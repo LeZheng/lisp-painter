@@ -16,39 +16,33 @@ LFileWidget::LFileWidget(QWidget *parent) :
     connect(this->ui->fileTree,&QTreeView::doubleClicked,
             [=](const QModelIndex &index)
     {
-        QModelIndex temp = index.parent();
-        QString aPath = index.data().toString();
-        while(temp.isValid())
-        {
-            QString p = temp.data().toString();
-            if(p == "/")
-            {
-                aPath = p + aPath;
-            }
-            else
-            {
-                aPath = p + "/" + aPath;
-            }
-
-            temp = temp.parent();
-        }
-        qDebug() << aPath;
-
+        QString aPath = model->filePath(index);
         if(model->isDir(index))
         {
             this->ui->fileTree->setRootIndex(index);
+            this->ui->cunrrentPath->setText(aPath);
         }
         else
         {
             emit itemSelected(aPath);
         }
-
     });
 
     connect(this->ui->fileTree,&QTreeView::clicked,
             [=](const QModelIndex &index)
     {
 
+    });
+
+    connect(this->ui->btnPrev,&QPushButton::clicked,
+            [=]()
+    {
+        QModelIndex index = this->ui->fileTree->currentIndex().parent();
+        if(index.isValid())
+        {
+            this->ui->fileTree->setRootIndex(index);
+        }
+        //TODO not complete
     });
 }
 

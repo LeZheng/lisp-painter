@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QDockWidget>
 #include <QTextEdit>
+#include <QFile>
 #include "lfilewidget.h"
 
 namespace Ui {
