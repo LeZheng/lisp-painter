@@ -14,10 +14,16 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    lfilewidget.cpp
+    lfilewidget.cpp \
+    leditwidget.cpp \
+    lconsolewidget.cpp
 
 HEADERS  += mainwindow.h \
-    lfilewidget.h
+    lfilewidget.h \
+    leditwidget.h \
+    lconsolewidget.h
 
 FORMS    += mainwindow.ui \
-    lfilewidget.ui
+    lfilewidget.ui \
+    leditwidget.ui \
+    lconsolewidget.ui

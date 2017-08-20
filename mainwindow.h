@@ -5,7 +5,10 @@
 #include <QDockWidget>
 #include <QTextEdit>
 #include <QFile>
+#include <QFileDialog>
 #include "lfilewidget.h"
+#include "lconsolewidget.h"
+#include "leditwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,18 +22,13 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-public slots:
-    void open(QString path);
-    void save(QString path);
-    void create(QString path);
-
 private:
     Ui::MainWindow *ui;
     QMenu * fileMenu;
     QAction * openAction;
     QAction * saveAction;
     QAction * createAction;
-    QMap<QString,QTextEdit *> edits;
+    LEditWidget * editWidget;
 };
 
 #endif // MAINWINDOW_H

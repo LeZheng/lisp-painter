@@ -1,90 +1,62 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->ui->tabWidget->clear();
+
+    this->editWidget = new LEditWidget(this);
+    setCentralWidget(editWidget);
 
     LFileWidget * fw = new LFileWidget(this);
     QDockWidget * leftDock = new QDockWidget(this);
     leftDock->setWidget(fw);
+    leftDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
     addDockWidget(Qt::LeftDockWidgetArea,leftDock);
 
-    connect(fw,&LFileWidget::itemSelected,this,&MainWindow::open);
+
+    connect(fw,&LFileWidget::itemSelected,this->editWidget,&LEditWidget::open);
+
+    LConsoleWidget * console = new LConsoleWidget(this);
+    QDockWidget * bottomDock = new QDockWidget(this);
+    bottomDock->setWidget(console);
+    bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    addDockWidget(Qt::BottomDockWidgetArea,bottomDock);
 
     fileMenu = menuBar()->addMenu(tr("file"));
     openAction = new QAction(tr("open"),this);
+    openAction->setShortcut(tr("Ctrl+O"));
     saveAction = new QAction(tr("save"),this);
+    saveAction->setShortcut(tr("Ctrl+S"));
     createAction = new QAction(tr("new"),this);
+    createAction->setShortcut(tr("Ctrl+N"));
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(createAction);
     connect(openAction,&QAction::triggered,
             [=](bool checked)
     {
-        if(checked)
-        {
-            //TODO
-        }
+        QString path = QFileDialog::getOpenFileName(this);
+        editWidget->open(path);
     });
     connect(saveAction,&QAction::triggered,
             [=](bool checked)
     {
-        if(checked)
-        {
-            QString path = this->ui->tabWidget->tabText(this->ui->tabWidget->currentIndex());
-            save(path);
-        }
+        QString path = this->ui->tabWidget->tabText(this->ui->tabWidget->currentIndex());
+        editWidget->save(path);
     });
     connect(createAction,&QAction::triggered,
             [=](bool checked)
     {
-        if(checked)
-        {
-            //TODO
-        }
+        QString path = QFileDialog::getSaveFileName(this);
+        editWidget->create(path);
     });
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::open(QString path)
-{
-    QFile f(path);
-    if(f.open(QIODevice::ReadWrite)){
-        QTextEdit * edit = new QTextEdit(this);
-        edits[path] = edit;
-        this->ui->tabWidget->addTab(edit,path);
-        edit->setText(QString(f.readAll().data()));
-    }else{
-        //TODO open failed
-    }
-}
-
-void MainWindow::save(QString path)
-{
-    QTextEdit * edit = edits[path];
-    if(edit != NULL){
-        QFile f(path);
-        if(f.open(QIODevice::WriteOnly)){
-            f.write(edit->toPlainText().toUtf8());
-            f.close();
-        }
-    }
-}
-
-void MainWindow::create(QString path)
-{
-    QFile f(path);
-    if(f.open(QIODevice::ReadWrite)){
-        QTextEdit * edit = new QTextEdit(this);
-        edits[path] = edit;
-        this->ui->tabWidget->addTab(edit,path);
-    }
 }
