@@ -20,9 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(fw,&LFileWidget::itemSelected,this->editWidget,&LEditWidget::open);
 
-    LConsoleWidget * console = new LConsoleWidget(this);
+    consoleWidget = new LConsoleWidget(this);
     QDockWidget * bottomDock = new QDockWidget(this);
-    bottomDock->setWidget(console);
+    bottomDock->setWidget(consoleWidget);
     bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
     addDockWidget(Qt::BottomDockWidgetArea,bottomDock);
 
@@ -33,9 +33,12 @@ MainWindow::MainWindow(QWidget *parent) :
     saveAction->setShortcut(tr("Ctrl+S"));
     createAction = new QAction(tr("new"),this);
     createAction->setShortcut(tr("Ctrl+N"));
+    runAction = new QAction(tr("run"),this);
+    runAction->setShortcut(tr("Ctrl+R"));
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(createAction);
+    fileMenu->addAction(runAction);
     connect(openAction,&QAction::triggered,
             [=](bool checked)
     {
@@ -53,6 +56,16 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         QString path = QFileDialog::getSaveFileName(this);
         editWidget->create(path);
+    });
+    connect(runAction,&QAction::triggered,
+            [=](bool checked)
+    {
+        this->consoleWidget->processCmd("clisp " + path);
+    });
+    connect(this->editWidget,&LEditWidget::currentFileChanged,
+            [=](QString path)
+    {
+        this->path = path;
     });
 }
 

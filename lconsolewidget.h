@@ -23,6 +23,7 @@ public slots:
 
 private slots:
     void readReady();
+    void done(int status);
 
 private:
     Ui::LConsoleWidget *ui;

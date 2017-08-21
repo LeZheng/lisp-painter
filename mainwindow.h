@@ -28,7 +28,10 @@ private:
     QAction * openAction;
     QAction * saveAction;
     QAction * createAction;
+    QAction * runAction;
     LEditWidget * editWidget;
+    LConsoleWidget * consoleWidget;
+    QString path;
 };
 
 #endif // MAINWINDOW_H

@@ -17,6 +17,9 @@ public:
     explicit LEditWidget(QWidget *parent = 0);
     ~LEditWidget();
 
+signals:
+    void currentFileChanged(QString path);
+
 public slots:
     void open(QString path);
     void save(QString path);

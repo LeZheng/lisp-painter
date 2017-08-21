@@ -13,16 +13,11 @@ LConsoleWidget::LConsoleWidget(QWidget *parent) :
     connect(this->process,static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished),
             [=](int exitCode, QProcess::ExitStatus exitStatus)
     {
+        done(exitCode);
         emit done(exitCode,result);
     });
 
-
-    connect(this->ui->pushButton,&QPushButton::clicked,
-            [=]()
-    {
-        QString s = this->ui->lineEdit->text();
-        processCmd(s);
-    });
+    this->ui->consoleEdit->setReadOnly(true);
 }
 
 LConsoleWidget::~LConsoleWidget()
@@ -46,4 +41,9 @@ void LConsoleWidget::readReady()
     QString str = QString(this->process->readAll());
     this->ui->consoleEdit->appendPlainText(str);
     result = result + str;
+}
+
+void LConsoleWidget::done(int status)
+{
+    //TODO
 }
