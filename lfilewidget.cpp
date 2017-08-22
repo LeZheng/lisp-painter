@@ -10,7 +10,6 @@ LFileWidget::LFileWidget(QWidget *parent) :
 
     this->workPath = QDir::homePath();
     model = new QDirModel(this);
-
     this->ui->fileTree->setModel(model);
 
     connect(this->ui->fileTree,&QTreeView::doubleClicked,
@@ -37,7 +36,7 @@ LFileWidget::LFileWidget(QWidget *parent) :
     connect(this->ui->btnPrev,&QPushButton::clicked,
             [=]()
     {
-        QModelIndex index = this->ui->fileTree->currentIndex().parent();
+        QModelIndex index = this->ui->fileTree->rootIndex().parent();
         if(index.isValid())
         {
             this->ui->fileTree->setRootIndex(index);

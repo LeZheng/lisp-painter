@@ -8,7 +8,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->setMinimumHeight(600);
+    this->setMinimumWidth(800);
+
     this->editWidget = new LEditWidget(this);
+    this->editWidget->setMinimumHeight(300);
+    this->editWidget->setMinimumWidth(400);
+
     setCentralWidget(editWidget);
 
     LFileWidget * fw = new LFileWidget(this);
@@ -72,4 +78,34 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::showFontComboBox(QString font)
+{
+    //TODO
+}
+
+void MainWindow::showSizeSpinBox(QString value)
+{
+    //TODO
+}
+void MainWindow::showBoldBtn()
+{
+    //TODO
+}
+void MainWindow::showItalicBtn()
+{
+    //TODO
+}
+void MainWindow::showUnderlineBtn()
+{
+    //TODO
+}
+void MainWindow::showColorBtn()
+{
+    //TODO
+}
+void MainWindow::showCurrentFormatChanged(const QTextCharFormat &fmt)
+{
+    //TODO
 }
