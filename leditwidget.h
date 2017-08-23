@@ -19,12 +19,12 @@ public:
 
 signals:
     void currentFileChanged(QString path);
-
+    void currentCharFormatChanged(const QTextCharFormat & fmt);
 public slots:
     void open(QString path);
     void save(QString path);
     void create(QString path);
-
+    void mergeFormat(QTextCharFormat fmt);
 private:
     Ui::LEditWidget *ui;
     QMap<QString,QTextEdit *> edits;

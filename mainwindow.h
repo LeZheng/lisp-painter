@@ -9,6 +9,7 @@
 #include <QLabel>
 #include <QFontComboBox>
 #include <QToolButton>
+#include <QColorDialog>
 #include "lfilewidget.h"
 #include "lconsolewidget.h"
 #include "leditwidget.h"
@@ -25,6 +26,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+signals:
+    void currentCharFormatChanged(QTextCharFormat fmt);
+
 private:
     Ui::MainWindow *ui;
     QMenu * fileMenu;
@@ -37,6 +41,7 @@ private:
     QString path;
 
     //TODO
+    void initToolBar();
     QToolBar * fontToolBar;
     QLabel * fontLabel1;
     QFontComboBox * fontComboBox;

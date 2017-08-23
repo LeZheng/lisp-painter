@@ -38,6 +38,7 @@ void LEditWidget::open(QString path)
         if(f.open(QIODevice::ReadWrite))
         {
             QTextEdit * edit = new QTextEdit(this);
+            connect(edit,&QTextEdit::currentCharFormatChanged,this,&LEditWidget::currentCharFormatChanged);
             edits[path] = edit;
             this->ui->tabWidget->addTab(edit,path);
             this->ui->tabWidget->setCurrentWidget(edit);
@@ -80,5 +81,22 @@ void LEditWidget::create(QString path)
         QTextEdit * edit = new QTextEdit(this);
         edits[path] = edit;
         this->ui->tabWidget->addTab(edit,path);
+    }
+}
+
+void LEditWidget::mergeFormat(QTextCharFormat fmt)
+{
+
+    QMapIterator<QString,QTextEdit *> iterator(edits);
+    while(iterator.hasNext())
+    {
+        QTextEdit * text = iterator.next().value();
+        QTextCursor cursor = text->textCursor();
+        if(!cursor.hasSelection())
+        {
+            cursor.select(QTextCursor::WordUnderCursor);
+        }
+        cursor.mergeCharFormat(fmt);
+        text->mergeCurrentCharFormat(fmt);
     }
 }
