@@ -10,6 +10,7 @@
 #include <QFontComboBox>
 #include <QToolButton>
 #include <QColorDialog>
+#include <QToolBar>
 #include "lfilewidget.h"
 #include "lconsolewidget.h"
 #include "leditwidget.h"

@@ -126,11 +126,9 @@ void MainWindow::initToolBar()
     fontToolBar->addWidget(fontComboBox);
     fontToolBar->addWidget(fontLabel2);
     fontToolBar->addWidget(sizeComboBox);
-    fontToolBar->addSeparator();
     fontToolBar->addWidget(boldBtn);
     fontToolBar->addWidget(italicBtn);
     fontToolBar->addWidget(underlineBtn);
-    fontToolBar->addSeparator();
     fontToolBar->addWidget(colorBtn);
 }
 
