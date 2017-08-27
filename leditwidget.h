@@ -7,6 +7,7 @@
 #include <QMouseEvent>
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
+#include "graphicsselectscene.h"
 
 namespace Ui {
 class LEditWidget;
@@ -29,16 +30,11 @@ public slots:
     void create(QString path);
     void mergeFormat(QTextCharFormat fmt);
 protected:
-    virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mousePressEvent(QMouseEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent *event);
-    virtual bool eventFilter(QObject *watched, QEvent *event);
 private:
     Ui::LEditWidget *ui;
     QMap<QString,QTextEdit *> edits;
-    QGraphicsScene * scene;
-    int startx;
-    int starty;
+    GraphicsSelectScene * scene;
 };
 
 #endif // LEDITWIDGET_H

@@ -16,12 +16,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     lfilewidget.cpp \
     leditwidget.cpp \
-    lconsolewidget.cpp
+    lconsolewidget.cpp \
+    graphicsselectscene.cpp
 
 HEADERS  += mainwindow.h \
     lfilewidget.h \
     leditwidget.h \
-    lconsolewidget.h
+    lconsolewidget.h \
+    graphicsselectscene.h
 
 FORMS    += mainwindow.ui \
     lfilewidget.ui \

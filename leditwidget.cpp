@@ -26,7 +26,8 @@ LEditWidget::LEditWidget(QWidget *parent) :
 
     QGraphicsView * painterView = this->ui->painterView;
     painterView->setStyleSheet("background: transparent;border:0px");
-    this->scene = new QGraphicsScene;
+    this->scene = new GraphicsSelectScene;
+    this->scene->setGraphicsView(this->ui->painterView);
     this->scene->setSceneRect(- this->ui->painterView->width()/2,
                               - this->ui->painterView->height()/2,
                               this->ui->painterView->width(),
@@ -34,8 +35,6 @@ LEditWidget::LEditWidget(QWidget *parent) :
     painterView->setScene(scene);
     painterView->move(this->ui->tabWidget->x(),this->ui->tabWidget->y());
     painterView->setVisible(false);
-    this->ui->painterView->installEventFilter(this);
-//    this->setMouseTracking(true);
 }
 
 LEditWidget::~LEditWidget()
@@ -117,57 +116,10 @@ void LEditWidget::mergeFormat(QTextCharFormat fmt)
 }
 void LEditWidget::mousePressEvent(QMouseEvent *event)
 {
+    qDebug() << "mousePressEvent";
     if(event->button() == Qt::RightButton)
     {
-        QList<QGraphicsItem *> items = scene->items();
-        while(!items.isEmpty())
-        {
-            scene->removeItem(items.at(0));
-            items.removeAt(0);
-        }
         this->ui->painterView->setVisible(true);
     }
-    this->startx = event->x();
-    this->starty = event->y();
     QWidget::mousePressEvent(event);
-}
-void LEditWidget::mouseReleaseEvent(QMouseEvent *event)
-{
-    qDebug() << "mouseReleaseEvent x:" << event->x() << " y:" << event->y();
-//TODO
-    if(event->button() == Qt::RightButton)
-    {
-        this->ui->painterView->setVisible(false);
-    }
-    QWidget::mouseReleaseEvent(event);
-}
-
-void LEditWidget::mouseMoveEvent(QMouseEvent *event)
-{
-    qDebug() << "mouseMoveEvent x:" << event->x() << " y:" << event->y();
-    if(this->ui->painterView->isVisible())
-    {
-        QList<QGraphicsItem *> items = scene->items();
-        while(!items.isEmpty())
-        {
-            scene->removeItem(items.at(0));
-            items.removeAt(0);
-        }
-        QGraphicsRectItem * item = new QGraphicsRectItem(QRectF(startx- this->ui->painterView->width()/2,
-                                                                starty- this->ui->painterView->height()/2,
-                                                                event->x() - startx,
-                                                                event->y() - starty));
-        item->setBrush(Qt::red);
-        scene->addItem(item);
-        item->setPos(0,0);
-    }
-    QWidget::mouseMoveEvent(event);
-}
-
-bool LEditWidget::eventFilter(QObject *watched, QEvent *event)
-{
-    qDebug() << "filter.." << event->type();
-//TODO
-
-    return QWidget::eventFilter(watched,event);
 }
