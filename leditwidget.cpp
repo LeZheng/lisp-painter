@@ -35,6 +35,7 @@ LEditWidget::LEditWidget(QWidget *parent) :
     painterView->setScene(scene);
     painterView->move(this->ui->tabWidget->x(),this->ui->tabWidget->y());
     painterView->setVisible(false);
+    connect(this->scene,&GraphicsSelectScene::rectSelected,this,&LEditWidget::chooseRectText);
 }
 
 LEditWidget::~LEditWidget()
@@ -100,7 +101,6 @@ void LEditWidget::create(QString path)
 
 void LEditWidget::mergeFormat(QTextCharFormat fmt)
 {
-
     QMapIterator<QString,QTextEdit *> iterator(edits);
     while(iterator.hasNext())
     {
@@ -116,10 +116,58 @@ void LEditWidget::mergeFormat(QTextCharFormat fmt)
 }
 void LEditWidget::mousePressEvent(QMouseEvent *event)
 {
-    qDebug() << "mousePressEvent";
     if(event->button() == Qt::RightButton)
     {
         this->ui->painterView->setVisible(true);
     }
     QWidget::mousePressEvent(event);
+}
+
+void LEditWidget::chooseRectText(int x,int y,int h,int w)
+{
+    QString path = this->ui->tabWidget->tabText(this->ui->tabWidget->currentIndex());
+    QTextEdit * edit = edits[path];
+    if(edit != NULL)
+    {
+        QFontMetrics fm(edit->currentFont());
+        int dh = fm.height();
+        QTextBlock block = edit->document()->begin();
+        QStringList list;
+        for(int i = 0,height = 0;i < edit->document()->lineCount();i++,height+= dh)
+        {
+            if((height >= y && height <= y + h) || (height + dh > y && height + dh < y + h))
+            {
+                QString line = block.text();
+                int start = -1,end = -1,j;
+                for(j = 0;j < line.length();j++)
+                {
+
+                    if(fm.width(line,j) > x && start < 0)
+                    {
+                        start = j;
+                        continue;
+                    }
+                    if(fm.width(line,j) > (x + w))
+                    {
+                        end  = j;
+                        break;
+                    }
+                    if(start > 0 && j == (line.length() - 1))
+                    {
+                        end = j + 1;
+                    }
+                }
+                if(start >= 0 && end >= 0)
+                {
+                    list << block.text().mid(start,end - start);
+                }
+                else
+                {
+                    list << "";
+                }
+            }
+            block = block.next();
+        }
+        emit currentTextSelected(list);
+    }
 }

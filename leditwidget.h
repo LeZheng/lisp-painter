@@ -7,6 +7,7 @@
 #include <QMouseEvent>
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
+#include <QTextBlock>
 #include "graphicsselectscene.h"
 
 namespace Ui {
@@ -24,11 +25,13 @@ public:
 signals:
     void currentFileChanged(QString path);
     void currentCharFormatChanged(const QTextCharFormat & fmt);
+    void currentTextSelected(QStringList strs);
 public slots:
     void open(QString path);
     void save(QString path);
     void create(QString path);
     void mergeFormat(QTextCharFormat fmt);
+    void chooseRectText(int x,int y,int h,int w);
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
 private:
