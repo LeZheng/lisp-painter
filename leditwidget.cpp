@@ -56,6 +56,7 @@ void LEditWidget::open(QString path)
             edit->setContextMenuPolicy (Qt::NoContextMenu);
             this->ui->tabWidget->addTab(edit,path);
             this->ui->tabWidget->setCurrentWidget(edit);
+            this->ui->painterView->raise();
             edit->setText(QString(f.readAll().data()));
         }
         else
@@ -96,6 +97,7 @@ void LEditWidget::create(QString path)
         edit->setContextMenuPolicy (Qt::NoContextMenu);
         edits[path] = edit;
         this->ui->tabWidget->addTab(edit,path);
+//        this->ui->painterView->resize(edit->width(),edit->height());
     }
 }
 
@@ -127,6 +129,10 @@ void LEditWidget::chooseRectText(int x,int y,int h,int w)
 {
     QString path = this->ui->tabWidget->tabText(this->ui->tabWidget->currentIndex());
     QTextEdit * edit = edits[path];
+    QPoint p(x,y);
+    p = edit->mapFromGlobal(p);
+    x = p.x();
+    y = p.y();
     if(edit != NULL)
     {
         QFontMetrics fm(edit->currentFont());

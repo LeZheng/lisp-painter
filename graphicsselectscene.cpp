@@ -60,7 +60,7 @@ void GraphicsSelectScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
     {
         QPoint p = view->mapFromScene(item->scenePos());
         QRectF r = item->boundingRect();
-        emit rectSelected(p.x(),p.y(),r.height(),r.width());
+        emit rectSelected(view->mapToGlobal(p).x(),view->mapToGlobal(p).y(),r.height(),r.width());
     }
     QGraphicsScene::mouseReleaseEvent(event);
 }
