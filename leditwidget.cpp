@@ -58,6 +58,26 @@ void LEditWidget::open(QString path)
             this->ui->tabWidget->setCurrentWidget(edit);
             this->ui->painterView->raise();
             edit->setText(QString(f.readAll().data()));
+            connect(edit,&QTextEdit::textChanged,
+                [=]()
+            {
+                int index = this->ui->tabWidget->currentIndex();
+                QSize size(200,200); //指定图片大小;
+                QImage img(size,QImage::Format_ARGB32);
+                QPainter painter(&img); //为这个QImage构造一个QPainter
+                painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
+                QPen pen = painter.pen();
+                pen.setColor(Qt::red);
+                QFont font = painter.font();
+                font.setBold(true);//加粗
+                font.setPixelSize(200);//改变字体大小
+                painter.setPen(pen);
+                painter.setFont(font);
+                painter.drawText(img.rect(),Qt::AlignCenter,"*");
+                QIcon icon(QPixmap::fromImage(img));
+                this->ui->tabWidget->setTabIcon(index,icon);
+
+            });
         }
         else
         {
@@ -97,7 +117,7 @@ void LEditWidget::create(QString path)
         edit->setContextMenuPolicy (Qt::NoContextMenu);
         edits[path] = edit;
         this->ui->tabWidget->addTab(edit,path);
-//        this->ui->painterView->resize(edit->width(),edit->height());
+        //TODO
     }
 }
 
