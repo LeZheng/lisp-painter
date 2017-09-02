@@ -1,5 +1,6 @@
 #include "lconsolewidget.h"
 #include "ui_lconsolewidget.h"
+#include <QDebug>
 
 LConsoleWidget::LConsoleWidget(QWidget *parent) :
     QWidget(parent),
@@ -45,5 +46,8 @@ void LConsoleWidget::readReady()
 
 void LConsoleWidget::done(int status)
 {
-    //TODO
+    if(status != 0)
+    {
+        qWarning() << "process not success:" << status;
+    }
 }

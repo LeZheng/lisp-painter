@@ -40,6 +40,7 @@ LEditWidget::LEditWidget(QWidget *parent) :
 
 LEditWidget::~LEditWidget()
 {
+    delete scene;
     delete ui;
 }
 
@@ -62,26 +63,25 @@ void LEditWidget::open(QString path)
                 [=]()
             {
                 int index = this->ui->tabWidget->currentIndex();
-                QSize size(200,200); //指定图片大小;
+                QSize size(200,200);
                 QImage img(size,QImage::Format_ARGB32);
-                QPainter painter(&img); //为这个QImage构造一个QPainter
+                QPainter painter(&img);
                 painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
                 QPen pen = painter.pen();
                 pen.setColor(Qt::red);
                 QFont font = painter.font();
-                font.setBold(true);//加粗
-                font.setPixelSize(200);//改变字体大小
+                font.setBold(true);
+                font.setPixelSize(200);
                 painter.setPen(pen);
                 painter.setFont(font);
                 painter.drawText(img.rect(),Qt::AlignCenter,"*");
                 QIcon icon(QPixmap::fromImage(img));
                 this->ui->tabWidget->setTabIcon(index,icon);
-
             });
         }
         else
         {
-            //TODO open failed
+            qWarning() << "file open failed";
         }
     }
     else
@@ -103,7 +103,7 @@ void LEditWidget::save(QString path)
         }
         else
         {
-            //TODO
+            qWarning() << "file save failed";
         }
     }
 }
@@ -168,12 +168,12 @@ void LEditWidget::chooseRectText(int x,int y,int h,int w)
                 for(j = 0;j < line.length();j++)
                 {
 
-                    if(fm.width(line,j) > x && start < 0)
+                    if(fm.width(line,j + 1) > x && start < 0)
                     {
                         start = j;
                         continue;
                     }
-                    if(fm.width(line,j) > (x + w))
+                    if(fm.width(line,j + 1) > (x + w))
                     {
                         end  = j;
                         break;

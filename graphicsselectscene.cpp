@@ -42,7 +42,7 @@ void GraphicsSelectScene::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
         item->setAcceptDrops(true);
         item->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable);
         this->addItem(item);
-        item->setPos(startx,starty);
+        item->setPos(sx > startx ? startx : sx,sy > starty ? starty : sy);
     }
     QGraphicsScene::mouseMoveEvent(event);
 }
