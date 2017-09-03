@@ -10,6 +10,7 @@
 #include <QTextBlock>
 #include <QScrollBar>
 #include "graphicsselectscene.h"
+#include "lispsyntaxhighlighter.h"
 
 namespace Ui {
 class LEditWidget;

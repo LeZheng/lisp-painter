@@ -17,13 +17,15 @@ SOURCES += main.cpp\
     lfilewidget.cpp \
     leditwidget.cpp \
     lconsolewidget.cpp \
-    graphicsselectscene.cpp
+    graphicsselectscene.cpp \
+    lispsyntaxhighlighter.cpp
 
 HEADERS  += mainwindow.h \
     lfilewidget.h \
     leditwidget.h \
     lconsolewidget.h \
-    graphicsselectscene.h
+    graphicsselectscene.h \
+    lispsyntaxhighlighter.h
 
 FORMS    += mainwindow.ui \
     lfilewidget.ui \

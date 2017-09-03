@@ -58,6 +58,7 @@ void LEditWidget::open(QString path)
             this->ui->tabWidget->addTab(edit,path);
             this->ui->tabWidget->setCurrentWidget(edit);
             this->ui->painterView->raise();
+            LispSyntaxHighlighter * shLighter = new LispSyntaxHighlighter(edit->document());
             edit->setText(QString(f.readAll().data()));
             connect(edit,&QTextEdit::textChanged,
                 [=]()
