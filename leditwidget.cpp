@@ -155,13 +155,15 @@ void LEditWidget::chooseRectText(int x,int y,int h,int w)
     y = p.y();
     if(edit != NULL)
     {
+        double proc = 1.0 * edit->verticalScrollBar()->value() / edit->verticalScrollBar()->maximum();
         QFontMetrics fm(edit->currentFont());
         int dh = fm.height();
         QTextBlock block = edit->document()->begin();
         QStringList list;
+        y = y + dh * edit->document()->lineCount() * proc;
         for(int i = 0,height = 0;i < edit->document()->lineCount();i++,height+= dh)
         {
-            if((height >= y && height <= y + h) || (height + dh > y && height + dh < y + h))
+            if((height >= y && height <= y + h) || (height + dh >= y && height + dh <= y + h))
             {
                 QString line = block.text();
                 int start = -1,end = -1,j;
@@ -178,7 +180,7 @@ void LEditWidget::chooseRectText(int x,int y,int h,int w)
                         end  = j;
                         break;
                     }
-                    if(start > 0 && j == (line.length() - 1))
+                    if(start >= 0 && j == (line.length() - 1))
                     {
                         end = j + 1;
                     }
@@ -193,6 +195,9 @@ void LEditWidget::chooseRectText(int x,int y,int h,int w)
                 }
             }
             block = block.next();
+        }
+        foreach (QString str, list) {
+            qDebug() << str;
         }
         emit currentTextSelected(list);
     }

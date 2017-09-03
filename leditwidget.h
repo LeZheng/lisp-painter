@@ -8,6 +8,7 @@
 #include <QGraphicsScene>
 #include <QGraphicsRectItem>
 #include <QTextBlock>
+#include <QScrollBar>
 #include "graphicsselectscene.h"
 
 namespace Ui {
