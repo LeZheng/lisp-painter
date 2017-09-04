@@ -18,16 +18,19 @@ SOURCES += main.cpp\
     leditwidget.cpp \
     lconsolewidget.cpp \
     graphicsselectscene.cpp \
-    lispsyntaxhighlighter.cpp
+    lispsyntaxhighlighter.cpp \
+    startupwidget.cpp
 
 HEADERS  += mainwindow.h \
     lfilewidget.h \
     leditwidget.h \
     lconsolewidget.h \
     graphicsselectscene.h \
-    lispsyntaxhighlighter.h
+    lispsyntaxhighlighter.h \
+    startupwidget.h
 
 FORMS    += mainwindow.ui \
     lfilewidget.ui \
     leditwidget.ui \
-    lconsolewidget.ui
+    lconsolewidget.ui \
+    startupwidget.ui
