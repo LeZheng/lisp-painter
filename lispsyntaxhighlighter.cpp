@@ -25,7 +25,7 @@ void LispSyntaxHighlighter::highlightBlock(const QString &text)
     int index = text.indexOf(expression);
     while (index >= 0) {
         int length = expression.matchedLength();
-        setFormat(index, length, myClassFormat);
+        setFormat(index + 1, length - 1, myClassFormat);
         index = text.indexOf(expression, index + length);
     }
 

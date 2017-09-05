@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QSyntaxHighlighter>
 
-#define BASE_KEY_WORD "defun|let|labels|defmacro|apply|funcall"
+#define BASE_KEY_WORD "[(][a-zA-Z\-]*\ "
 #define KEY_WORD_ARGU ":[a-zA-Z\-]*[ \$)]"
 
 class LispSyntaxHighlighter : public QSyntaxHighlighter
