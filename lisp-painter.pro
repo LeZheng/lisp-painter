@@ -11,26 +11,34 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = lisp-painter
 TEMPLATE = app
 
+INCLUDEPATH += $PWD/include
 
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    lfilewidget.cpp \
-    leditwidget.cpp \
-    lconsolewidget.cpp \
-    graphicsselectscene.cpp \
-    lispsyntaxhighlighter.cpp \
-    startupwidget.cpp
+SOURCES += \
+    src/graphicsselectscene.cpp \
+    src/lconsolewidget.cpp \
+    src/leditwidget.cpp \
+    src/lfilewidget.cpp \
+    src/lispsyntaxhighlighter.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp \
+    src/startupwidget.cpp
 
-HEADERS  += mainwindow.h \
-    lfilewidget.h \
-    leditwidget.h \
-    lconsolewidget.h \
-    graphicsselectscene.h \
-    lispsyntaxhighlighter.h \
-    startupwidget.h
+HEADERS  += \
+    include/graphicsselectscene.h \
+    include/lconsolewidget.h \
+    include/leditwidget.h \
+    include/lfilewidget.h \
+    include/lispsyntaxhighlighter.h \
+    include/mainwindow.h \
+    include/startupwidget.h
 
-FORMS    += mainwindow.ui \
-    lfilewidget.ui \
-    leditwidget.ui \
-    lconsolewidget.ui \
-    startupwidget.ui
+FORMS    += \
+    ui/lconsolewidget.ui \
+    ui/leditwidget.ui \
+    ui/lfilewidget.ui \
+    ui/mainwindow.ui \
+    ui/startupwidget.ui
+
+DISTFILES += \
+    LICENSE \
+    README.md
