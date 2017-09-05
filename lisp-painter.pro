@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = lisp-painter
 TEMPLATE = app
 
-INCLUDEPATH += $PWD/include
+INCLUDEPATH += $$PWD/include
 
 SOURCES += \
     src/graphicsselectscene.cpp \

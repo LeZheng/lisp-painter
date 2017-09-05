@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QSyntaxHighlighter>
+#include <QHash>
+#include <QProcess>
 
 #define BASE_KEY_WORD "[(][a-zA-Z\-]*\ "
 #define KEY_WORD_ARGU ":[a-zA-Z\-]*[ \$)]"
@@ -17,6 +19,9 @@ public:
 
 protected:
     void highlightBlock(const QString &text);
+private:
+    QHash<QString,QString> symbolMap;
+    QProcess * p;
 };
 
 #endif // LISPSYNTAXHIGHLIGHTER_H
