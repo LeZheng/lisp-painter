@@ -24,20 +24,20 @@ SOURCES += \
     src/startupwidget.cpp
 
 HEADERS  += \
-    include/graphicsselectscene.h \
-    include/lconsolewidget.h \
-    include/leditwidget.h \
-    include/lfilewidget.h \
-    include/lispsyntaxhighlighter.h \
-    include/mainwindow.h \
-    include/startupwidget.h
+    src/graphicsselectscene.h \
+    src/lconsolewidget.h \
+    src/leditwidget.h \
+    src/lfilewidget.h \
+    src/lispsyntaxhighlighter.h \
+    src/mainwindow.h \
+    src/startupwidget.h
 
 FORMS    += \
-    ui/lconsolewidget.ui \
-    ui/leditwidget.ui \
-    ui/lfilewidget.ui \
-    ui/mainwindow.ui \
-    ui/startupwidget.ui
+    src/lconsolewidget.ui \
+    src/leditwidget.ui \
+    src/lfilewidget.ui \
+    src/mainwindow.ui \
+    src/startupwidget.ui
 
 DISTFILES += \
     LICENSE \
