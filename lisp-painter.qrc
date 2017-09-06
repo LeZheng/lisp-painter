@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="go-previous">image/go-previous.png</file>
+        <file alias="go-next">image/go-next.png</file>
+        <file alias="text-open">image/text-open.png</file>
+        <file alias="go-home">image/user-home.png</file>
+        <file alias="build-only">image/build-only.png</file>
+        <file alias="text-new">image/text-new.png</file>
+        <file alias="load-only">image/load-only.png</file>
+        <file alias="save-only">image/document-save-all.png</file>
+    </qresource>
+</RCC>

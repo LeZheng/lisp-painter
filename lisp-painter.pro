@@ -42,3 +42,6 @@ FORMS    += \
 DISTFILES += \
     LICENSE \
     README.md
+
+RESOURCES += \
+    lisp-painter.qrc

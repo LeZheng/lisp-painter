@@ -11,7 +11,8 @@ LFileWidget::LFileWidget(QWidget *parent) :
     this->workPath = QDir::homePath();
     model = new QDirModel(this);
     this->ui->fileTree->setModel(model);
-
+    this->ui->btnPrev->setIcon(QIcon(":/go-previous"));
+    this->ui->btnNext->setIcon(QIcon(":/go-next"));
     connect(this->ui->fileTree,&QTreeView::doubleClicked,
             [=](const QModelIndex &index)
     {
@@ -41,7 +42,6 @@ LFileWidget::LFileWidget(QWidget *parent) :
         {
             this->ui->fileTree->setRootIndex(index);
         }
-        //TODO not complete
     });
 }
 

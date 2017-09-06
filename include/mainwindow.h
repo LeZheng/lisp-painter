@@ -44,6 +44,7 @@ private:
     //TODO
     void initToolBar();
     QToolBar * fontToolBar;
+    QToolBar * baseToolBar;
     QLabel * fontLabel1;
     QFontComboBox * fontComboBox;
     QLabel * fontLabel2;

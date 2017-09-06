@@ -32,15 +32,21 @@ MainWindow::MainWindow(QWidget *parent) :
     bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
     addDockWidget(Qt::BottomDockWidgetArea,bottomDock);
 
+    baseToolBar = addToolBar("base");
+
     fileMenu = menuBar()->addMenu(tr("file"));
-    openAction = new QAction(tr("open"),this);
+    openAction = baseToolBar->addAction(QIcon(":/text-open"),tr("open"));
     openAction->setShortcut(tr("Ctrl+O"));
-    saveAction = new QAction(tr("save"),this);
+    openAction->setStatusTip("open a file");//TODO
+    saveAction = baseToolBar->addAction(QIcon(":/save-only"),tr("save"));
     saveAction->setShortcut(tr("Ctrl+S"));
-    createAction = new QAction(tr("new"),this);
+    saveAction->setStatusTip("save all");//TODO
+    createAction = baseToolBar->addAction(QIcon(":/text-new"),tr("new"));
     createAction->setShortcut(tr("Ctrl+N"));
-    runAction = new QAction(tr("run"),this);
+    createAction->setStatusTip("new a file");//TODO
+    runAction = baseToolBar->addAction(QIcon(":/load-only"),tr("load"));
     runAction->setShortcut(tr("Ctrl+R"));
+    runAction->setStatusTip("load file by clisp");//TODO
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(createAction);
