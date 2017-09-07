@@ -21,7 +21,8 @@ SOURCES += \
     src/lispsyntaxhighlighter.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
-    src/startupwidget.cpp
+    src/startupwidget.cpp \
+    src/lispsymbolfactory.cpp
 
 HEADERS  += \
     src/graphicsselectscene.h \
@@ -30,7 +31,8 @@ HEADERS  += \
     src/lfilewidget.h \
     src/lispsyntaxhighlighter.h \
     src/mainwindow.h \
-    src/startupwidget.h
+    src/startupwidget.h \
+    src/lispsymbolfactory.h
 
 FORMS    += \
     src/lconsolewidget.ui \
