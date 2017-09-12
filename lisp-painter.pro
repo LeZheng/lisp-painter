@@ -22,7 +22,8 @@ SOURCES += \
     src/main.cpp \
     src/mainwindow.cpp \
     src/startupwidget.cpp \
-    src/lispsymbolfactory.cpp
+    src/lispsymbolfactory.cpp \
+    src/qgraphicsstaritem.cpp
 
 HEADERS  += \
     src/graphicsselectscene.h \
@@ -32,14 +33,14 @@ HEADERS  += \
     src/lispsyntaxhighlighter.h \
     src/mainwindow.h \
     src/startupwidget.h \
-    src/lispsymbolfactory.h
+    src/lispsymbolfactory.h \
+    src/qgraphicsstaritem.h
 
 FORMS    += \
     src/lconsolewidget.ui \
     src/leditwidget.ui \
     src/lfilewidget.ui \
-    src/mainwindow.ui \
-    src/startupwidget.ui
+    src/mainwindow.ui
 
 DISTFILES += \
     LICENSE \

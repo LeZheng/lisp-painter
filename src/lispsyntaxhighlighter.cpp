@@ -1,4 +1,5 @@
 #include "lispsyntaxhighlighter.h"
+#include "lispsymbolfactory.h"
 #include <QDebug>
 
 LispSyntaxHighlighter::LispSyntaxHighlighter(QObject * parent):QSyntaxHighlighter(parent)
@@ -8,27 +9,7 @@ LispSyntaxHighlighter::LispSyntaxHighlighter(QObject * parent):QSyntaxHighlighte
 
 LispSyntaxHighlighter::LispSyntaxHighlighter(QTextDocument *parent):QSyntaxHighlighter(parent)
 {
-    p = new QProcess(this);QString::fromLatin1("");
-    connect(p,static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished),
-            [=](int code,QProcess::ExitStatus exitStatus)
-    {
-        QByteArray qOutput = p->readAllStandardOutput();
-        QList<QByteArray> list = qOutput.split('\n');
-        QList<QByteArray>::iterator itor = list.begin();
 
-        for ( ; itor != list.end(); itor++)
-        {
-            QByteArray strline = *itor;
-            QString line = strline.simplified();
-            int i = line.indexOf(" ");
-            if(i == -1)
-                continue;
-            QString symbol = line.left(i);
-            QString type = line.mid(i + 1);
-            symbolMap[symbol] = type;
-        }
-    });
-    p->start("clisp -i ~/init-symbol.lisp");//TODO
 }
 
 LispSyntaxHighlighter::~LispSyntaxHighlighter()
@@ -38,6 +19,7 @@ LispSyntaxHighlighter::~LispSyntaxHighlighter()
 
 void LispSyntaxHighlighter::highlightBlock(const QString &text)
 {
+    LispSymbolFactory * factory = LispSymbolFactory::getInstance();
     QTextCharFormat myClassFormat;
     myClassFormat.setFontWeight(QFont::Bold);
     myClassFormat.setForeground(Qt::darkMagenta);
@@ -46,7 +28,12 @@ void LispSyntaxHighlighter::highlightBlock(const QString &text)
     int index = text.indexOf(expression);
     while (index >= 0) {
         int length = expression.matchedLength();
-        setFormat(index + 1, length - 1, myClassFormat);
+//        LispSymbol * sym = factory->getSymbol(text.mid(index + 1,length - 2));
+//        if(sym != NULL)
+//        {
+            setFormat(index + 1, length - 1, myClassFormat);
+//            delete sym;
+//        }
         index = text.indexOf(expression, index + length);
     }
 

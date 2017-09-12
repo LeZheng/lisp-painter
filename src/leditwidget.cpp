@@ -23,7 +23,6 @@ LEditWidget::LEditWidget(QWidget *parent) :
         QString path = this->ui->tabWidget->tabText(index);
         emit currentFileChanged(path);
     });
-
     QGraphicsView * painterView = this->ui->painterView;
     painterView->setStyleSheet("background: transparent;border:0px");
     this->scene = new GraphicsSelectScene;

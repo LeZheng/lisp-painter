@@ -7,5 +7,6 @@
         <file alias="text-new">image/text-new.png</file>
         <file alias="load-only">image/load-only.png</file>
         <file alias="save-only">image/document-save-all.png</file>
+        <file alias="startup">image/startup-background.jpg</file>
     </qresource>
 </RCC>

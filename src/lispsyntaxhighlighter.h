@@ -6,8 +6,8 @@
 #include <QHash>
 #include <QProcess>
 
-#define BASE_KEY_WORD "[(][a-zA-Z\-]*\ "
-#define KEY_WORD_ARGU ":[a-zA-Z\-]*[ \$)]"
+#define BASE_KEY_WORD "[(][a-zA-Z\-]*[ ]* "
+#define KEY_WORD_ARGU ":[a-zA-Z\-]*[ $)]"
 
 class LispSyntaxHighlighter : public QSyntaxHighlighter
 {

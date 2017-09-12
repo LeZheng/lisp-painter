@@ -2,6 +2,8 @@
 #define LISPSYMBOLFACTORY_H
 
 #include <QObject>
+#include <QProcess>
+#include <QHash>
 
 class LispSymbol : public QObject
 {
@@ -33,8 +35,13 @@ class LispSymbolFactory : public QObject
 {
     Q_OBJECT
 public:
+    static LispSymbolFactory * getInstance();
+    LispSymbol * getSymbol(QString name);
+private:
     explicit LispSymbolFactory(QObject *parent = 0);
-
+    static LispSymbolFactory * instance;
+    QHash<QString,QString> symbolMap;
+    QProcess * p;
 signals:
 
 public slots:
