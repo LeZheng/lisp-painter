@@ -4,7 +4,7 @@
 QGraphicsStarItem::QGraphicsStarItem(QObject * parent):
     QObject(parent)
 {
-    img.load("/home/skyline/temp/weather-clear.png");//TODO
+    img.load(":/star");
     vx = rand()%2 == 0 ? rand()%5 + 1 : -rand()%5 - 1;
     vy = rand()%2 == 0 ? rand()%5 + 1 : -rand()%5 - 1;
 }

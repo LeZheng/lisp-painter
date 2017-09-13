@@ -14,11 +14,23 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <item row="1" column="0" colspan="5">
     <widget class="QTreeView" name="fileTree"/>
-   </item>
-   <item row="0" column="3">
-    <widget class="QLineEdit" name="cunrrentPath"/>
    </item>
    <item row="0" column="1">
     <widget class="QPushButton" name="btnPrev">
@@ -33,6 +45,9 @@
       <string/>
      </property>
     </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLineEdit" name="cunrrentPath"/>
    </item>
   </layout>
  </widget>

@@ -8,5 +8,7 @@
         <file alias="load-only">image/load-only.png</file>
         <file alias="save-only">image/document-save-all.png</file>
         <file alias="startup">image/startup-background.jpg</file>
+        <file alias="star">image/star.png</file>
+        <file>tools/init-symbol.lisp</file>
     </qresource>
 </RCC>

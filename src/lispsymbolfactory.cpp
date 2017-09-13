@@ -1,4 +1,5 @@
 #include "lispsymbolfactory.h"
+#include <QDebug>
 
 LispSymbol::LispSymbol(QString name,
                        QString type,
@@ -51,7 +52,6 @@ LispSymbolFactory::LispSymbolFactory(QObject *parent) : QObject(parent)
         QByteArray qOutput = p->readAllStandardOutput();
         QList<QByteArray> list = qOutput.split('\n');
         QList<QByteArray>::iterator itor = list.begin();
-
         for ( ; itor != list.end(); itor++)
         {
             QByteArray strline = *itor;
@@ -64,6 +64,10 @@ LispSymbolFactory::LispSymbolFactory(QObject *parent) : QObject(parent)
             QString type = line.mid(i + 1);
             symbolMap[symbol] = type;
         }
+        if(code == 0)
+            emit inited();
+        else
+            qWarning() << code << ":init failed!!";
     });
     p->start("clisp -i ~/init-symbol.lisp");//TODO
 }
@@ -81,7 +85,11 @@ LispSymbolFactory * LispSymbolFactory::getInstance()
 
 LispSymbol * LispSymbolFactory::getSymbol(QString name)
 {
-    name = name.toUpper();
+    name = name.trimmed();
+    if(!symbolMap.contains(name))
+    {
+        name = name.toUpper();
+    }
     if(symbolMap.contains(name))
     {
         LispSymbol * sym = new LispSymbol(name,symbolMap[name]);

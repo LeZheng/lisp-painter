@@ -1,8 +1,8 @@
 #include "startupwidget.h"
 #include <QDebug>
 
-StartupWidget::StartupWidget(QWidget *parent)
-    : QWidget(parent)
+StartupWidget::StartupWidget(int c,QWidget *parent)
+    : QWidget(parent),initCount(c)
 {
     this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowMinimizeButtonHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
@@ -41,5 +41,17 @@ void StartupWidget::timerEvent(QTimerEvent *event)
     for(int i = 0;i < 10;i++)
     {
         i1[i].moveToNext();
+    }
+}
+
+void StartupWidget::initStateChange(QString state)
+{
+    //TODO state
+    static int count = 0;
+    count++;
+    this->progressBar->setValue(count * 100 / initCount);
+    if(count == initCount)
+    {
+        this->close();
     }
 }

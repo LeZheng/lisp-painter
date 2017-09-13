@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     int seed = QDateTime::currentDateTime().toTime_t();
     srand(seed);
-    StartupWidget s;
+    StartupWidget s(1);
     s.show();
     s.move((QApplication::desktop()->width() - s.width())/2,
                    (QApplication::desktop()->height() - s.height())/2);

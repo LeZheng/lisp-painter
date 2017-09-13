@@ -28,12 +28,12 @@ void LispSyntaxHighlighter::highlightBlock(const QString &text)
     int index = text.indexOf(expression);
     while (index >= 0) {
         int length = expression.matchedLength();
-//        LispSymbol * sym = factory->getSymbol(text.mid(index + 1,length - 2));
-//        if(sym != NULL)
-//        {
+        LispSymbol * sym = factory->getSymbol(text.mid(index + 1,length - 1));
+        if(sym != NULL)
+        {
             setFormat(index + 1, length - 1, myClassFormat);
-//            delete sym;
-//        }
+            delete sym;
+        }
         index = text.indexOf(expression, index + length);
     }
 

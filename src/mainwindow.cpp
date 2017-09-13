@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     LFileWidget * fw = new LFileWidget(this);
     QDockWidget * leftDock = new QDockWidget(this);
     leftDock->setWidget(fw);
-    leftDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    leftDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     addDockWidget(Qt::LeftDockWidgetArea,leftDock);
 
 

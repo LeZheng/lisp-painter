@@ -43,7 +43,7 @@ private:
     QHash<QString,QString> symbolMap;
     QProcess * p;
 signals:
-
+    void inited();
 public slots:
 };
 
