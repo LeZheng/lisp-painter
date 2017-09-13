@@ -53,5 +53,6 @@ void StartupWidget::initStateChange(QString state)
     if(count == initCount)
     {
         this->close();
+        emit finished();
     }
 }

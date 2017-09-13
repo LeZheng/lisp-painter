@@ -37,13 +37,14 @@ class LispSymbolFactory : public QObject
 public:
     static LispSymbolFactory * getInstance();
     LispSymbol * getSymbol(QString name);
+    void init();
 private:
     explicit LispSymbolFactory(QObject *parent = 0);
     static LispSymbolFactory * instance;
     QHash<QString,QString> symbolMap;
     QProcess * p;
 signals:
-    void inited();
+    void inited(QString info);
 public slots:
 };
 

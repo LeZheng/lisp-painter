@@ -24,7 +24,8 @@ private:
     QGraphicsStarItem i1[10];
     QProgressBar * progressBar;
     QVBoxLayout * layout;
-
+signals:
+    void finished();
 public slots:
     void initStateChange(QString state);
 };
