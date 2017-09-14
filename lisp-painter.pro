@@ -23,7 +23,8 @@ SOURCES += \
     src/mainwindow.cpp \
     src/startupwidget.cpp \
     src/lispsymbolfactory.cpp \
-    src/qgraphicsstaritem.cpp
+    src/qgraphicsstaritem.cpp \
+    src/qfloatdockwidget.cpp
 
 HEADERS  += \
     src/graphicsselectscene.h \
@@ -34,7 +35,8 @@ HEADERS  += \
     src/mainwindow.h \
     src/startupwidget.h \
     src/lispsymbolfactory.h \
-    src/qgraphicsstaritem.h
+    src/qgraphicsstaritem.h \
+    src/qfloatdockwidget.h
 
 FORMS    += \
     src/lconsolewidget.ui \

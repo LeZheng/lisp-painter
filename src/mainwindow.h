@@ -14,6 +14,7 @@
 #include "lfilewidget.h"
 #include "lconsolewidget.h"
 #include "leditwidget.h"
+#include "qfloatdockwidget.h"
 
 namespace Ui {
 class MainWindow;
