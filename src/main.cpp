@@ -5,7 +5,6 @@
 #include <QDesktopWidget>
 #include "lispsymbolfactory.h"
 
-
 QMainWindow * mainWindow;
 
 static void messageOutput(QtMsgType type,const QMessageLogContext &context,const QString &msg)
@@ -23,6 +22,7 @@ static void messageOutput(QtMsgType type,const QMessageLogContext &context,const
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
     int seed = QDateTime::currentDateTime().toTime_t();
     srand(seed);
     LispSymbolFactory * factory = LispSymbolFactory::getInstance();

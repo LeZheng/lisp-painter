@@ -83,6 +83,7 @@ void LEditWidget::open(QString path)
         {
             qWarning() << "file open failed";
         }
+        f.close();
     }
     else
     {
@@ -93,6 +94,8 @@ void LEditWidget::open(QString path)
 
 void LEditWidget::save(QString path)
 {
+    if(path == "")
+        path = this->ui->tabWidget->tabText(this->ui->tabWidget->currentIndex());
     QTextEdit * edit = edits[path];
     if(edit != NULL){
         QFile f(path);

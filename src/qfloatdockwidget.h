@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QDesktopWidget>
 #include <QApplication>
+#include <QTimer>
 
 class QFloatDockWidget : public QWidget
 {
@@ -18,15 +19,15 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
-    void timerEvent(QTimerEvent *event);
 private:
     QPoint mouseMovePos;
     bool isAppear;
     QRect originRect;
-signals:
-
+    QTimer timer;
 public slots:
     void appearOrDisappear(bool flag);
+private slots:
+    void dockDrop();
 };
 
 #endif // QFLOATDOCKWIDGET_H

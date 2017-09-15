@@ -60,8 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(saveAction,&QAction::triggered,
             [=](bool checked)
     {
-        QString path = this->ui->tabWidget->tabText(this->ui->tabWidget->currentIndex());
-        editWidget->save(path);
+        editWidget->save("");
     });
     connect(createAction,&QAction::triggered,
             [=](bool checked)

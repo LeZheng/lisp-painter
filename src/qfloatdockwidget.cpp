@@ -10,9 +10,9 @@ QFloatDockWidget::QFloatDockWidget(QWidget *parent) : QWidget(parent)
     QPalette p;
     p.setBrush(QPalette::Window, QBrush(mask));
     setPalette(p);
-    resize(400,300);
     mouseMovePos = QPoint(0, 0);
     originRect = frameGeometry();
+    connect(&timer,&QTimer::timeout,this,&QFloatDockWidget::dockDrop);
 }
 
 void QFloatDockWidget::enterEvent(QEvent *)
@@ -43,18 +43,18 @@ void QFloatDockWidget::leaveEvent(QEvent *)
     }
 }
 
-void QFloatDockWidget::timerEvent(QTimerEvent *event)
+void QFloatDockWidget::dockDrop()
 {
     qreal opacity = isAppear ? windowOpacity() + 0.05:windowOpacity() - 0.05;
     this->setWindowOpacity(opacity);
     if(opacity >= 1 || opacity <= 0)
     {
-        killTimer(event->timerId());
+        timer.stop();
+        return;
     }
 
     QRect rect = this->frameGeometry();
     QRect dRect = QApplication::desktop()->availableGeometry();
-    qDebug() << dRect.bottom() << ":" << rect.bottom() << ":" <<dRect.height();
     if(dRect.top() >= rect.top() && dRect.bottom() > rect.bottom())
     {
         int nextHeight = isAppear ? rect.height() + originRect.height()/20:rect.height() - originRect.height()/20;
@@ -66,11 +66,10 @@ void QFloatDockWidget::timerEvent(QTimerEvent *event)
     else if(dRect.bottom() <= rect.bottom() && dRect.top() < rect.top())
     {
         int nextHeight = isAppear ? rect.height() + originRect.height()/20:rect.height() - originRect.height()/20;
-        qDebug() << dRect.height() - nextHeight << " - " << nextHeight;
         if(nextHeight <= originRect.height() && nextHeight >= 2)
         {
             resize(rect.width(),nextHeight);
-//            move(frameGeometry().left(),dRect.height() - nextHeight);//TODO hava problem
+            move(rect.x(),dRect.bottom() - nextHeight + 1);
         }
     }
     else if(dRect.left() >= rect.left() && dRect.right() != rect.right())
@@ -81,13 +80,13 @@ void QFloatDockWidget::timerEvent(QTimerEvent *event)
             resize(nextWidth,rect.height());
         }
     }
-    else if(dRect.left() != rect.left() && dRect.right() == rect.right())
+    else if(dRect.left() != rect.left() && dRect.right() <= rect.right())
     {
         int nextWidth = isAppear ? rect.width() + originRect.width()/20:rect.width() - originRect.width()/20;
         if(nextWidth <= originRect.width() && nextWidth >= 2)
         {
             resize(nextWidth,rect.height());
-            //TODO not complete
+            move(dRect.right() - nextWidth + 1,rect.y());
         }
     }
 }
@@ -114,5 +113,6 @@ void  QFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
 void QFloatDockWidget::appearOrDisappear(bool flag)
 {
     isAppear = flag;
-    startTimer(10);
+    if(!this->timer.isActive())
+        this->timer.start(10);
 }
