@@ -28,7 +28,7 @@ StartupWidget::StartupWidget(int c,QWidget *parent)
     layout->addWidget(this->gView);
     layout->addWidget(this->progressBar);
     resize(400,250 + this->progressBar->height());
-    startTimer(60);
+    timerid = startTimer(60);
 }
 
 StartupWidget::~StartupWidget()
@@ -38,10 +38,45 @@ StartupWidget::~StartupWidget()
 
 void StartupWidget::timerEvent(QTimerEvent *event)
 {
+    timerid = event->timerId();
+    QListIterator<QGraphicsLineItem *> iterator(lines);
+    while(iterator.hasNext())
+    {
+        QGraphicsLineItem * item = iterator.next();
+        this->gScene->removeItem(item);
+        delete item;
+    }
+    lines.clear();
+
     for(int i = 0;i < 10;i++)
     {
         i1[i].moveToNext();
     }
+
+    for(int i = 0;i < 10;i++)
+    {
+        QPainterPath pPath;
+        pPath.addEllipse(i1[i].pos(),20,20);
+        QList<QGraphicsItem *> items = gScene->items(pPath);
+        QListIterator<QGraphicsItem *> itemIter(items);
+        while(itemIter.hasNext())
+        {
+            QGraphicsItem * item = itemIter.next();
+            if(item->type() != QGraphicsLineItem::Type)
+            {
+                QPen pen;
+                pen.setColor(Qt::white);
+                pen.setWidth(2);
+                QGraphicsLineItem * lItem = gScene->addLine(item->x() - item->boundingRect().width()/2,
+                                                            item->y() - item->boundingRect().height()/2,
+                                                            i1[i].x() - i1[i].boundingRect().width()/2,
+                                                            i1[i].y() - i1[i].boundingRect().height()/2,
+                                                            pen);
+                lines.append(lItem);
+            }
+        }
+    }
+
 }
 
 void StartupWidget::initStateChange(QString state)
@@ -52,6 +87,7 @@ void StartupWidget::initStateChange(QString state)
     this->progressBar->setValue(count * 100 / initCount);
     if(count == initCount)
     {
+        killTimer(timerid);
         this->close();
         emit finished();
     }

@@ -8,6 +8,8 @@
 #include "qgraphicsstaritem.h"
 #include <QProgressBar>
 #include <QVBoxLayout>
+#include <QList>
+#include <QTimerEvent>
 
 class StartupWidget : public QWidget
 {
@@ -22,8 +24,10 @@ private:
     QGraphicsView * gView;
     QGraphicsScene * gScene;
     QGraphicsStarItem i1[10];
+    QList<QGraphicsLineItem *> lines;
     QProgressBar * progressBar;
     QVBoxLayout * layout;
+    int timerid;
 signals:
     void finished();
 public slots:
