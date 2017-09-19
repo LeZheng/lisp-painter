@@ -77,6 +77,34 @@ LispSymbol * LispSymbolFactory::getSymbol(QString name)
     }
 }
 
+QList<LispSymbol *> LispSymbolFactory::getSymbols(QString name)
+{
+    QList<LispSymbol *> symbols;
+    QProcess proc;
+    proc.start("");//TODO
+
+    if (!proc.waitForFinished())
+         qWarning() << "proc.waitForFinished error";
+
+    QByteArray result = proc.readAll();
+    QList<QByteArray> list = result.split('\n');
+    QList<QByteArray>::iterator itor = list.begin();
+    for ( ; itor != list.end(); itor++)
+    {
+        QByteArray strline = *itor;
+        QString line = strline.simplified();
+        int start = line.indexOf("| ");
+        int i = line.indexOf(" ",start == -1 ? 0 : start);
+        if(i == -1)
+            continue;
+        QString symbol = line.left(i);
+        QString type = line.mid(i + 1);
+        LispSymbol * sym = new LispSymbol(symbol,type);
+        symbols.append(sym);
+    }
+    return symbols;
+}
+
 void LispSymbolFactory::init()
 {
     p = new QProcess(this);

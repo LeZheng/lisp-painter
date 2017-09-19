@@ -37,6 +37,7 @@ class LispSymbolFactory : public QObject
 public:
     static LispSymbolFactory * getInstance();
     LispSymbol * getSymbol(QString name);
+    QList<LispSymbol *> getSymbols(QString name);
     void init();
 private:
     explicit LispSymbolFactory(QObject *parent = 0);

@@ -10,6 +10,7 @@ LFileWidget::LFileWidget(QWidget *parent) :
 
     this->workPath = QDir::homePath();
     model = new QDirModel(this);
+    qDebug() << model->removeColumn(2);
     this->ui->fileTree->setModel(model);
     this->ui->btnPrev->setIcon(QIcon(":/go-previous"));
     this->ui->btnNext->setIcon(QIcon(":/go-next"));
