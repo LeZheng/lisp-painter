@@ -47,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent) :
     runAction = baseToolBar->addAction(QIcon(":/load-only"),tr("load"));
     runAction->setShortcut(tr("Ctrl+R"));
     runAction->setStatusTip("load file by clisp");//TODO
+    remindAction =  baseToolBar->addAction(QIcon(":/text-remind"),tr("remind"));
+    remindAction->setShortcut(tr("Ctrl+1"));
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(createAction);
@@ -78,7 +80,7 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         this->path = path;
     });
-
+    connect(remindAction,&QAction::triggered,editWidget,&LEditWidget::selectCurrentWord);
     initToolBar();
 }
 

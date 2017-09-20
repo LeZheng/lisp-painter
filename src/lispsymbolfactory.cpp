@@ -81,7 +81,7 @@ QList<LispSymbol *> LispSymbolFactory::getSymbols(QString name)
 {
     QList<LispSymbol *> symbols;
     QProcess proc;
-    proc.start("");//TODO
+    proc.start(QString("/home/skyline/get-symbols.mem %1").arg(name));
 
     if (!proc.waitForFinished())
          qWarning() << "proc.waitForFinished error";
@@ -131,5 +131,5 @@ void LispSymbolFactory::init()
         else
             qWarning() << code << ":init failed!!";
     });
-    p->start("clisp -i ~/init-symbol.lisp");//TODO
+    p->start("/home/skyline/get-symbols.mem");
 }

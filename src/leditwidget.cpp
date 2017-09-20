@@ -35,6 +35,8 @@ LEditWidget::LEditWidget(QWidget *parent) :
     painterView->move(this->ui->tabWidget->x(),this->ui->tabWidget->y());
     painterView->setVisible(false);
     connect(this->scene,&GraphicsSelectScene::rectSelected,this,&LEditWidget::chooseRectText);
+    remindView = new QTableView();
+    model = new QStandardItemModel();
 }
 
 LEditWidget::~LEditWidget()
@@ -103,6 +105,7 @@ void LEditWidget::save(QString path)
         {
             f.write(edit->toPlainText().toUtf8());
             f.close();
+            this->ui->tabWidget->setTabIcon(this->ui->tabWidget->currentIndex(),QIcon());
         }
         else
         {
@@ -203,5 +206,30 @@ void LEditWidget::chooseRectText(int x,int y,int h,int w)
             qDebug() << str;
         }
         emit currentTextSelected(list);
+    }
+}
+
+void LEditWidget::selectCurrentWord()
+{
+    if(edits.contains(ui->tabWidget->tabText(ui->tabWidget->currentIndex())))
+    {
+        QTextEdit * edit = edits.value(ui->tabWidget->tabText(ui->tabWidget->currentIndex()));
+        QTextCursor cursor = edit->textCursor();
+        if(!cursor.hasSelection())
+        {
+            cursor.select(QTextCursor::WordUnderCursor);
+            QString word = cursor.selectedText();
+            LispSymbolFactory * lsf = LispSymbolFactory::getInstance();
+            QList<LispSymbol *> symbols = lsf->getSymbols(word);//TODO need delete
+
+            foreach (LispSymbol * sym, symbols) {
+                QList<QStandardItem *> list;
+                list.append(new QStandardItem(sym->name()));//TODO need delete
+                list.append(new QStandardItem(sym->type()));
+                model->insertRow(0,list);
+            }
+            remindView->setModel(model);
+            remindView->show();
+        }
     }
 }

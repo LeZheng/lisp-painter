@@ -9,8 +9,12 @@
 #include <QGraphicsRectItem>
 #include <QTextBlock>
 #include <QScrollBar>
+#include <QTableWidget>
+#include <QTableView>
+#include <QStandardItemModel>
 #include "graphicsselectscene.h"
 #include "lispsyntaxhighlighter.h"
+#include "lispsymbolfactory.h"
 
 namespace Ui {
 class LEditWidget;
@@ -28,18 +32,22 @@ signals:
     void currentFileChanged(QString path);
     void currentCharFormatChanged(const QTextCharFormat & fmt);
     void currentTextSelected(QStringList strs);
+    void currentWordSelected(QString word);
 public slots:
     void open(QString path);
     void save(QString path);
     void create(QString path);
     void mergeFormat(QTextCharFormat fmt);
     void chooseRectText(int x,int y,int h,int w);
+    void selectCurrentWord();
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
 private:
     Ui::LEditWidget *ui;
     QMap<QString,QTextEdit *> edits;
     GraphicsSelectScene * scene;
+    QTableView * remindView;
+    QStandardItemModel * model;
 };
 
 #endif // LEDITWIDGET_H
