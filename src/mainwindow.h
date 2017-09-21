@@ -39,6 +39,7 @@ private:
     QAction * createAction;
     QAction * runAction;
     QAction * remindAction;
+    QAction * drawRectAction;
     LEditWidget * editWidget;
     LConsoleWidget * consoleWidget;
     QString path;

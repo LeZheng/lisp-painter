@@ -35,8 +35,19 @@ LEditWidget::LEditWidget(QWidget *parent) :
     painterView->move(this->ui->tabWidget->x(),this->ui->tabWidget->y());
     painterView->setVisible(false);
     connect(this->scene,&GraphicsSelectScene::rectSelected,this,&LEditWidget::chooseRectText);
+
     remindView = new QTableView();
     model = new QStandardItemModel();
+    remindView->verticalHeader()->setVisible(false);
+    remindView->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowMinimizeButtonHint);
+    remindView->setModel(model);
+    connect(remindView,&QTableView::doubleClicked,
+            [=](const QModelIndex &index)
+    {
+        QStandardItem * item = this->model->item(index.row());
+        remindView->hide();
+        qDebug() << item->text();
+    });
 }
 
 LEditWidget::~LEditWidget()
@@ -222,13 +233,15 @@ void LEditWidget::selectCurrentWord()
             LispSymbolFactory * lsf = LispSymbolFactory::getInstance();
             QList<LispSymbol *> symbols = lsf->getSymbols(word);//TODO need delete
 
+            model->clear();
             foreach (LispSymbol * sym, symbols) {
                 QList<QStandardItem *> list;
                 list.append(new QStandardItem(sym->name()));//TODO need delete
                 list.append(new QStandardItem(sym->type()));
                 model->insertRow(0,list);
             }
-            remindView->setModel(model);
+            QPoint p = QCursor::pos();
+            remindView->move(p.x(),p.y());
             remindView->show();
         }
     }

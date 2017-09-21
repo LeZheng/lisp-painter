@@ -11,5 +11,6 @@
         <file alias="star">image/star.png</file>
         <file>tools/init-symbol.lisp</file>
         <file alias="text-remind">image/dialog-information.png</file>
+        <file alias="rect-scale">image/transform-scale.png</file>
     </qresource>
 </RCC>

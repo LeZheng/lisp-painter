@@ -49,6 +49,9 @@ MainWindow::MainWindow(QWidget *parent) :
     runAction->setStatusTip("load file by clisp");//TODO
     remindAction =  baseToolBar->addAction(QIcon(":/text-remind"),tr("remind"));
     remindAction->setShortcut(tr("Ctrl+1"));
+    drawRectAction = baseToolBar->addAction(QIcon(":/rect-scale"),tr("rect select"));
+    drawRectAction->setShortcut(tr("Ctrl+Alt+a"));
+    drawRectAction->setStatusTip("choose text with rect");//TODO
     fileMenu->addAction(openAction);
     fileMenu->addAction(saveAction);
     fileMenu->addAction(createAction);
