@@ -46,4 +46,24 @@ void LispSyntaxHighlighter::highlightBlock(const QString &text)
         setFormat(index, length, myClassFormat);
         index = text.indexOf(kargu_expression, index + length);
     }
+
+    myClassFormat.setForeground(Qt::darkRed);
+    pattern = STRING_WORD;//TODO
+    QRegExp str_expression(pattern);
+    index = text.indexOf(str_expression);
+    while (index >= 0) {
+        int length = str_expression.matchedLength();
+        setFormat(index, length, myClassFormat);
+        index = text.indexOf(str_expression, index + length);
+    }
+
+    myClassFormat.setForeground(Qt::darkCyan);
+    pattern = ARGU_TYPE_WORD;//TODO
+    QRegExp argu_expression(pattern);
+    index = text.indexOf(argu_expression);
+    while (index >= 0) {
+        int length = argu_expression.matchedLength();
+        setFormat(index, length, myClassFormat);
+        index = text.indexOf(argu_expression, index + length);
+    }
 }

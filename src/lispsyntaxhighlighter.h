@@ -8,6 +8,8 @@
 
 #define BASE_KEY_WORD "[(][a-zA-Z\-]*[ ]*"
 #define KEY_WORD_ARGU ":[a-zA-Z\-]*[ $)]"
+#define STRING_WORD "\".*\""
+#define ARGU_TYPE_WORD "[ ]&[a-zA-Z]*"
 
 class LispSyntaxHighlighter : public QSyntaxHighlighter
 {
