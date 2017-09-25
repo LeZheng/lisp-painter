@@ -15,6 +15,7 @@
 #include "lconsolewidget.h"
 #include "leditwidget.h"
 #include "qfloatdockwidget.h"
+#include "ltoolswidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -42,6 +43,7 @@ private:
     QAction * drawRectAction;
     LEditWidget * editWidget;
     LConsoleWidget * consoleWidget;
+    LToolsWidget * toolWidget;
     QString path;
 
     //TODO

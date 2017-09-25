@@ -85,6 +85,19 @@ MainWindow::MainWindow(QWidget *parent) :
     });
     connect(remindAction,&QAction::triggered,editWidget,&LEditWidget::selectCurrentWord);
     initToolBar();
+
+    toolWidget = new LToolsWidget(this);
+    QDockWidget * toolDock = new QDockWidget(this);
+    toolDock->setWidget(toolWidget);
+    toolDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
+    addDockWidget(Qt::TopDockWidgetArea,toolDock);
+
+    toolWidget->addAction("base",openAction);
+    toolWidget->addAction("base",saveAction);
+    toolWidget->addAction("base",createAction);
+    toolWidget->addAction("base",runAction);
+    toolWidget->addAction("base",remindAction);
+    toolWidget->addAction("base",drawRectAction);
 }
 
 MainWindow::~MainWindow()
@@ -140,6 +153,7 @@ void MainWindow::initToolBar()
     fontToolBar->addWidget(italicBtn);
     fontToolBar->addWidget(underlineBtn);
     fontToolBar->addWidget(colorBtn);
+//    toolWidget->addPage("font",fontToolBar); TODO
 }
 
 void MainWindow::showFontComboBox(QString font)

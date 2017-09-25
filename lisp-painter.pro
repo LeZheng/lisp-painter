@@ -25,7 +25,8 @@ SOURCES += \
     src/lispsymbolfactory.cpp \
     src/qgraphicsstaritem.cpp \
     src/qfloatdockwidget.cpp \
-    src/lactionmanager.cpp
+    src/lactionmanager.cpp \
+    src/ltoolswidget.cpp
 
 HEADERS  += \
     src/graphicsselectscene.h \
@@ -38,13 +39,15 @@ HEADERS  += \
     src/lispsymbolfactory.h \
     src/qgraphicsstaritem.h \
     src/qfloatdockwidget.h \
-    src/lactionmanager.h
+    src/lactionmanager.h \
+    src/ltoolswidget.h
 
 FORMS    += \
     src/lconsolewidget.ui \
     src/leditwidget.ui \
     src/lfilewidget.ui \
-    src/mainwindow.ui
+    src/mainwindow.ui \
+    src/ltoolswidget.ui
 
 DISTFILES += \
     LICENSE \
