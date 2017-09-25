@@ -46,7 +46,16 @@ LEditWidget::LEditWidget(QWidget *parent) :
     {
         QStandardItem * item = this->model->item(index.row());
         remindView->hide();
+        QTextEdit * edit = edits.value(ui->tabWidget->tabText(ui->tabWidget->currentIndex()));
         qDebug() << item->text();
+        QTextCursor cursor = edit->textCursor();
+        if(!cursor.hasSelection())
+        {
+            cursor.select(QTextCursor::WordUnderCursor);
+            cursor.removeSelectedText();
+            cursor.insertText(item->text());
+            edit->setTextCursor(cursor);
+        }
     });
 }
 
