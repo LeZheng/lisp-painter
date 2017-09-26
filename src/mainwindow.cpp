@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "lactionmanager.h"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -34,28 +35,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     baseToolBar = addToolBar("base");
 
-    fileMenu = menuBar()->addMenu(tr("file"));
-    openAction = baseToolBar->addAction(QIcon(":/text-open"),tr("open"));
-    openAction->setShortcut(tr("Ctrl+O"));
-    openAction->setStatusTip("open a file");//TODO
-    saveAction = baseToolBar->addAction(QIcon(":/save-only"),tr("save"));
-    saveAction->setShortcut(tr("Ctrl+S"));
-    saveAction->setStatusTip("save all");//TODO
-    createAction = baseToolBar->addAction(QIcon(":/text-new"),tr("new"));
-    createAction->setShortcut(tr("Ctrl+N"));
-    createAction->setStatusTip("new a file");//TODO
-    runAction = baseToolBar->addAction(QIcon(":/load-only"),tr("load"));
-    runAction->setShortcut(tr("Ctrl+R"));
-    runAction->setStatusTip("load file by clisp");//TODO
-    remindAction =  baseToolBar->addAction(QIcon(":/text-remind"),tr("remind"));
-    remindAction->setShortcut(tr("Ctrl+1"));
-    drawRectAction = baseToolBar->addAction(QIcon(":/rect-scale"),tr("rect select"));
-    drawRectAction->setShortcut(tr("Ctrl+Alt+a"));
-    drawRectAction->setStatusTip("choose text with rect");//TODO
-    fileMenu->addAction(openAction);
-    fileMenu->addAction(saveAction);
-    fileMenu->addAction(createAction);
-    fileMenu->addAction(runAction);
+    LActionManager * manager = LActionManager::getInstance();
+    openAction = manager->addAction(tr("open"),":/text-open","Ctrl+O","open a file");
+    saveAction = manager->addAction(tr("save"),":/save-only","Ctrl+S","save all");
+    createAction = manager->addAction(tr("new"),":/text-new","Ctrl+N","new a file");
+    runAction = manager->addAction(tr("load"),":/load-only","Ctrl+R","load file by clisp");
+    remindAction = manager->addAction(tr("remind"),":/text-remind","Ctrl+1","symbol remind");
+    drawRectAction = manager->addAction(tr("rect select"),":/rect-scale","Ctrl+Alt+a","choose text with rect");
     connect(openAction,&QAction::triggered,
             [=](bool checked)
     {
@@ -84,7 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
         this->path = path;
     });
     connect(remindAction,&QAction::triggered,editWidget,&LEditWidget::selectCurrentWord);
-    initToolBar();
 
     toolWidget = new LToolsWidget(this);
     QDockWidget * toolDock = new QDockWidget(this);
@@ -98,6 +83,8 @@ MainWindow::MainWindow(QWidget *parent) :
     toolWidget->addAction("base",runAction);
     toolWidget->addAction("base",remindAction);
     toolWidget->addAction("base",drawRectAction);
+
+    initToolBar();
 }
 
 MainWindow::~MainWindow()
@@ -144,7 +131,7 @@ void MainWindow::initToolBar()
     connect(this->editWidget,&LEditWidget::currentCharFormatChanged,this,&MainWindow::showCurrentFormatChanged);
     connect(this,&MainWindow::currentCharFormatChanged,this->editWidget,&LEditWidget::mergeFormat);
 
-    fontToolBar = addToolBar("Font");
+    fontToolBar = addToolBar("Font");//new QToolBar();
     fontToolBar->addWidget(fontLabel1);
     fontToolBar->addWidget(fontComboBox);
     fontToolBar->addWidget(fontLabel2);
@@ -153,7 +140,7 @@ void MainWindow::initToolBar()
     fontToolBar->addWidget(italicBtn);
     fontToolBar->addWidget(underlineBtn);
     fontToolBar->addWidget(colorBtn);
-//    toolWidget->addPage("font",fontToolBar); TODO
+//    toolWidget->addPage("font",fontToolBar);
 }
 
 void MainWindow::showFontComboBox(QString font)

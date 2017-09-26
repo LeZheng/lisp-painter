@@ -44,7 +44,6 @@ bool LToolsWidget::addPage(QString pageName,QWidget * page)
         this->pageMap[pageName] = page;
         return true;
     }
-
 }
 
 void LToolsWidget::addAction(QString pageName,QAction * action)
