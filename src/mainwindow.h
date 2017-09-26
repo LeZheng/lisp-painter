@@ -34,40 +34,13 @@ signals:
 
 private:
     Ui::MainWindow *ui;
-    QMenu * fileMenu;
-    QAction * openAction;
-    QAction * saveAction;
-    QAction * createAction;
-    QAction * runAction;
-    QAction * remindAction;
-    QAction * drawRectAction;
     LEditWidget * editWidget;
     LConsoleWidget * consoleWidget;
     LToolsWidget * toolWidget;
     QString path;
 
-    //TODO
-    void initToolBar();
-    QToolBar * fontToolBar;
-    QToolBar * baseToolBar;
-    QLabel * fontLabel1;
-    QFontComboBox * fontComboBox;
-    QLabel * fontLabel2;
-    QComboBox * sizeComboBox;
-    QToolButton * boldBtn;
-    QToolButton * italicBtn;
-    QToolButton * underlineBtn;
-    QToolButton * colorBtn;
-
-protected slots:
-    void showFontComboBox(QString font);
-    void showSizeSpinBox(QString value);
-    void showBoldBtn();
-    void showItalicBtn();
-    void showUnderlineBtn();
-    void showColorBtn();
-    void showCurrentFormatChanged(const QTextCharFormat &fmt);
-
+    void initFontToolBar();
+    void initBaseToolBar();
 };
 
 #endif // MAINWINDOW_H

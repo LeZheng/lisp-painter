@@ -12,6 +12,7 @@
 #include <QTableWidget>
 #include <QTableView>
 #include <QStandardItemModel>
+#include <QColorDialog>
 #include "graphicsselectscene.h"
 #include "lispsyntaxhighlighter.h"
 #include "lispsymbolfactory.h"
@@ -34,6 +35,14 @@ signals:
     void currentTextSelected(QStringList strs);
     void currentWordSelected(QString word);
 public slots:
+
+    void changeFontType(QString font);
+    void changeFontSize(QString value);
+    void changeToBold(bool checked);
+    void changeToItalic(bool checked);
+    void changeToUnderline(bool checked);
+    void changeColor();
+
     void open(QString path);
     void save(QString path);
     void create(QString path);

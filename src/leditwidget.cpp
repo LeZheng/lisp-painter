@@ -85,20 +85,22 @@ void LEditWidget::open(QString path)
                 [=]()
             {
                 int index = this->ui->tabWidget->currentIndex();
-                QSize size(200,200);
-                QImage img(size,QImage::Format_ARGB32);
-                QPainter painter(&img);
-                painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
-                QPen pen = painter.pen();
-                pen.setColor(Qt::red);
-                QFont font = painter.font();
-                font.setBold(true);
-                font.setPixelSize(200);
-                painter.setPen(pen);
-                painter.setFont(font);
-                painter.drawText(img.rect(),Qt::AlignCenter,"*");
-                QIcon icon(QPixmap::fromImage(img));
-                this->ui->tabWidget->setTabIcon(index,icon);
+                if(this->ui->tabWidget->tabIcon(index).isNull()){
+                    QSize size(200,200);
+                    QImage img(size,QImage::Format_ARGB32);
+                    QPainter painter(&img);
+                    painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
+                    QPen pen = painter.pen();
+                    pen.setColor(Qt::red);
+                    QFont font = painter.font();
+                    font.setBold(true);
+                    font.setPixelSize(200);
+                    painter.setPen(pen);
+                    painter.setFont(font);
+                    painter.drawText(img.rect(),Qt::AlignCenter,"*");
+                    QIcon icon(QPixmap::fromImage(img));
+                    this->ui->tabWidget->setTabIcon(index,icon);
+                }
             });
         }
         else
@@ -255,3 +257,51 @@ void LEditWidget::selectCurrentWord()
         }
     }
 }
+
+void LEditWidget::changeFontType(QString font)
+{
+    QTextCharFormat fmt;
+    fmt.setFontFamily(font);
+    mergeFormat(fmt);
+}
+
+void LEditWidget::changeFontSize(QString value)
+{
+    QTextCharFormat fmt;
+    fmt.setFontPointSize(value.toFloat());
+    mergeFormat(fmt);
+}
+void LEditWidget::changeToBold(bool checked)
+{
+    QTextCharFormat fmt;
+    fmt.setFontWeight(checked ? QFont::Bold : QFont::Normal);
+    mergeFormat(fmt);
+}
+void LEditWidget::changeToItalic(bool checked)
+{
+    QTextCharFormat fmt;
+    fmt.setFontItalic(checked);
+    mergeFormat(fmt);
+}
+void LEditWidget::changeToUnderline(bool checked)
+{
+    QTextCharFormat fmt;
+    fmt.setFontUnderline(checked);
+    mergeFormat(fmt);
+}
+void LEditWidget::changeColor()
+{
+
+    QColor color = QColorDialog::getColor(Qt::red,this);
+    if(color.isValid())
+    {
+        QTextCharFormat fmt;
+        fmt.setForeground(color);
+        mergeFormat(fmt);
+    }
+    else
+    {
+        //TODO color is not valid
+    }
+}
+
