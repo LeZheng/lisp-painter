@@ -2,7 +2,7 @@
 #define LTOOLSWIDGET_H
 
 #include <QWidget>
-#include <QToolBox>
+#include <QTabWidget>
 #include <QToolBar>
 #include <QToolButton>
 #include <QGridLayout>
@@ -24,7 +24,7 @@ public:
     QAction * addAction(QString pageName,QString action,QIcon icon,QString shortcut,QString status);
 private:
     Ui::LToolsWidget *ui;
-    QToolBox * toolBox;
+    QTabWidget * tabWidget;
     QHash<QString,QWidget *> pageMap;
 };
 

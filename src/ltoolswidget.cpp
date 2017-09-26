@@ -6,8 +6,7 @@ LToolsWidget::LToolsWidget(QWidget *parent) :
     ui(new Ui::LToolsWidget)
 {
     ui->setupUi(this);
-    this->toolBox = this->ui->toolBox;
-    this->toolBox->removeItem(0);
+    this->tabWidget = this->ui->tabWidget;
 }
 
 LToolsWidget::~LToolsWidget()
@@ -26,7 +25,7 @@ QAction * LToolsWidget::addWidget(QString pageName,QWidget * w)
     else
     {
         QToolBar * toolbar = new QToolBar(this);
-        this->toolBox->insertItem(0,toolbar,pageName);
+        this->tabWidget->addTab(toolbar,pageName);
         pageMap[pageName] = toolbar;
         return toolbar->addWidget(w);
     }
@@ -40,7 +39,7 @@ bool LToolsWidget::addPage(QString pageName,QWidget * page)
     }
     else
     {
-        this->toolBox->insertItem(0,page,pageName);
+        this->tabWidget->addTab(page,pageName);
         this->pageMap[pageName] = page;
         return true;
     }
@@ -52,7 +51,7 @@ void LToolsWidget::addAction(QString pageName,QAction * action)
     {
         QToolBar * bar = new QToolBar(this);
         pageMap[pageName] = bar;
-        this->toolBox->insertItem(0,bar,pageName);
+        this->tabWidget->addTab(bar,pageName);
     }
     pageMap[pageName]->addAction(action);
 }
@@ -66,7 +65,7 @@ QAction * LToolsWidget::addAction(QString pageName,QString name,QIcon icon,QStri
     {
         QToolBar * bar = new QToolBar(this);
         pageMap[pageName] = bar;
-        this->toolBox->insertItem(0,bar,pageName);
+        this->tabWidget->addTab(bar,pageName);
     }
     pageMap[pageName]->addAction(action);
     return action;

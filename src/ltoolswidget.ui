@@ -15,23 +15,10 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QToolBox" name="toolBox">
+    <widget class="QTabWidget" name="tabWidget">
      <property name="currentIndex">
-      <number>0</number>
+      <number>-1</number>
      </property>
-     <widget class="QWidget" name="page">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>382</width>
-        <height>253</height>
-       </rect>
-      </property>
-      <attribute name="label">
-       <string>Page 1</string>
-      </attribute>
-     </widget>
     </widget>
    </item>
   </layout>
