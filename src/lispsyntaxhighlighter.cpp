@@ -2,11 +2,6 @@
 #include "lispsymbolfactory.h"
 #include <QDebug>
 
-LispSyntaxHighlighter::LispSyntaxHighlighter(QObject * parent):QSyntaxHighlighter(parent)
-{
-
-}
-
 LispSyntaxHighlighter::LispSyntaxHighlighter(QTextDocument *parent):QSyntaxHighlighter(parent)
 {
 
@@ -37,33 +32,64 @@ void LispSyntaxHighlighter::highlightBlock(const QString &text)
         index = text.indexOf(expression, index + length);
     }
 
-    myClassFormat.setForeground(Qt::yellow);
-    pattern = KEY_WORD_ARGU;//TODO
-    QRegExp kargu_expression(pattern);
-    index = text.indexOf(kargu_expression);
-    while (index >= 0) {
-        int length = kargu_expression.matchedLength();
-        setFormat(index, length, myClassFormat);
-        index = text.indexOf(kargu_expression, index + length);
+    QListIterator<LHighlighterStrategy *> iterator(strategys);
+    while (iterator.hasNext())
+    {
+        LHighlighterStrategy * strategy = iterator.next();
+        int index = 0,length = 0;
+        strategy->match(text,&index,&length);
+        while(index >= 0){
+            setFormat(index,length,strategy->getFormat());
+            strategy->match(text,&index,&length,index + length);
+        }
     }
+}
 
-    myClassFormat.setForeground(Qt::darkRed);
-    pattern = STRING_WORD;//TODO
-    QRegExp str_expression(pattern);
-    index = text.indexOf(str_expression);
-    while (index >= 0) {
-        int length = str_expression.matchedLength();
-        setFormat(index, length, myClassFormat);
-        index = text.indexOf(str_expression, index + length);
-    }
+void LispSyntaxHighlighter::addStrategy(LHighlighterStrategy * strategy)
+{
+    strategys.append(strategy);
+}
 
-    myClassFormat.setForeground(Qt::darkCyan);
-    pattern = ARGU_TYPE_WORD;//TODO
-    QRegExp argu_expression(pattern);
-    index = text.indexOf(argu_expression);
-    while (index >= 0) {
-        int length = argu_expression.matchedLength();
-        setFormat(index, length, myClassFormat);
-        index = text.indexOf(argu_expression, index + length);
-    }
+LHighlighterStrategy::LHighlighterStrategy(LispSyntaxHighlighter * parent):
+    QObject(parent)
+{
+    parent->addStrategy(this);
+}
+
+LHighlighterStrategy::~LHighlighterStrategy()
+{
+
+}
+
+QTextCharFormat LHighlighterStrategy::getFormat()
+{
+    return format;
+}
+
+LRegExpHighlighterStrategy::LRegExpHighlighterStrategy(QString r, LispSyntaxHighlighter *parent):
+    LHighlighterStrategy(parent),regexp(r)
+{
+
+}
+
+void LRegExpHighlighterStrategy::setFont(const QFont & f)
+{
+    format.setFont(f);
+}
+
+void LRegExpHighlighterStrategy::setForeground(const QBrush & b)
+{
+    format.setForeground(b);
+}
+
+void LRegExpHighlighterStrategy::setBackground(const QBrush & b)
+{
+    format.setBackground(b);
+}
+
+void LRegExpHighlighterStrategy::match(const QString & text,int * rIndex,int * rLength,int from)
+{
+    QRegExp argu_expression(regexp);
+    *rIndex = text.indexOf(argu_expression, from);
+    *rLength = argu_expression.matchedLength();
 }

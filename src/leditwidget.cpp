@@ -80,6 +80,12 @@ void LEditWidget::open(QString path)
             this->ui->tabWidget->setCurrentWidget(edit);
             this->ui->painterView->raise();
             LispSyntaxHighlighter * shLighter = new LispSyntaxHighlighter(edit->document());
+            LRegExpHighlighterStrategy * s1 = new LRegExpHighlighterStrategy(KEY_WORD_ARGU,shLighter);
+            s1->setForeground(Qt::yellow);
+            LRegExpHighlighterStrategy * s2 = new LRegExpHighlighterStrategy(STRING_WORD,shLighter);
+            s2->setForeground(Qt::darkRed);
+            LRegExpHighlighterStrategy * s3 = new LRegExpHighlighterStrategy(ARGU_TYPE_WORD,shLighter);
+            s3->setForeground(Qt::darkCyan);
             edit->setText(QString(f.readAll().data()));
             connect(edit,&QTextEdit::textChanged,
                 [=]()
