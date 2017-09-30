@@ -34,6 +34,9 @@ public:
     ~LHighlighterStrategy();
     virtual void match(const QString & text,int * rIndex,int * rLength,int from = 0) = 0;
     QTextCharFormat getFormat();
+    void setFont(const QFont &);
+    void setForeground(const QBrush &);
+    void setBackground(const QBrush &);
 protected:
     QTextCharFormat format;
 };
@@ -44,11 +47,16 @@ class LRegExpHighlighterStrategy : public LHighlighterStrategy
 public:
     explicit LRegExpHighlighterStrategy(QString regexp,LispSyntaxHighlighter * parent = 0);
     virtual void match(const QString & text,int * rIndex,int * rLength,int from = 0);
-    void setFont(const QFont &);
-    void setForeground(const QBrush &);
-    void setBackground(const QBrush &);
 private:
     const QString regexp;
+};
+
+class LSymbolHighlighterStrategy : public LHighlighterStrategy
+{
+    Q_OBJECT
+public:
+    explicit LSymbolHighlighterStrategy(LispSyntaxHighlighter * parent = 0);
+    virtual void match(const QString & text,int * rIndex,int * rLength,int from = 0);
 };
 
 #endif // LISPSYNTAXHIGHLIGHTER_H

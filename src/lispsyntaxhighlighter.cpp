@@ -2,36 +2,12 @@
 #include "lispsymbolfactory.h"
 #include <QDebug>
 
-LispSyntaxHighlighter::LispSyntaxHighlighter(QTextDocument *parent):QSyntaxHighlighter(parent)
-{
+LispSyntaxHighlighter::LispSyntaxHighlighter(QTextDocument *parent):QSyntaxHighlighter(parent){ }
 
-}
-
-LispSyntaxHighlighter::~LispSyntaxHighlighter()
-{
-
-}
+LispSyntaxHighlighter::~LispSyntaxHighlighter(){ }
 
 void LispSyntaxHighlighter::highlightBlock(const QString &text)
 {
-    LispSymbolFactory * factory = LispSymbolFactory::getInstance();
-    QTextCharFormat myClassFormat;
-    myClassFormat.setFontWeight(QFont::Bold);
-    myClassFormat.setForeground(Qt::darkMagenta);
-    QString pattern = BASE_KEY_WORD;//TODO
-    QRegExp expression(pattern);
-    int index = text.indexOf(expression);
-    while (index >= 0) {
-        int length = expression.matchedLength();
-        LispSymbol * sym = factory->getSymbol(text.mid(index + 1,length - 1));
-        if(sym != NULL)
-        {
-            setFormat(index + 1, length - 1, myClassFormat);
-            delete sym;
-        }
-        index = text.indexOf(expression, index + length);
-    }
-
     QListIterator<LHighlighterStrategy *> iterator(strategys);
     while (iterator.hasNext())
     {
@@ -40,7 +16,7 @@ void LispSyntaxHighlighter::highlightBlock(const QString &text)
         strategy->match(text,&index,&length);
         while(index >= 0){
             setFormat(index,length,strategy->getFormat());
-            strategy->match(text,&index,&length,index + length);
+            strategy->match(text,&index,&length,length == 0?index + 1:index + length);
         }
     }
 }
@@ -56,9 +32,21 @@ LHighlighterStrategy::LHighlighterStrategy(LispSyntaxHighlighter * parent):
     parent->addStrategy(this);
 }
 
-LHighlighterStrategy::~LHighlighterStrategy()
-{
+LHighlighterStrategy::~LHighlighterStrategy(){ }
 
+void LHighlighterStrategy::setFont(const QFont & f)
+{
+    format.setFont(f);
+}
+
+void LHighlighterStrategy::setForeground(const QBrush & b)
+{
+    format.setForeground(b);
+}
+
+void LHighlighterStrategy::setBackground(const QBrush & b)
+{
+    format.setBackground(b);
 }
 
 QTextCharFormat LHighlighterStrategy::getFormat()
@@ -67,29 +55,36 @@ QTextCharFormat LHighlighterStrategy::getFormat()
 }
 
 LRegExpHighlighterStrategy::LRegExpHighlighterStrategy(QString r, LispSyntaxHighlighter *parent):
-    LHighlighterStrategy(parent),regexp(r)
-{
-
-}
-
-void LRegExpHighlighterStrategy::setFont(const QFont & f)
-{
-    format.setFont(f);
-}
-
-void LRegExpHighlighterStrategy::setForeground(const QBrush & b)
-{
-    format.setForeground(b);
-}
-
-void LRegExpHighlighterStrategy::setBackground(const QBrush & b)
-{
-    format.setBackground(b);
-}
+    LHighlighterStrategy(parent),regexp(r){ }
 
 void LRegExpHighlighterStrategy::match(const QString & text,int * rIndex,int * rLength,int from)
 {
     QRegExp argu_expression(regexp);
     *rIndex = text.indexOf(argu_expression, from);
     *rLength = argu_expression.matchedLength();
+}
+
+LSymbolHighlighterStrategy::LSymbolHighlighterStrategy(LispSyntaxHighlighter * parent)
+    : LHighlighterStrategy(parent){ }
+
+void LSymbolHighlighterStrategy::match(const QString & text,int * rIndex,int * rLength,int from)
+{
+    LispSymbolFactory * factory = LispSymbolFactory::getInstance();
+    QString pattern = BASE_KEY_WORD;
+    QRegExp expression(pattern);
+    *rIndex = text.indexOf(expression,from);
+    if (*rIndex >= 0) {
+        *rLength = expression.matchedLength();
+        LispSymbol * sym = factory->getSymbol(text.mid(*rIndex + 1,*rLength - 1));
+        if(sym != NULL)
+        {
+            *rIndex = *rIndex + 1;
+            *rLength = *rLength - 1;
+            delete sym;
+        }
+        else
+        {
+            *rLength = 0;
+        }
+    }
 }

@@ -86,6 +86,9 @@ void LEditWidget::open(QString path)
             s2->setForeground(Qt::darkRed);
             LRegExpHighlighterStrategy * s3 = new LRegExpHighlighterStrategy(ARGU_TYPE_WORD,shLighter);
             s3->setForeground(Qt::darkCyan);
+            LSymbolHighlighterStrategy * s4 = new LSymbolHighlighterStrategy(shLighter);
+            s4->setFont(QFont(edit->fontFamily(),edit->fontPointSize(),QFont::Bold));
+            s4->setForeground(Qt::darkMagenta);
             edit->setText(QString(f.readAll().data()));
             connect(edit,&QTextEdit::textChanged,
                 [=]()

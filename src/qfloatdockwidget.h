@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QDesktopWidget>
 #include <QApplication>
+#include <QDockWidget>
 #include <QTimer>
 
 class QFloatDockWidget : public QWidget

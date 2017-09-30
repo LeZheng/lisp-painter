@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "lactionmanager.h"
+#include "qfloatdockwidget.h"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
