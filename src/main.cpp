@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     s.move((QApplication::desktop()->width() - s.width())/2,
                    (QApplication::desktop()->height() - s.height())/2);
     MainWindow w;
-    w.connect(&s,&StartupWidget::finished,&w,&MainWindow::show);
+    w.connect(&s,&StartupWidget::finished,&w,&MainWindow::init);
     mainWindow = &w;
 //    qInstallMessageHandler(messageOutput);
     return a.exec();

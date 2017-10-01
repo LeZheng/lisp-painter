@@ -11,6 +11,9 @@
 #include <QToolButton>
 #include <QColorDialog>
 #include <QToolBar>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QObjectCleanupHandler>
 #include "lfilewidget.h"
 #include "lconsolewidget.h"
 #include "leditwidget.h"
@@ -28,17 +31,23 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
+public slots:
+    void init();
 signals:
     void currentCharFormatChanged(QTextCharFormat fmt);
-
+protected:
+    virtual void resizeEvent(QResizeEvent *event);
 private:
     Ui::MainWindow *ui;
+    QFloatDockWidget * fdw;
+    QFloatDockWidget * tdw;
+    QFloatDockWidget * cdw;
     LEditWidget * editWidget;
     LConsoleWidget * consoleWidget;
     LToolsWidget * toolWidget;
     QString path;
-
+    QObjectCleanupHandler cleaner;
+    void initFloatDock();
     void initFontToolBar();
     void initBaseToolBar();
 };

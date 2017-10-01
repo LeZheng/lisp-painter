@@ -1,7 +1,7 @@
 #include "qfloatdockwidget.h"
 #include <QDebug>
 
-QFloatDockWidget::QFloatDockWidget(QWidget *parent) : QWidget(parent)
+QFloatDockWidget::QFloatDockWidget(int l,int t,int w,int h,QWidget *parent) : QWidget(parent)
 {
     this->setMouseTracking(true);
     this->setWindowFlags(Qt::FramelessWindowHint);
@@ -11,8 +11,19 @@ QFloatDockWidget::QFloatDockWidget(QWidget *parent) : QWidget(parent)
     p.setBrush(QPalette::Window, QBrush(mask));
     setPalette(p);
     mouseMovePos = QPoint(0, 0);
-    originRect = frameGeometry();
+    if(w == 0 || h == 0)
+        originRect = frameGeometry();
+    else
+        originRect = QRect(l,t,w,h);
+    move(l,t);
+    resize(w,h);
     connect(&timer,&QTimer::timeout,this,&QFloatDockWidget::dockDrop);
+    connect(this,&QFloatDockWidget::onDropDownOrUp,this,&QFloatDockWidget::appearOrDisappear);
+}
+
+QFloatDockWidget::~QFloatDockWidget()
+{
+    this->close();
 }
 
 void QFloatDockWidget::enterEvent(QEvent *)
@@ -39,7 +50,7 @@ void QFloatDockWidget::leaveEvent(QEvent *)
             rect.left() <= desktop->availableGeometry().left() ||
             rect.right() >= desktop->availableGeometry().right())
     {
-        appearOrDisappear(false);
+//        appearOrDisappear(false);
     }
 }
 
@@ -49,12 +60,15 @@ void QFloatDockWidget::dockDrop()
     this->setWindowOpacity(opacity);
     if(opacity >= 1 || opacity <= 0)
     {
+        resize(originRect.width(),originRect.height());
+        move(originRect.x(),originRect.y());
         timer.stop();
         return;
     }
 
     QRect rect = this->frameGeometry();
     QRect dRect = QApplication::desktop()->availableGeometry();
+
     if(dRect.top() >= rect.top() && dRect.bottom() > rect.bottom())
     {
         int nextHeight = isAppear ? rect.height() + originRect.height()/20:rect.height() - originRect.height()/20;
@@ -112,7 +126,8 @@ void  QFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
 
 void QFloatDockWidget::appearOrDisappear(bool flag)
 {
-    isAppear = flag;
-    if(!this->timer.isActive())
+    if(!this->timer.isActive()){
+        isAppear = flag;
         this->timer.start(10);
+    }
 }

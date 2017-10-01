@@ -18,35 +18,13 @@ MainWindow::MainWindow(QWidget *parent) :
     this->editWidget->setMinimumWidth(400);
 
     setCentralWidget(editWidget);
-
-    LFileWidget * fw = new LFileWidget(this);
-    QDockWidget * leftDock = new QDockWidget(this);
-    leftDock->setWidget(fw);
-    leftDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    addDockWidget(Qt::LeftDockWidgetArea,leftDock);
-
-
-    connect(fw,&LFileWidget::itemSelected,this->editWidget,&LEditWidget::open);
-
-    consoleWidget = new LConsoleWidget(this);
-    QDockWidget * bottomDock = new QDockWidget(this);
-    bottomDock->setWidget(consoleWidget);
-    bottomDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    addDockWidget(Qt::BottomDockWidgetArea,bottomDock);
-
-    toolWidget = new LToolsWidget(this);
-    QDockWidget * toolDock = new QDockWidget(this);
-    toolDock->setWidget(toolWidget);
-    toolDock->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-    addDockWidget(Qt::TopDockWidgetArea,toolDock);
-
-    initBaseToolBar();
-    initFontToolBar();
+    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    exit(0);
 }
 
 void MainWindow::initBaseToolBar()
@@ -146,4 +124,60 @@ void MainWindow::initFontToolBar()
     fontToolBar->addWidget(underlineBtn);
     fontToolBar->addWidget(colorBtn);
     toolWidget->addPage("Font",fontToolBar);
+}
+
+void MainWindow::initFloatDock()
+{
+    QRect desktopRect = QApplication::desktop()->availableGeometry();
+
+    fdw = new QFloatDockWidget(0,200,200,500);
+    QVBoxLayout * layout = new QVBoxLayout(fdw);
+    layout->setMargin(6);
+    LFileWidget * fw = new LFileWidget(fdw);
+    layout->addWidget(fw);
+    fdw->show();
+    connect(fw,&LFileWidget::itemSelected,this->editWidget,&LEditWidget::open);
+    connect(this,&MainWindow::destroyed,fdw,&QFloatDockWidget::deleteLater);
+
+    tdw = new QFloatDockWidget(300,0,desktopRect.width() - 300 * 2,150);
+    QVBoxLayout * tlayout = new QVBoxLayout(tdw);
+    tlayout->setMargin(6);
+    toolWidget = new LToolsWidget(tdw);
+    tlayout->addWidget(toolWidget);
+    tdw->show();
+
+    cdw = new QFloatDockWidget(300,desktopRect.bottom() - 150 + 1,desktopRect.width() - 300 * 2,150);
+    consoleWidget = new LConsoleWidget(cdw);
+    QVBoxLayout * clayout = new QVBoxLayout(cdw);
+    clayout->setMargin(6);
+    clayout->addWidget(consoleWidget);
+    cdw->show();
+}
+
+void MainWindow::init()
+{
+    initFloatDock();
+    initBaseToolBar();
+    initFontToolBar();
+    QRect desktopRect = QApplication::desktop()->availableGeometry();
+    move((desktopRect.width() - width())/2,(desktopRect.height() - height())/2);
+    this->show();
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    if(frameGeometry().top() < tdw->originRect.bottom() && tdw->windowOpacity() >= 1)
+        emit tdw->onDropDownOrUp(false);
+    else if(frameGeometry().top() > tdw->originRect.bottom() && tdw->windowOpacity() <= 0)
+        emit tdw->onDropDownOrUp(true);
+
+    if(frameGeometry().left() < fdw->originRect.right() && fdw->windowOpacity() >= 1)
+        emit fdw->onDropDownOrUp(false);
+    else if(frameGeometry().left() > fdw->originRect.right() && fdw->windowOpacity() <= 0)
+        emit fdw->onDropDownOrUp(true);
+
+    if(frameGeometry().bottom() > cdw->originRect.top() && cdw->windowOpacity() >= 1)
+        emit cdw->onDropDownOrUp(false);
+    else if(frameGeometry().bottom() < cdw->originRect.top() && cdw->windowOpacity() <= 0)
+        emit cdw->onDropDownOrUp(true);
 }
