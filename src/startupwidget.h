@@ -5,7 +5,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 #include <QGraphicsItem>
-#include "qgraphicsstaritem.h"
+#include "lgraphicsstaritem.h"
 #include <QProgressBar>
 #include <QVBoxLayout>
 #include <QList>
@@ -23,7 +23,7 @@ public:
 private:
     QGraphicsView * gView;
     QGraphicsScene * gScene;
-    QGraphicsStarItem i1[10];
+    LGraphicsStarItem i1[10];
     QList<QGraphicsLineItem *> lines;
     QProgressBar * progressBar;
     QVBoxLayout * layout;

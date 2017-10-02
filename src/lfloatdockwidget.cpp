@@ -1,7 +1,7 @@
-#include "qfloatdockwidget.h"
+#include "lfloatdockwidget.h"
 #include <QDebug>
 
-QFloatDockWidget::QFloatDockWidget(int l,int t,int w,int h,QWidget *parent) : QWidget(parent)
+LFloatDockWidget::LFloatDockWidget(int l,int t,int w,int h,QWidget *parent) : QWidget(parent)
 {
     this->setMouseTracking(true);
     this->setWindowFlags(Qt::FramelessWindowHint);
@@ -17,16 +17,16 @@ QFloatDockWidget::QFloatDockWidget(int l,int t,int w,int h,QWidget *parent) : QW
     }
     originRect = frameGeometry();
 
-    connect(&timer,&QTimer::timeout,this,&QFloatDockWidget::dockDrop);
-    connect(this,&QFloatDockWidget::onDropDownOrUp,this,&QFloatDockWidget::appearOrDisappear);
+    connect(&timer,&QTimer::timeout,this,&LFloatDockWidget::dockDrop);
+    connect(this,&LFloatDockWidget::onDropDownOrUp,this,&LFloatDockWidget::appearOrDisappear);
 }
 
-QFloatDockWidget::~QFloatDockWidget()
+LFloatDockWidget::~LFloatDockWidget()
 {
     this->close();
 }
 
-void QFloatDockWidget::enterEvent(QEvent *)
+void LFloatDockWidget::enterEvent(QEvent *)
 {
     QRect rect;
     rect = this->frameGeometry();
@@ -40,7 +40,7 @@ void QFloatDockWidget::enterEvent(QEvent *)
     }
 }
 
-void QFloatDockWidget::leaveEvent(QEvent *)
+void LFloatDockWidget::leaveEvent(QEvent *)
 {
     QRect rect;
     rect = this->frameGeometry();
@@ -54,7 +54,7 @@ void QFloatDockWidget::leaveEvent(QEvent *)
     }
 }
 
-void QFloatDockWidget::dockDrop()
+void LFloatDockWidget::dockDrop()
 {
     qreal opacity = isAppear ? windowOpacity() + 0.05:windowOpacity() - 0.05;
     this->setWindowOpacity(opacity);
@@ -107,7 +107,7 @@ void QFloatDockWidget::dockDrop()
     }
 }
 
-void  QFloatDockWidget::mouseMoveEvent(QMouseEvent *event)
+void  LFloatDockWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if(mouseMovePos != QPoint(0, 0))
     {
@@ -116,17 +116,17 @@ void  QFloatDockWidget::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-void  QFloatDockWidget::mousePressEvent(QMouseEvent *event)
+void  LFloatDockWidget::mousePressEvent(QMouseEvent *event)
 {
     mouseMovePos = event->globalPos();
 }
 
-void  QFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
+void  LFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     mouseMovePos = QPoint(0, 0);
 }
 
-void QFloatDockWidget::appearOrDisappear(bool flag)
+void LFloatDockWidget::appearOrDisappear(bool flag)
 {
     if(!this->timer.isActive()){
         isAppear = flag;

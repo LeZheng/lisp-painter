@@ -1,15 +1,15 @@
-#ifndef QGRAPHICSSTARITEM_H
-#define QGRAPHICSSTARITEM_H
+#ifndef LGRAPHICSSTARITEM_H
+#define LGRAPHICSSTARITEM_H
 
 #include <QGraphicsItem>
 #include <QPainter>
 #include <QGraphicsScene>
 #include <QDateTime>
 
-class QGraphicsStarItem :public QObject, public QGraphicsItem
+class LGraphicsStarItem :public QObject, public QGraphicsItem
 {
 public:
-    QGraphicsStarItem(QObject * parent = 0);
+    LGraphicsStarItem(QObject * parent = 0);
     QRectF boundingRect() const;
     void moveToNext();
     int vx;
@@ -20,4 +20,4 @@ private:
     QPixmap img;
 };
 
-#endif // QGRAPHICSSTARITEM_H
+#endif // LGRAPHICSSTARITEM_H

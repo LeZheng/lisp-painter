@@ -22,10 +22,10 @@ SOURCES += \
     src/mainwindow.cpp \
     src/startupwidget.cpp \
     src/lispsymbolfactory.cpp \
-    src/qgraphicsstaritem.cpp \
-    src/qfloatdockwidget.cpp \
     src/lactionmanager.cpp \
-    src/ltoolswidget.cpp
+    src/ltoolswidget.cpp \
+    src/lfloatdockwidget.cpp \
+    src/lgraphicsstaritem.cpp
 
 HEADERS  += \
     src/graphicsselectscene.h \
@@ -36,10 +36,10 @@ HEADERS  += \
     src/mainwindow.h \
     src/startupwidget.h \
     src/lispsymbolfactory.h \
-    src/qgraphicsstaritem.h \
-    src/qfloatdockwidget.h \
     src/lactionmanager.h \
-    src/ltoolswidget.h
+    src/ltoolswidget.h \
+    src/lfloatdockwidget.h \
+    src/lgraphicsstaritem.h
 
 FORMS    += \
     src/lconsolewidget.ui \

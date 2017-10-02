@@ -1,5 +1,5 @@
-#ifndef QFLOATDOCKWIDGET_H
-#define QFLOATDOCKWIDGET_H
+#ifndef LFLOATDOCKWIDGET_H
+#define LFLOATDOCKWIDGET_H
 
 #include <QWidget>
 #include <QBitmap>
@@ -9,12 +9,12 @@
 #include <QDockWidget>
 #include <QTimer>
 
-class QFloatDockWidget : public QWidget
+class LFloatDockWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit QFloatDockWidget(int l = 0,int t = 0,int w = 0,int h = 0,QWidget *parent = 0);
-    ~QFloatDockWidget();
+    explicit LFloatDockWidget(int l = 0,int t = 0,int w = 0,int h = 0,QWidget *parent = 0);
+    ~LFloatDockWidget();
     QRect originRect;
 protected:
     void enterEvent(QEvent *event);
@@ -35,4 +35,4 @@ private slots:
     void dockDrop();
 };
 
-#endif // QFLOATDOCKWIDGET_H
+#endif // LFLOATDOCKWIDGET_H

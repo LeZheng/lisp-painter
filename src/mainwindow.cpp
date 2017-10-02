@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "lactionmanager.h"
-#include "qfloatdockwidget.h"
+#include "lfloatdockwidget.h"
 #include <QDebug>
 #include <iostream>
 
@@ -130,23 +130,23 @@ void MainWindow::initFloatDock()
 {
     QRect desktopRect = QApplication::desktop()->availableGeometry();
 
-    fdw = new QFloatDockWidget(0,200,200,500);
+    fdw = new LFloatDockWidget(0,200,200,500);
     QVBoxLayout * layout = new QVBoxLayout(fdw);
     layout->setMargin(6);
     LFileWidget * fw = new LFileWidget(fdw);
     layout->addWidget(fw);
     fdw->show();
     connect(fw,&LFileWidget::itemSelected,this->editWidget,&LEditWidget::open);
-    connect(this,&MainWindow::destroyed,fdw,&QFloatDockWidget::deleteLater);
+    connect(this,&MainWindow::destroyed,fdw,&LFloatDockWidget::deleteLater);
 
-    tdw = new QFloatDockWidget(300,0,desktopRect.width() - 300 * 2,150);
+    tdw = new LFloatDockWidget(300,0,desktopRect.width() - 300 * 2,150);
     QVBoxLayout * tlayout = new QVBoxLayout(tdw);
     tlayout->setMargin(6);
     toolWidget = new LToolsWidget(tdw);
     tlayout->addWidget(toolWidget);
     tdw->show();
 
-    cdw = new QFloatDockWidget(300,desktopRect.bottom() - 150 + 1,desktopRect.width() - 300 * 2,150);
+    cdw = new LFloatDockWidget(300,desktopRect.bottom() - 150 + 1,desktopRect.width() - 300 * 2,150);
     consoleWidget = new LConsoleWidget(cdw);
     QVBoxLayout * clayout = new QVBoxLayout(cdw);
     clayout->setMargin(6);

@@ -17,7 +17,7 @@
 #include "lfilewidget.h"
 #include "lconsolewidget.h"
 #include "leditwidget.h"
-#include "qfloatdockwidget.h"
+#include "lfloatdockwidget.h"
 #include "ltoolswidget.h"
 
 namespace Ui {
@@ -39,9 +39,9 @@ protected:
     virtual void moveEvent(QMoveEvent *event);
 private:
     Ui::MainWindow *ui;
-    QFloatDockWidget * fdw;
-    QFloatDockWidget * tdw;
-    QFloatDockWidget * cdw;
+    LFloatDockWidget * fdw;
+    LFloatDockWidget * tdw;
+    LFloatDockWidget * cdw;
     LEditWidget * editWidget;
     LConsoleWidget * consoleWidget;
     LToolsWidget * toolWidget;

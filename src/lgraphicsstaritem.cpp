@@ -1,7 +1,7 @@
-#include "qgraphicsstaritem.h"
+#include "lgraphicsstaritem.h"
 #include "QDebug"
 
-QGraphicsStarItem::QGraphicsStarItem(QObject * parent):
+LGraphicsStarItem::LGraphicsStarItem(QObject * parent):
     QObject(parent)
 {
     img.load(":/star");
@@ -9,18 +9,18 @@ QGraphicsStarItem::QGraphicsStarItem(QObject * parent):
     vy = rand()%2 == 0 ? rand()%5 + 1 : -rand()%5 - 1;
 }
 
-QRectF QGraphicsStarItem::boundingRect() const
+QRectF LGraphicsStarItem::boundingRect() const
 {
     return QRectF(-img.width(),-img.height(),img.width(),img.height());
 }
 
-void QGraphicsStarItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void LGraphicsStarItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF r = boundingRect();
     painter->drawPixmap(r.topLeft(),img);
 }
 
-void QGraphicsStarItem::moveToNext()
+void LGraphicsStarItem::moveToNext()
 {
     QRectF sr = scene()->sceneRect();
     qreal edgeRight = sr.right();
