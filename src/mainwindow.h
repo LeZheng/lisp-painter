@@ -36,7 +36,7 @@ public slots:
 signals:
     void currentCharFormatChanged(QTextCharFormat fmt);
 protected:
-    virtual void resizeEvent(QResizeEvent *event);
+    virtual void moveEvent(QMoveEvent *event);
 private:
     Ui::MainWindow *ui;
     QFloatDockWidget * fdw;

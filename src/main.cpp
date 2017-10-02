@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDesktopWidget>
 #include "lispsymbolfactory.h"
+#include <QDebug>
 
 QMainWindow * mainWindow;
 

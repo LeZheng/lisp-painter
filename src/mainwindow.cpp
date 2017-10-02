@@ -3,13 +3,13 @@
 #include "lactionmanager.h"
 #include "qfloatdockwidget.h"
 #include <QDebug>
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
     this->setMinimumHeight(600);
     this->setMinimumWidth(800);
 
@@ -164,20 +164,21 @@ void MainWindow::init()
     this->show();
 }
 
-void MainWindow::resizeEvent(QResizeEvent *event)
+void MainWindow::moveEvent(QMoveEvent *event)//TODO not complete
 {
-    if(frameGeometry().top() < tdw->originRect.bottom() && tdw->windowOpacity() >= 1)
+    QPoint p = event->pos();
+    if(p.y() < tdw->originRect.bottom() && tdw->windowOpacity() >= 1)
         emit tdw->onDropDownOrUp(false);
-    else if(frameGeometry().top() > tdw->originRect.bottom() && tdw->windowOpacity() <= 0)
+    else if(p.y() > tdw->originRect.bottom() && tdw->windowOpacity() <= 0)
         emit tdw->onDropDownOrUp(true);
 
-    if(frameGeometry().left() < fdw->originRect.right() && fdw->windowOpacity() >= 1)
+    if(p.x() < fdw->originRect.right() && fdw->windowOpacity() >= 1)
         emit fdw->onDropDownOrUp(false);
-    else if(frameGeometry().left() > fdw->originRect.right() && fdw->windowOpacity() <= 0)
+    else if(p.x() > fdw->originRect.right() && fdw->windowOpacity() <= 0)
         emit fdw->onDropDownOrUp(true);
 
-    if(frameGeometry().bottom() > cdw->originRect.top() && cdw->windowOpacity() >= 1)
+    if(p.y() + frameGeometry().height() > cdw->originRect.top() && cdw->windowOpacity() >= 1)
         emit cdw->onDropDownOrUp(false);
-    else if(frameGeometry().bottom() < cdw->originRect.top() && cdw->windowOpacity() <= 0)
+    else if(p.y() + frameGeometry().height() < cdw->originRect.top() && cdw->windowOpacity() <= 0)
         emit cdw->onDropDownOrUp(true);
 }

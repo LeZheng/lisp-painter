@@ -11,12 +11,12 @@ QFloatDockWidget::QFloatDockWidget(int l,int t,int w,int h,QWidget *parent) : QW
     p.setBrush(QPalette::Window, QBrush(mask));
     setPalette(p);
     mouseMovePos = QPoint(0, 0);
-    if(w == 0 || h == 0)
-        originRect = frameGeometry();
-    else
-        originRect = QRect(l,t,w,h);
-    move(l,t);
-    resize(w,h);
+    if(w != 0 && h != 0){
+        move(l,t);
+        resize(w,h);
+    }
+    originRect = frameGeometry();
+
     connect(&timer,&QTimer::timeout,this,&QFloatDockWidget::dockDrop);
     connect(this,&QFloatDockWidget::onDropDownOrUp,this,&QFloatDockWidget::appearOrDisappear);
 }
@@ -60,8 +60,10 @@ void QFloatDockWidget::dockDrop()
     this->setWindowOpacity(opacity);
     if(opacity >= 1 || opacity <= 0)
     {
-        resize(originRect.width(),originRect.height());
-        move(originRect.x(),originRect.y());
+        if(opacity >= 1){
+            resize(originRect.width(),originRect.height());
+            move(originRect.x(),originRect.y());
+        }
         timer.stop();
         return;
     }

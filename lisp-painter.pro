@@ -10,7 +10,6 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = lisp-painter
 TEMPLATE = app
-
 INCLUDEPATH += $$PWD/include
 
 SOURCES += \
