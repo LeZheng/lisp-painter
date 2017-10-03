@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include <QDockWidget>
 #include <QTextEdit>
-#include <QFile>
 #include <QFileDialog>
 #include <QLabel>
 #include <QFontComboBox>
@@ -13,7 +12,6 @@
 #include <QToolBar>
 #include <QApplication>
 #include <QDesktopWidget>
-#include <QObjectCleanupHandler>
 #include "lfilewidget.h"
 #include "lconsolewidget.h"
 #include "leditwidget.h"
@@ -46,7 +44,6 @@ private:
     LConsoleWidget * consoleWidget;
     LToolsWidget * toolWidget;
     QString path;
-    QObjectCleanupHandler cleaner;
     void initFloatDock();
     void initFontToolBar();
     void initBaseToolBar();

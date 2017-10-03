@@ -1,7 +1,7 @@
-#include "startupwidget.h"
+#include "lstartupwidget.h"
 #include <QDebug>
 
-StartupWidget::StartupWidget(int c,QWidget *parent)
+LStartupWidget::LStartupWidget(int c,QWidget *parent)
     : QWidget(parent),initCount(c)
 {
     this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowMinimizeButtonHint);
@@ -31,12 +31,12 @@ StartupWidget::StartupWidget(int c,QWidget *parent)
     timerid = startTimer(60);
 }
 
-StartupWidget::~StartupWidget()
+LStartupWidget::~LStartupWidget()
 {
 
 }
 
-void StartupWidget::timerEvent(QTimerEvent *event)
+void LStartupWidget::timerEvent(QTimerEvent *event)
 {
     timerid = event->timerId();
     QListIterator<QGraphicsLineItem *> iterator(lines);
@@ -79,7 +79,7 @@ void StartupWidget::timerEvent(QTimerEvent *event)
 
 }
 
-void StartupWidget::initStateChange(QString state)
+void LStartupWidget::initStateChange(QString state)
 {
     //TODO state
     static int count = 0;

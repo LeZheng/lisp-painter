@@ -20,12 +20,12 @@ SOURCES += \
     src/lispsyntaxhighlighter.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
-    src/startupwidget.cpp \
     src/lispsymbolfactory.cpp \
     src/lactionmanager.cpp \
     src/ltoolswidget.cpp \
     src/lfloatdockwidget.cpp \
-    src/lgraphicsstaritem.cpp
+    src/lgraphicsstaritem.cpp \
+    src/lstartupwidget.cpp
 
 HEADERS  += \
     src/graphicsselectscene.h \
@@ -34,12 +34,12 @@ HEADERS  += \
     src/lfilewidget.h \
     src/lispsyntaxhighlighter.h \
     src/mainwindow.h \
-    src/startupwidget.h \
     src/lispsymbolfactory.h \
     src/lactionmanager.h \
     src/ltoolswidget.h \
     src/lfloatdockwidget.h \
-    src/lgraphicsstaritem.h
+    src/lgraphicsstaritem.h \
+    src/lstartupwidget.h
 
 FORMS    += \
     src/lconsolewidget.ui \

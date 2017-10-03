@@ -36,6 +36,12 @@ void MainWindow::initBaseToolBar()
     QAction *runAction = manager->addAction(tr("load"),":/load-only","Ctrl+R","load file by clisp");
     QAction *remindAction = manager->addAction(tr("remind"),":/text-remind","Ctrl+1","symbol remind");
     QAction *drawRectAction = manager->addAction(tr("rect select"),":/rect-scale","Ctrl+Alt+a","choose text with rect");
+    toolWidget->addAction("base",openAction);
+    toolWidget->addAction("base",saveAction);
+    toolWidget->addAction("base",createAction);
+    toolWidget->addAction("base",runAction);
+    toolWidget->addAction("base",remindAction);
+    toolWidget->addAction("base",drawRectAction);
     connect(openAction,&QAction::triggered,
             [=](bool checked)
     {
@@ -64,13 +70,6 @@ void MainWindow::initBaseToolBar()
         this->path = path;
     });
     connect(remindAction,&QAction::triggered,editWidget,&LEditWidget::selectCurrentWord);
-
-    toolWidget->addAction("base",openAction);
-    toolWidget->addAction("base",saveAction);
-    toolWidget->addAction("base",createAction);
-    toolWidget->addAction("base",runAction);
-    toolWidget->addAction("base",remindAction);
-    toolWidget->addAction("base",drawRectAction);
 }
 
 void MainWindow::initFontToolBar()
@@ -98,6 +97,15 @@ void MainWindow::initFontToolBar()
     QToolButton * colorBtn = new QToolButton(fontToolBar);
     colorBtn->setText("color");
     colorBtn->setCheckable(true);
+    fontToolBar->addWidget(fontLabel1);
+    fontToolBar->addWidget(fontComboBox);
+    fontToolBar->addWidget(fontLabel2);
+    fontToolBar->addWidget(sizeComboBox);
+    fontToolBar->addWidget(boldBtn);
+    fontToolBar->addWidget(italicBtn);
+    fontToolBar->addWidget(underlineBtn);
+    fontToolBar->addWidget(colorBtn);
+    toolWidget->addPage("Font",fontToolBar);
 
     connect(fontComboBox,static_cast<void(QComboBox::*)(const QString &)>(&QFontComboBox::activated),editWidget,&LEditWidget::changeFontType);
     connect(sizeComboBox,static_cast<void(QComboBox::*)(const QString &)>(&QComboBox::activated),editWidget,&LEditWidget::changeFontSize);
@@ -114,16 +122,6 @@ void MainWindow::initFontToolBar()
         italicBtn->setChecked(fmt.font().italic());
         underlineBtn->setChecked(fmt.font().underline());
     });
-
-    fontToolBar->addWidget(fontLabel1);
-    fontToolBar->addWidget(fontComboBox);
-    fontToolBar->addWidget(fontLabel2);
-    fontToolBar->addWidget(sizeComboBox);
-    fontToolBar->addWidget(boldBtn);
-    fontToolBar->addWidget(italicBtn);
-    fontToolBar->addWidget(underlineBtn);
-    fontToolBar->addWidget(colorBtn);
-    toolWidget->addPage("Font",fontToolBar);
 }
 
 void MainWindow::initFloatDock()
@@ -135,6 +133,7 @@ void MainWindow::initFloatDock()
     layout->setMargin(6);
     LFileWidget * fw = new LFileWidget(fdw);
     layout->addWidget(fw);
+    fdw->setWindowFlags(fdw->windowFlags() | Qt::WindowStaysOnTopHint);
     fdw->show();
     connect(fw,&LFileWidget::itemSelected,this->editWidget,&LEditWidget::open);
     connect(this,&MainWindow::destroyed,fdw,&LFloatDockWidget::deleteLater);
@@ -144,6 +143,7 @@ void MainWindow::initFloatDock()
     tlayout->setMargin(6);
     toolWidget = new LToolsWidget(tdw);
     tlayout->addWidget(toolWidget);
+    tdw->setWindowFlags(tdw->windowFlags() | Qt::WindowStaysOnTopHint);
     tdw->show();
 
     cdw = new LFloatDockWidget(300,desktopRect.bottom() - 150 + 1,desktopRect.width() - 300 * 2,150);
@@ -151,6 +151,7 @@ void MainWindow::initFloatDock()
     QVBoxLayout * clayout = new QVBoxLayout(cdw);
     clayout->setMargin(6);
     clayout->addWidget(consoleWidget);
+    cdw->setWindowFlags(cdw->windowFlags() | Qt::WindowStaysOnTopHint);
     cdw->show();
 }
 
@@ -168,17 +169,35 @@ void MainWindow::moveEvent(QMoveEvent *event)//TODO not complete
 {
     QPoint p = event->pos();
     if(p.y() < tdw->originRect.bottom() && tdw->windowOpacity() >= 1)
+    {
+        tdw->setOverlap(true);
         emit tdw->onDropDownOrUp(false);
+    }
     else if(p.y() > tdw->originRect.bottom() && tdw->windowOpacity() <= 0)
+    {
+        tdw->setOverlap(false);
         emit tdw->onDropDownOrUp(true);
+    }
 
     if(p.x() < fdw->originRect.right() && fdw->windowOpacity() >= 1)
+    {
+        fdw->setOverlap(true);
         emit fdw->onDropDownOrUp(false);
+    }
     else if(p.x() > fdw->originRect.right() && fdw->windowOpacity() <= 0)
+    {
+        fdw->setOverlap(false);
         emit fdw->onDropDownOrUp(true);
+    }
 
     if(p.y() + frameGeometry().height() > cdw->originRect.top() && cdw->windowOpacity() >= 1)
+    {
+        cdw->setOverlap(true);
         emit cdw->onDropDownOrUp(false);
+    }
     else if(p.y() + frameGeometry().height() < cdw->originRect.top() && cdw->windowOpacity() <= 0)
+    {
+        cdw->setOverlap(false);
         emit cdw->onDropDownOrUp(true);
+    }
 }

@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-#include "startupwidget.h"
+#include "lstartupwidget.h"
 #include <QApplication>
 #include <QMessageBox>
 #include <QDesktopWidget>
@@ -27,14 +27,14 @@ int main(int argc, char *argv[])
     int seed = QDateTime::currentDateTime().toTime_t();
     srand(seed);
     LispSymbolFactory * factory = LispSymbolFactory::getInstance();
-    StartupWidget s(1);
-    s.connect(factory,&LispSymbolFactory::inited,&s,&StartupWidget::initStateChange);
+    LStartupWidget s(1);
+    s.connect(factory,&LispSymbolFactory::inited,&s,&LStartupWidget::initStateChange);
     factory->init();
     s.show();
     s.move((QApplication::desktop()->width() - s.width())/2,
                    (QApplication::desktop()->height() - s.height())/2);
     MainWindow w;
-    w.connect(&s,&StartupWidget::finished,&w,&MainWindow::init);
+    w.connect(&s,&LStartupWidget::finished,&w,&MainWindow::init);
     mainWindow = &w;
 //    qInstallMessageHandler(messageOutput);
     return a.exec();

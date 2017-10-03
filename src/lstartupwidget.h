@@ -1,5 +1,5 @@
-#ifndef STARTUPWIDGET_H
-#define STARTUPWIDGET_H
+#ifndef LSTARTUPWIDGET_H
+#define LSTARTUPWIDGET_H
 
 #include <QWidget>
 #include <QGraphicsView>
@@ -11,13 +11,13 @@
 #include <QList>
 #include <QTimerEvent>
 
-class StartupWidget : public QWidget
+class LStartupWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    StartupWidget(int count,QWidget *parent = 0);
-    ~StartupWidget();
+    LStartupWidget(int count,QWidget *parent = 0);
+    ~LStartupWidget();
     void timerEvent(QTimerEvent *event);
     const int initCount;
 private:
@@ -34,4 +34,4 @@ public slots:
     void initStateChange(QString state);
 };
 
-#endif // STARTUPWIDGET_H
+#endif // LSTARTUPWIDGET_H
