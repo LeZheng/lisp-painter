@@ -3,7 +3,6 @@
 #include "lactionmanager.h"
 #include "lfloatdockwidget.h"
 #include <QDebug>
-#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -127,8 +126,7 @@ void MainWindow::initFontToolBar()
 void MainWindow::initFloatDock()
 {
     QRect desktopRect = QApplication::desktop()->availableGeometry();
-
-    fdw = new LFloatDockWidget(0,200,200,500);
+    fdw = new LFloatDockWidget(desktopRect.left(),200,200,500);
     QVBoxLayout * layout = new QVBoxLayout(fdw);
     layout->setMargin(6);
     LFileWidget * fw = new LFileWidget(fdw);
@@ -168,6 +166,7 @@ void MainWindow::init()
 void MainWindow::moveEvent(QMoveEvent *event)//TODO not complete
 {
     QPoint p = event->pos();
+
     if(p.y() < tdw->originRect.bottom() && tdw->windowOpacity() >= 1)
     {
         tdw->setOverlap(true);

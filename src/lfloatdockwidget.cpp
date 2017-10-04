@@ -16,7 +16,8 @@ LFloatDockWidget::LFloatDockWidget(int l,int t,int w,int h,QWidget *parent) : QW
         resize(w,h);
     }
     originRect = frameGeometry();
-
+    setMinimumHeight(5);
+    setMinimumWidth(5);
     connect(&timer,&QTimer::timeout,this,&LFloatDockWidget::dockDrop);
     connect(this,&LFloatDockWidget::onDropDownOrUp,this,&LFloatDockWidget::appearOrDisappear);
 }
@@ -54,14 +55,13 @@ void LFloatDockWidget::leaveEvent(QEvent *)
             appearOrDisappear(false);
     }
 }
-#include <iostream>
+
 void LFloatDockWidget::dockDrop()
 {
     QRect rect = this->frameGeometry();
     QRect dRect = QApplication::desktop()->availableGeometry();
     qreal opacity = isAppear ? (windowOpacity() + 0.05):(windowOpacity() - 0.05);
     this->setWindowOpacity(opacity);
-    std::cout <<opacity << std::endl;
     if(opacity >= 1 || opacity <= 0)
     {
         if(opacity >= 1)
@@ -75,16 +75,16 @@ void LFloatDockWidget::dockDrop()
 
     if(dRect.top() >= rect.top() && dRect.bottom() > rect.bottom())
     {
-        int nextHeight = isAppear ? (rect.height() + originRect.height()/20):(rect.height() - originRect.height()/20);
-        if(nextHeight <= originRect.height() && nextHeight >= 2)
+        int nextHeight = isAppear ? (rect.height() + originRect.height()/20 + 1):(rect.height() - originRect.height()/20 - 1);
+        if(nextHeight <= originRect.height())
         {
             resize(rect.width(),nextHeight);
         }
     }
     else if(dRect.bottom() <= rect.bottom() && dRect.top() < rect.top())
     {
-        int nextHeight = isAppear ? rect.height() + originRect.height()/20:rect.height() - originRect.height()/20;
-        if(nextHeight <= originRect.height() && nextHeight >= 2)
+        int nextHeight = isAppear ? (rect.height() + originRect.height()/20 + 1):(rect.height() - originRect.height()/20 - 1);
+        if(nextHeight <= originRect.height())
         {
             resize(rect.width(),nextHeight);
             move(rect.x(),dRect.bottom() - nextHeight + 1);
@@ -92,16 +92,16 @@ void LFloatDockWidget::dockDrop()
     }
     else if(dRect.left() >= rect.left() && dRect.right() != rect.right())
     {
-        int nextWidth = isAppear ? rect.width() + originRect.width()/20:rect.width() - originRect.width()/20;
-        if(nextWidth <= originRect.width() && nextWidth >= 2)
+        int nextWidth = isAppear ? (rect.width() + originRect.width()/20 + 1):(rect.width() - originRect.width()/20 - 1);
+        if(nextWidth <= originRect.width())
         {
             resize(nextWidth,rect.height());
         }
     }
     else if(dRect.left() != rect.left() && dRect.right() <= rect.right())
     {
-        int nextWidth = isAppear ? rect.width() + originRect.width()/20:rect.width() - originRect.width()/20;
-        if(nextWidth <= originRect.width() && nextWidth >= 2)
+        int nextWidth = isAppear ? (rect.width() + originRect.width()/20 + 1):(rect.width() - originRect.width()/20 - 1);
+        if(nextWidth <= originRect.width())
         {
             resize(nextWidth,rect.height());
             move(dRect.right() - nextWidth + 1,rect.y());
