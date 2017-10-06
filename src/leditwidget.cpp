@@ -3,14 +3,13 @@
 #include <QDebug>
 
 LEditWidget::LEditWidget(QWidget *parent) :
-    QWidget(parent),
+    LCloneableWidget(parent),
     ui(new Ui::LEditWidget)
 {
     ui->setupUi(this);
     connect(this->ui->tabWidget,&QTabWidget::tabBarDoubleClicked,
             [=](int index)
     {
-        qDebug() << this->ui->tabWidget->tabText(index);
         this->edits.remove(this->ui->tabWidget->tabText(index));
         QWidget * w = this->ui->tabWidget->widget(index);
         this->ui->tabWidget->removeTab(index);
@@ -47,7 +46,6 @@ LEditWidget::LEditWidget(QWidget *parent) :
         QStandardItem * item = this->model->item(index.row());
         remindView->hide();
         QTextEdit * edit = edits.value(ui->tabWidget->tabText(ui->tabWidget->currentIndex()));
-        qDebug() << item->text();
         QTextCursor cursor = edit->textCursor();
         if(!cursor.hasSelection())
         {
@@ -63,6 +61,17 @@ LEditWidget::~LEditWidget()
 {
     delete scene;
     delete ui;
+}
+
+LCloneableWidget * LEditWidget::clone()
+{
+    LEditWidget * widget = new LEditWidget();
+    QListIterator<QString> iterator(edits.keys());
+    while(iterator.hasNext())
+    {
+        widget->open(iterator.next());
+    }
+    return widget;
 }
 
 void LEditWidget::open(QString path)
@@ -90,7 +99,7 @@ void LEditWidget::open(QString path)
             s4->setFont(QFont(edit->fontFamily(),edit->fontPointSize(),QFont::Bold));
             s4->setForeground(Qt::darkMagenta);
             edit->setText(QString(f.readAll().data()));
-            connect(edit,&QTextEdit::textChanged,
+            QWidget::connect(edit,&QTextEdit::textChanged,
                 [=]()
             {
                 int index = this->ui->tabWidget->currentIndex();
@@ -307,10 +316,6 @@ void LEditWidget::changeColor()
         QTextCharFormat fmt;
         fmt.setForeground(color);
         mergeFormat(fmt);
-    }
-    else
-    {
-        //TODO color is not valid
     }
 }
 

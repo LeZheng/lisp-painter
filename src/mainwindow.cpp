@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "lactionmanager.h"
-#include "lfloatdockwidget.h"
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -13,11 +11,6 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setMinimumWidth(800);
 
     this->editWidget = new LEditWidget(this);
-    this->editWidget->setMinimumHeight(300);
-    this->editWidget->setMinimumWidth(400);
-
-    setCentralWidget(editWidget);
-    setAttribute(Qt::WA_DeleteOnClose);
 }
 
 MainWindow::~MainWindow()
@@ -160,6 +153,23 @@ void MainWindow::init()
     initFontToolBar();
     QRect desktopRect = QApplication::desktop()->availableGeometry();
     move((desktopRect.width() - width())/2,(desktopRect.height() - height())/2);
+
+    this->editWidget->setMinimumHeight(300);
+    this->editWidget->setMinimumWidth(400);
+
+
+    setAttribute(Qt::WA_DeleteOnClose);
+
+    LSplitCopyWidget * scw = new LSplitCopyWidget(editWidget,this);
+    LActionManager * manager = LActionManager::getInstance();
+    QAction * splitVAction = manager->addAction(tr("split vertical"),":/split-v","Ctrl+Shift+O","split vertically");
+    QAction * splitHAction = manager->addAction(tr("split horizontal"),":/split-h","Ctrl+Shift+E","split horizontally");
+    toolWidget->addAction("base",splitVAction);
+    toolWidget->addAction("base",splitHAction);
+    connect(splitHAction,&QAction::triggered,scw,&LSplitCopyWidget::horizontalSplit);
+    connect(splitVAction,&QAction::triggered,scw,&LSplitCopyWidget::verticalSplit);
+
+    setCentralWidget(scw);
     this->show();
 }
 

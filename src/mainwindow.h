@@ -17,6 +17,8 @@
 #include "leditwidget.h"
 #include "lfloatdockwidget.h"
 #include "ltoolswidget.h"
+#include "lactionmanager.h"
+#include "lsplitcopywidget.h"
 
 namespace Ui {
 class MainWindow;

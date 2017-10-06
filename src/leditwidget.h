@@ -16,19 +16,20 @@
 #include "graphicsselectscene.h"
 #include "lispsyntaxhighlighter.h"
 #include "lispsymbolfactory.h"
+#include "lsplitcopywidget.h"
 
 namespace Ui {
 class LEditWidget;
 }
 
-class LEditWidget : public QWidget
+class LEditWidget : public LCloneableWidget
 {
     Q_OBJECT
 
 public:
     explicit LEditWidget(QWidget *parent = 0);
     ~LEditWidget();
-
+    virtual LCloneableWidget * clone();
 signals:
     void currentFileChanged(QString path);
     void currentCharFormatChanged(const QTextCharFormat & fmt);

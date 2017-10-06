@@ -33,12 +33,6 @@ LFileWidget::LFileWidget(QWidget *parent) :
         }
     });
 
-    connect(this->ui->fileTree,&QTreeView::clicked,
-            [=](const QModelIndex &index)
-    {
-
-    });
-
     connect(this->ui->btnPrev,&QPushButton::clicked,
             [=]()
     {

@@ -25,7 +25,8 @@ SOURCES += \
     src/ltoolswidget.cpp \
     src/lfloatdockwidget.cpp \
     src/lgraphicsstaritem.cpp \
-    src/lstartupwidget.cpp
+    src/lstartupwidget.cpp \
+    src/lsplitcopywidget.cpp
 
 HEADERS  += \
     src/graphicsselectscene.h \
@@ -39,7 +40,8 @@ HEADERS  += \
     src/ltoolswidget.h \
     src/lfloatdockwidget.h \
     src/lgraphicsstaritem.h \
-    src/lstartupwidget.h
+    src/lstartupwidget.h \
+    src/lsplitcopywidget.h
 
 FORMS    += \
     src/lconsolewidget.ui \

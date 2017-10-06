@@ -12,5 +12,7 @@
         <file>tools/init-symbol.lisp</file>
         <file alias="text-remind">image/dialog-information.png</file>
         <file alias="rect-scale">image/transform-scale.png</file>
+        <file alias="split-h">image/anchor_horizontal.png</file>
+        <file alias="split-v">image/anchor_vertical.png</file>
     </qresource>
 </RCC>
