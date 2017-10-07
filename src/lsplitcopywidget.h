@@ -25,11 +25,15 @@ public:
     explicit LSplitCopyWidget(LCloneableWidget * w,QWidget *parent = nullptr);
 private:
     LCloneableWidget * widget;
+    LSplitCopyWidget * currentLeaf;
 signals:
-
+    void widgetActive(LSplitCopyWidget * w);
 public slots:
     void verticalSplit();
     void horizontalSplit();
+private slots:
+    void onCloneWidgetActive(LCloneableWidget * w);
+    void onLeafWidgetActive(LSplitCopyWidget * w);
 };
 
 #endif // LSPLITCOPYWIDGET_H
