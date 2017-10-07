@@ -9,7 +9,7 @@
         <file alias="save-only">image/document-save-all.png</file>
         <file alias="startup">image/startup-background.jpg</file>
         <file alias="star">image/star.png</file>
-        <file>tools/init-symbol.lisp</file>
+        <file alias="init-mem">tools/init-symbol.lisp</file>
         <file alias="text-remind">image/dialog-information.png</file>
         <file alias="rect-scale">image/transform-scale.png</file>
         <file alias="split-h">image/anchor_horizontal.png</file>

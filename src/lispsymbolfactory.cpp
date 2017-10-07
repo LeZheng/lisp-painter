@@ -107,29 +107,50 @@ QList<LispSymbol *> LispSymbolFactory::getSymbols(QString name)
 
 void LispSymbolFactory::init()
 {
-    p = new QProcess(this);
-    connect(p,static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished),
-            [=](int code,QProcess::ExitStatus exitStatus)
+    this->setAutoDelete(false);
+    QThreadPool::globalInstance()->start(this);
+}
+
+void LispSymbolFactory::run()
+{
+    p = new QProcess();
+    QString tmpPath = QDir::tempPath();
+    QFile::copy(":/init-mem",QString("%1/init-symbol.lisp").arg(tmpPath));
+    emit inited("download init lisp file successfully");
+
+    p->start(QString("clisp -i %1/init-symbol.lisp").arg(tmpPath));
+    p->waitForFinished();
+    if(p->exitCode() == 0)
+        emit inited("create get-symbols.mem file successfully");
+    else
     {
-        QByteArray qOutput = p->readAllStandardOutput();
-        QList<QByteArray> list = qOutput.split('\n');
-        QList<QByteArray>::iterator itor = list.begin();
-        for ( ; itor != list.end(); itor++)
-        {
-            QByteArray strline = *itor;
-            QString line = strline.simplified();
-            int start = line.indexOf("| ");
-            int i = line.indexOf(" ",start == -1 ? 0 : start);
-            if(i == -1)
-                continue;
-            QString symbol = line.left(i);
-            QString type = line.mid(i + 1);
-            symbolMap[symbol] = type;
-        }
-        if(code == 0)
-            emit inited("load symbol from clisp successfully");
-        else
-            qWarning() << code << ":init failed!!";
-    });
+        qWarning() << "create get-symbols.mem file failed";
+        //TODO dialog and exit
+    }
+
     p->start("/home/skyline/get-symbols.mem");
+    QByteArray qOutput = p->readAllStandardOutput();
+    QList<QByteArray> list = qOutput.split('\n');
+    QList<QByteArray>::iterator itor = list.begin();
+    for ( ; itor != list.end(); itor++)
+    {
+        QByteArray strline = *itor;
+        QString line = strline.simplified();
+        int start = line.indexOf("| ");
+        int i = line.indexOf(" ",start == -1 ? 0 : start);
+        if(i == -1)
+            continue;
+        QString symbol = line.left(i);
+        QString type = line.mid(i + 1);
+        symbolMap[symbol] = type;
+    }
+    if(p->exitCode() == 0)
+    {
+        emit inited("load symbol from clisp successfully");
+    }
+    else
+    {
+        qWarning() << p->exitCode() << ":init failed!!";
+        emit inited("load symbol from clisp failed");
+    }
 }

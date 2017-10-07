@@ -28,7 +28,7 @@ void MainWindow::initBaseToolBar()
     QAction *runAction = manager->addAction(tr("load"),":/load-only","Ctrl+R","load file by clisp");
     QAction *remindAction = manager->addAction(tr("remind"),":/text-remind","Ctrl+1","symbol remind");
     QAction *drawRectAction = manager->addAction(tr("rect select"),":/rect-scale","Ctrl+Alt+a","choose text with rect");
-    toolWidget->addAction("base",openAction);
+    toolWidget->addAction("base",openAction);openAction->setParent(this);
     toolWidget->addAction("base",saveAction);
     toolWidget->addAction("base",createAction);
     toolWidget->addAction("base",runAction);
@@ -62,6 +62,12 @@ void MainWindow::initBaseToolBar()
         this->path = path;
     });
     connect(remindAction,&QAction::triggered,editWidget,&LEditWidget::selectCurrentWord);
+
+    QMenuBar * bar = menuBar();
+    QMenu * fileMenu = bar->addMenu(tr("file"));
+    fileMenu->addAction(openAction->text(),openAction,&QAction::trigger,openAction->shortcut());
+    fileMenu->addAction(saveAction->text(),saveAction,&QAction::trigger,saveAction->shortcut());
+    fileMenu->addAction(createAction->text(),createAction,&QAction::trigger,createAction->shortcut());
 }
 
 void MainWindow::initFontToolBar()
@@ -128,7 +134,7 @@ void MainWindow::initFloatDock()
     connect(fw,&LFileWidget::itemSelected,this->editWidget,&LEditWidget::open);
     connect(this,&MainWindow::destroyed,fdw,&LFloatDockWidget::deleteLater);
 
-    tdw = new LFloatDockWidget(300,0,desktopRect.width() - 300 * 2,150);
+    tdw = new LFloatDockWidget(300,0,desktopRect.width() - 300 * 2,90);
     QVBoxLayout * tlayout = new QVBoxLayout(tdw);
     tlayout->setMargin(6);
     toolWidget = new LToolsWidget(tdw);
@@ -167,16 +173,16 @@ void MainWindow::init()
     this->show();
 }
 
-void MainWindow::moveEvent(QMoveEvent *event)//TODO not complete
+void MainWindow::moveEvent(QMoveEvent *event)
 {
     QPoint p = event->pos();
-
-    if(p.y() < tdw->originRect.bottom() && tdw->windowOpacity() >= 1)
+    int titleBarHeight = style()->pixelMetric(QStyle::PM_TitleBarHeight);
+    if(p.y() - titleBarHeight < tdw->originRect.bottom() && tdw->windowOpacity() >= 1)
     {
         tdw->setOverlap(true);
         emit tdw->onDropDownOrUp(false);
     }
-    else if(p.y() > tdw->originRect.bottom() && tdw->windowOpacity() <= 0)
+    else if(p.y() - titleBarHeight > tdw->originRect.bottom() && tdw->windowOpacity() <= 0)
     {
         tdw->setOverlap(false);
         emit tdw->onDropDownOrUp(true);
@@ -193,12 +199,12 @@ void MainWindow::moveEvent(QMoveEvent *event)//TODO not complete
         emit fdw->onDropDownOrUp(true);
     }
 
-    if(p.y() + frameGeometry().height() > cdw->originRect.top() && cdw->windowOpacity() >= 1)
+    if(p.y() - titleBarHeight + frameGeometry().height() > cdw->originRect.top() && cdw->windowOpacity() >= 1)
     {
         cdw->setOverlap(true);
         emit cdw->onDropDownOrUp(false);
     }
-    else if(p.y() + frameGeometry().height() < cdw->originRect.top() && cdw->windowOpacity() <= 0)
+    else if(p.y() - titleBarHeight + frameGeometry().height() < cdw->originRect.top() && cdw->windowOpacity() <= 0)
     {
         cdw->setOverlap(false);
         emit cdw->onDropDownOrUp(true);

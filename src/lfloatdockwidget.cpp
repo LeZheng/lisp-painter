@@ -1,6 +1,10 @@
 #include "lfloatdockwidget.h"
 #include <QDebug>
 
+/*
+ * This is LFloatDockWidget's constructor,\a l \a t \a w \a h means left,top,width and
+ * height,respectively.This is the widget's max rect.
+ */
 LFloatDockWidget::LFloatDockWidget(int l,int t,int w,int h,QWidget *parent) : QWidget(parent)
 {
     this->setMouseTracking(true);
@@ -27,6 +31,11 @@ LFloatDockWidget::~LFloatDockWidget()
     this->close();
 }
 
+/*
+ * Overriding the QWidget's enterEvent method.The mouse enter this widget
+ * when this widget's opacity is 0 will start the timer to resize and change
+ * the opacity of this widget.Then the widget will appear.
+ */
 void LFloatDockWidget::enterEvent(QEvent *)
 {
     QRect rect;
@@ -41,6 +50,11 @@ void LFloatDockWidget::enterEvent(QEvent *)
     }
 }
 
+/*
+ * Overriding the QWidget's leaveEvent method.The mouse enter this widget
+ * when this widget's opacity is 1 will start the timer to resize and change
+ * the opacity of this widget.Then the widget will disappear.
+ */
 void LFloatDockWidget::leaveEvent(QEvent *)
 {
     QRect rect;
@@ -51,18 +65,22 @@ void LFloatDockWidget::leaveEvent(QEvent *)
             rect.left() <= desktop->availableGeometry().left() ||
             rect.right() >= desktop->availableGeometry().right())
     {
+        //If this widget is not overlapped,\fn appearOrDisappear won't be called.
         if(isOverlapped)
             appearOrDisappear(false);
     }
 }
 
+/*
+ * This function will drop the widget using resize,move and setWindowOpacity.
+*/
 void LFloatDockWidget::dockDrop()
 {
     QRect rect = this->frameGeometry();
     QRect dRect = QApplication::desktop()->availableGeometry();
     qreal opacity = isAppear ? (windowOpacity() + 0.05):(windowOpacity() - 0.05);
     this->setWindowOpacity(opacity);
-    if(opacity >= 1 || opacity <= 0)
+    if(opacity >= 1 || opacity <= 0)//drop end
     {
         if(opacity >= 1)
         {
@@ -73,7 +91,7 @@ void LFloatDockWidget::dockDrop()
         return;
     }
 
-    if(dRect.top() >= rect.top() && dRect.bottom() > rect.bottom())
+    if(dRect.top() >= rect.top() && dRect.bottom() > rect.bottom())//drop down
     {
         int nextHeight = isAppear ? (rect.height() + originRect.height()/20 + 1):(rect.height() - originRect.height()/20 - 1);
         if(nextHeight <= originRect.height())
@@ -81,7 +99,7 @@ void LFloatDockWidget::dockDrop()
             resize(rect.width(),nextHeight);
         }
     }
-    else if(dRect.bottom() <= rect.bottom() && dRect.top() < rect.top())
+    else if(dRect.bottom() <= rect.bottom() && dRect.top() < rect.top())//drop up
     {
         int nextHeight = isAppear ? (rect.height() + originRect.height()/20 + 1):(rect.height() - originRect.height()/20 - 1);
         if(nextHeight <= originRect.height())
@@ -90,7 +108,7 @@ void LFloatDockWidget::dockDrop()
             move(rect.x(),dRect.bottom() - nextHeight + 1);
         }
     }
-    else if(dRect.left() >= rect.left() && dRect.right() != rect.right())
+    else if(dRect.left() >= rect.left() && dRect.right() != rect.right())//drop right
     {
         int nextWidth = isAppear ? (rect.width() + originRect.width()/20 + 1):(rect.width() - originRect.width()/20 - 1);
         if(nextWidth <= originRect.width())
@@ -98,7 +116,7 @@ void LFloatDockWidget::dockDrop()
             resize(nextWidth,rect.height());
         }
     }
-    else if(dRect.left() != rect.left() && dRect.right() <= rect.right())
+    else if(dRect.left() != rect.left() && dRect.right() <= rect.right())//drop left
     {
         int nextWidth = isAppear ? (rect.width() + originRect.width()/20 + 1):(rect.width() - originRect.width()/20 - 1);
         if(nextWidth <= originRect.width())
@@ -109,6 +127,10 @@ void LFloatDockWidget::dockDrop()
     }
 }
 
+/*
+ * Because of the Qt::FramelessWindowHint flag,overriding following three
+ * method is necessarilly.
+ */
 void  LFloatDockWidget::mouseMoveEvent(QMouseEvent *event)
 {
     if(mouseMovePos != QPoint(0, 0))
@@ -128,6 +150,9 @@ void  LFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
     mouseMovePos = QPoint(0, 0);
 }
 
+/*
+ * To start the timer.When the timer is active,this function is useless.
+ */
 void LFloatDockWidget::appearOrDisappear(bool flag)
 {
     if(!this->timer.isActive()){

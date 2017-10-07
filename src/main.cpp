@@ -27,15 +27,18 @@ int main(int argc, char *argv[])
     int seed = QDateTime::currentDateTime().toTime_t();
     srand(seed);
     LispSymbolFactory * factory = LispSymbolFactory::getInstance();
-    LStartupWidget s(1);
+    LStartupWidget s(3);
     s.connect(factory,&LispSymbolFactory::inited,&s,&LStartupWidget::initStateChange);
-    factory->init();
     s.show();
     s.move((QApplication::desktop()->width() - s.width())/2,
                    (QApplication::desktop()->height() - s.height())/2);
+
     MainWindow w;
     w.connect(&s,&LStartupWidget::finished,&w,&MainWindow::init);
     mainWindow = &w;
+    w.setWindowTitle("lisp painter");
+    w.setWindowIcon(QIcon(":/star"));
 //    qInstallMessageHandler(messageOutput);
+    factory->init();
     return a.exec();
 }

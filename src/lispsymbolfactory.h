@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QProcess>
 #include <QHash>
+#include <QThreadPool>
+#include <QDir>
 
 class LispSymbol : public QObject
 {
@@ -31,7 +33,7 @@ private:
     const QString sdescription;
 };
 
-class LispSymbolFactory : public QObject
+class LispSymbolFactory : public QObject,public QRunnable
 {
     Q_OBJECT
 public:
@@ -39,6 +41,7 @@ public:
     LispSymbol * getSymbol(QString name);
     QList<LispSymbol *> getSymbols(QString name);
     void init();
+    virtual void run();
 private:
     explicit LispSymbolFactory(QObject *parent = 0);
     static LispSymbolFactory * instance;

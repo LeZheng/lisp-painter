@@ -1,3 +1,8 @@
+/*
+ * This widget will hide when near edge of desktop.
+ * If you want to use it,you need add your own layout
+ * or widget to it,like QWidget.
+ */
 #ifndef LFLOATDOCKWIDGET_H
 #define LFLOATDOCKWIDGET_H
 
