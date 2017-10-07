@@ -12,6 +12,10 @@ class LCloneableWidget:public QWidget
 public:
     explicit LCloneableWidget(QWidget *parent = nullptr);
     virtual LCloneableWidget * clone() = 0;
+protected:
+    virtual bool eventFilter(QObject *watched, QEvent *event);
+signals:
+    void widgetActive(LCloneableWidget * w);
 };
 
 class LSplitCopyWidget : public QWidget

@@ -82,6 +82,7 @@ void LEditWidget::open(QString path)
         if(f.open(QIODevice::ReadWrite))
         {
             QTextEdit * edit = new QTextEdit(this);
+            edit->installEventFilter(this);
             connect(edit,&QTextEdit::currentCharFormatChanged,this,&LEditWidget::currentCharFormatChanged);
             edits[path] = edit;
             edit->setContextMenuPolicy (Qt::NoContextMenu);
@@ -188,7 +189,7 @@ void LEditWidget::mousePressEvent(QMouseEvent *event)
     {
         this->ui->painterView->setVisible(true);
     }
-    QWidget::mousePressEvent(event);
+    LCloneableWidget::mousePressEvent(event);
 }
 
 void LEditWidget::chooseRectText(int x,int y,int h,int w)

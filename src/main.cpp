@@ -23,7 +23,7 @@ static void messageOutput(QtMsgType type,const QMessageLogContext &context,const
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-
+    qDebug() << "start...";
     int seed = QDateTime::currentDateTime().toTime_t();
     srand(seed);
     LispSymbolFactory * factory = LispSymbolFactory::getInstance();

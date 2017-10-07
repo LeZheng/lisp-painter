@@ -4,7 +4,7 @@
 LFloatDockWidget::LFloatDockWidget(int l,int t,int w,int h,QWidget *parent) : QWidget(parent)
 {
     this->setMouseTracking(true);
-    this->setWindowFlags(Qt::FramelessWindowHint);
+    this->setWindowFlags(Qt::FramelessWindowHint | Qt::Tool | Qt::WindowStaysOnTopHint | Qt::X11BypassWindowManagerHint);
     QPixmap mask(":/startup");
     setMask(QBitmap(mask.mask()));
     QPalette p;

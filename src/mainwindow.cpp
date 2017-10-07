@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    exit(0);
+    QApplication::quit();
 }
 
 void MainWindow::initBaseToolBar()
@@ -124,7 +124,6 @@ void MainWindow::initFloatDock()
     layout->setMargin(6);
     LFileWidget * fw = new LFileWidget(fdw);
     layout->addWidget(fw);
-    fdw->setWindowFlags(fdw->windowFlags() | Qt::WindowStaysOnTopHint);
     fdw->show();
     connect(fw,&LFileWidget::itemSelected,this->editWidget,&LEditWidget::open);
     connect(this,&MainWindow::destroyed,fdw,&LFloatDockWidget::deleteLater);
@@ -134,7 +133,6 @@ void MainWindow::initFloatDock()
     tlayout->setMargin(6);
     toolWidget = new LToolsWidget(tdw);
     tlayout->addWidget(toolWidget);
-    tdw->setWindowFlags(tdw->windowFlags() | Qt::WindowStaysOnTopHint);
     tdw->show();
 
     cdw = new LFloatDockWidget(300,desktopRect.bottom() - 150 + 1,desktopRect.width() - 300 * 2,150);
@@ -142,7 +140,6 @@ void MainWindow::initFloatDock()
     QVBoxLayout * clayout = new QVBoxLayout(cdw);
     clayout->setMargin(6);
     clayout->addWidget(consoleWidget);
-    cdw->setWindowFlags(cdw->windowFlags() | Qt::WindowStaysOnTopHint);
     cdw->show();
 }
 
@@ -156,9 +153,6 @@ void MainWindow::init()
 
     this->editWidget->setMinimumHeight(300);
     this->editWidget->setMinimumWidth(400);
-
-
-    setAttribute(Qt::WA_DeleteOnClose);
 
     LSplitCopyWidget * scw = new LSplitCopyWidget(editWidget,this);
     LActionManager * manager = LActionManager::getInstance();

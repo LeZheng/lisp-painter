@@ -1,7 +1,18 @@
 #include "lsplitcopywidget.h"
+#include <QDebug>
 
 LCloneableWidget::LCloneableWidget(QWidget *parent):
     QWidget(parent){}
+
+bool LCloneableWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    if(event->type() == QEvent::FocusIn || event->type() == QEvent::MouseButtonPress)
+    {
+        qDebug() << "widgetActive ..";
+        emit widgetActive(this);
+    }
+    return QWidget::eventFilter(watched,event);
+}
 
 LSplitCopyWidget::LSplitCopyWidget(LCloneableWidget * w,QWidget *parent) : QWidget(parent)
 {
