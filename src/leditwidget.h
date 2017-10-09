@@ -13,6 +13,7 @@
 #include <QTableView>
 #include <QStandardItemModel>
 #include <QColorDialog>
+#include <QMessageBox>
 #include "graphicsselectscene.h"
 #include "lispsyntaxhighlighter.h"
 #include "lispsymbolfactory.h"

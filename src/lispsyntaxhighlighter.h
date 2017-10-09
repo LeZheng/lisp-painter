@@ -35,6 +35,7 @@ public:
     virtual void match(const QString & text,int * rIndex,int * rLength,int from = 0) = 0;
     QTextCharFormat getFormat();
     void setFont(const QFont &);
+    void setFontWeight(int w);
     void setForeground(const QBrush &);
     void setBackground(const QBrush &);
 protected:

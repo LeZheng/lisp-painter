@@ -39,6 +39,11 @@ void LHighlighterStrategy::setFont(const QFont & f)
     format.setFont(f);
 }
 
+void LHighlighterStrategy::setFontWeight(int w)
+{
+    format.setFontWeight(w);
+}
+
 void LHighlighterStrategy::setForeground(const QBrush & b)
 {
     format.setForeground(b);

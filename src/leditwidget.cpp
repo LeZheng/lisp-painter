@@ -97,7 +97,7 @@ void LEditWidget::open(QString path)
             LRegExpHighlighterStrategy * s3 = new LRegExpHighlighterStrategy(ARGU_TYPE_WORD,shLighter);
             s3->setForeground(Qt::darkCyan);
             LSymbolHighlighterStrategy * s4 = new LSymbolHighlighterStrategy(shLighter);
-            s4->setFont(QFont(edit->fontFamily(),edit->fontPointSize(),QFont::Bold));
+            s4->setFontWeight(QFont::Bold);
             s4->setForeground(Qt::darkMagenta);
             edit->setText(QString(f.readAll().data()));
             QWidget::connect(edit,&QTextEdit::textChanged,
@@ -194,6 +194,8 @@ void LEditWidget::mousePressEvent(QMouseEvent *event)
 
 void LEditWidget::chooseRectText(int x,int y,int h,int w)
 {
+    y -= 4;//TODO this value have not get from qt api
+    x -= 5;//TODO this value have not get from qt api
     QString path = this->ui->tabWidget->tabText(this->ui->tabWidget->currentIndex());
     QTextEdit * edit = edits[path];
     QPoint p(x,y);
@@ -216,7 +218,6 @@ void LEditWidget::chooseRectText(int x,int y,int h,int w)
                 int start = -1,end = -1,j;
                 for(j = 0;j < line.length();j++)
                 {
-
                     if(fm.width(line,j + 1) > x && start < 0)
                     {
                         start = j;
@@ -243,9 +244,12 @@ void LEditWidget::chooseRectText(int x,int y,int h,int w)
             }
             block = block.next();
         }
+        QString temp = "";
         foreach (QString str, list) {
-            qDebug() << str;
+            temp.append(str);
+            temp.append("\n");
         }
+        QMessageBox::information(this,tr("select text"),temp,QMessageBox::Yes);
         emit currentTextSelected(list);
     }
 }
