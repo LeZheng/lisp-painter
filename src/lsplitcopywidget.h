@@ -23,6 +23,7 @@ class LSplitCopyWidget : public QWidget
     Q_OBJECT
 public:
     explicit LSplitCopyWidget(LCloneableWidget * w,QWidget *parent = nullptr);
+    LCloneableWidget * getWidget();
 private:
     LCloneableWidget * widget;
     LSplitCopyWidget * currentLeaf;

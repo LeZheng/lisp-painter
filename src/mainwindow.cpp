@@ -38,18 +38,18 @@ void MainWindow::initBaseToolBar()
             [=](bool checked)
     {
         QString path = QFileDialog::getOpenFileName(this);
-        editWidget->open(path);
+        this->editWidget->open(path);
     });
     connect(saveAction,&QAction::triggered,
             [=](bool checked)
     {
-        editWidget->save("");
+        this->editWidget->save("");
     });
     connect(createAction,&QAction::triggered,
             [=](bool checked)
     {
         QString path = QFileDialog::getSaveFileName(this);
-        editWidget->create(path);
+        this->editWidget->create(path);
     });
     connect(runAction,&QAction::triggered,
             [=](bool checked)
@@ -131,7 +131,11 @@ void MainWindow::initFloatDock()
     LFileWidget * fw = new LFileWidget(fdw);
     layout->addWidget(fw);
     fdw->show();
-    connect(fw,&LFileWidget::itemSelected,this->editWidget,&LEditWidget::open);
+    connect(fw,&LFileWidget::itemSelected,
+            [=](QString path)
+    {
+        this->editWidget->open(path);
+    });
     connect(this,&MainWindow::destroyed,fdw,&LFloatDockWidget::deleteLater);
 
     tdw = new LFloatDockWidget(300,0,desktopRect.width() - 300 * 2,90);
@@ -168,7 +172,16 @@ void MainWindow::init()
     toolWidget->addAction("base",splitHAction);
     connect(splitHAction,&QAction::triggered,scw,&LSplitCopyWidget::horizontalSplit);
     connect(splitVAction,&QAction::triggered,scw,&LSplitCopyWidget::verticalSplit);
-
+    connect(scw,&LSplitCopyWidget::widgetActive,
+            [=](LSplitCopyWidget * w)
+    {
+        LCloneableWidget * widget = w->getWidget();
+        if(widget->inherits("LEditWidget"))
+        {
+            this->editWidget = qobject_cast<LEditWidget *>(widget);
+            qDebug() << "change to " << this->editWidget;
+        }
+    });
     setCentralWidget(scw);
     this->show();
 }

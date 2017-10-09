@@ -41,6 +41,8 @@ void LSplitCopyWidget::verticalSplit()
         widget = NULL;
         setLayout(mLayout);
         this->currentLeaf = scw1;
+        connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
+        connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
         connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
         connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
     }
@@ -67,6 +69,8 @@ void LSplitCopyWidget::horizontalSplit()
         widget = NULL;
         setLayout(mLayout);
         this->currentLeaf = scw1;
+        connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
+        connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
         connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
         connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
     }
@@ -85,4 +89,9 @@ void LSplitCopyWidget::onCloneWidgetActive(LCloneableWidget * w)
 void LSplitCopyWidget::onLeafWidgetActive(LSplitCopyWidget * w)
 {
     this->currentLeaf = w;
+}
+
+LCloneableWidget * LSplitCopyWidget::getWidget()
+{
+    return this->widget;
 }
