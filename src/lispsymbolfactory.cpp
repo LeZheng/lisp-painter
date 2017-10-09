@@ -81,7 +81,7 @@ QList<LispSymbol *> LispSymbolFactory::getSymbols(QString name)
 {
     QList<LispSymbol *> symbols;
     QProcess proc;
-    proc.start(QString("/home/skyline/get-symbols.mem %1").arg(name));
+    proc.start(QString("./get-symbols.mem %1").arg(name));
 
     if (!proc.waitForFinished())
          qWarning() << "proc.waitForFinished error";
@@ -128,7 +128,8 @@ void LispSymbolFactory::run()
         //TODO dialog and exit
     }
 
-    p->start("/home/skyline/get-symbols.mem");
+    p->start("./get-symbols.mem");
+    p->waitForFinished();
     QByteArray qOutput = p->readAllStandardOutput();
     QList<QByteArray> list = qOutput.split('\n');
     QList<QByteArray>::iterator itor = list.begin();

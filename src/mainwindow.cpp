@@ -7,8 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->setMinimumHeight(600);
-    this->setMinimumWidth(800);
+    this->setMinimumHeight(300);
+    this->setMinimumWidth(400);
 
     this->editWidget = new LEditWidget(this);
 }
@@ -125,7 +125,7 @@ void MainWindow::initFontToolBar()
 void MainWindow::initFloatDock()
 {
     QRect desktopRect = QApplication::desktop()->availableGeometry();
-    fdw = new LFloatDockWidget(desktopRect.left(),200,200,500);
+    fdw = new LFloatDockWidget(desktopRect.left(),100,200,desktopRect.height() - 100 * 2);
     QVBoxLayout * layout = new QVBoxLayout(fdw);
     layout->setMargin(6);
     LFileWidget * fw = new LFileWidget(fdw);

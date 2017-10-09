@@ -91,34 +91,38 @@ void LFloatDockWidget::dockDrop()
         return;
     }
 
-    if(dRect.top() >= rect.top() && dRect.bottom() > rect.bottom())//drop down
+    if(dRect.top() >= rect.top() && dRect.bottom() > rect.bottom())//berth at top
     {
         int nextHeight = isAppear ? (rect.height() + originRect.height()/20 + 1):(rect.height() - originRect.height()/20 - 1);
+        nextHeight = nextHeight >= 0 ? nextHeight : 2;
         if(nextHeight <= originRect.height())
         {
             resize(rect.width(),nextHeight);
         }
     }
-    else if(dRect.bottom() <= rect.bottom() && dRect.top() < rect.top())//drop up
+    else if(dRect.bottom() <= rect.bottom() && dRect.top() < rect.top())//berth at bottom
     {
         int nextHeight = isAppear ? (rect.height() + originRect.height()/20 + 1):(rect.height() - originRect.height()/20 - 1);
+        nextHeight = nextHeight >= 0 ? nextHeight : 2;
         if(nextHeight <= originRect.height())
         {
             resize(rect.width(),nextHeight);
             move(rect.x(),dRect.bottom() - nextHeight + 1);
         }
     }
-    else if(dRect.left() >= rect.left() && dRect.right() != rect.right())//drop right
+    else if(dRect.left() >= rect.left() && dRect.right() != rect.right())//berth at left
     {
         int nextWidth = isAppear ? (rect.width() + originRect.width()/20 + 1):(rect.width() - originRect.width()/20 - 1);
+        nextWidth = nextWidth >= 0 ? nextWidth : 2;
         if(nextWidth <= originRect.width())
         {
             resize(nextWidth,rect.height());
         }
     }
-    else if(dRect.left() != rect.left() && dRect.right() <= rect.right())//drop left
+    else if(dRect.left() != rect.left() && dRect.right() <= rect.right())//berth at right
     {
         int nextWidth = isAppear ? (rect.width() + originRect.width()/20 + 1):(rect.width() - originRect.width()/20 - 1);
+        nextWidth = nextWidth >= 0 ? nextWidth : 2;
         if(nextWidth <= originRect.width())
         {
             resize(nextWidth,rect.height());
