@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDirModel>
+#include <QStack>
 
 namespace Ui {
 class LFileWidget;
@@ -21,6 +22,7 @@ private:
     Ui::LFileWidget *ui;
     QDirModel * model;
     QString workPath;
+    QStack<QModelIndex> historyPathStack;
 };
 
 #endif // LFILEWIDGET_H
