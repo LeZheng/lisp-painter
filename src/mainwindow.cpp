@@ -68,6 +68,8 @@ void MainWindow::initBaseToolBar()
     fileMenu->addAction(openAction->text(),openAction,&QAction::trigger,openAction->shortcut());
     fileMenu->addAction(saveAction->text(),saveAction,&QAction::trigger,saveAction->shortcut());
     fileMenu->addAction(createAction->text(),createAction,&QAction::trigger,createAction->shortcut());
+    QMenu * buildMenu = bar->addMenu(tr("build"));
+    buildMenu->addAction(runAction->text(),runAction,&QAction::trigger,runAction->shortcut());
 }
 
 void MainWindow::initFontToolBar()
@@ -179,7 +181,6 @@ void MainWindow::init()
         if(widget->inherits("LEditWidget"))
         {
             this->editWidget = qobject_cast<LEditWidget *>(widget);
-            qDebug() << "change to " << this->editWidget;
         }
     });
     setCentralWidget(scw);
