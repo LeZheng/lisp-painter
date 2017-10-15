@@ -194,33 +194,33 @@ void MainWindow::moveEvent(QMoveEvent *event)
     if(p.y() - titleBarHeight < tdw->originRect.bottom() && tdw->windowOpacity() >= 1)
     {
         tdw->setOverlap(true);
-        emit tdw->onDropDownOrUp(false);
+        tdw->appearOrDisappear(false);
     }
     else if(p.y() - titleBarHeight > tdw->originRect.bottom() && tdw->windowOpacity() <= 0)
     {
         tdw->setOverlap(false);
-        emit tdw->onDropDownOrUp(true);
+        tdw->appearOrDisappear(true);
     }
 
     if(p.x() < fdw->originRect.right() && fdw->windowOpacity() >= 1)
     {
         fdw->setOverlap(true);
-        emit fdw->onDropDownOrUp(false);
+        fdw->appearOrDisappear(false);
     }
     else if(p.x() > fdw->originRect.right() && fdw->windowOpacity() <= 0)
     {
         fdw->setOverlap(false);
-        emit fdw->onDropDownOrUp(true);
+        fdw->appearOrDisappear(true);
     }
 
     if(p.y() - titleBarHeight + frameGeometry().height() > cdw->originRect.top() && cdw->windowOpacity() >= 1)
     {
         cdw->setOverlap(true);
-        emit cdw->onDropDownOrUp(false);
+        cdw->appearOrDisappear(false);
     }
     else if(p.y() - titleBarHeight + frameGeometry().height() < cdw->originRect.top() && cdw->windowOpacity() <= 0)
     {
         cdw->setOverlap(false);
-        emit cdw->onDropDownOrUp(true);
+        cdw->appearOrDisappear(true);
     }
 }

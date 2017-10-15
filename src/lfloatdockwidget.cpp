@@ -151,6 +151,25 @@ void  LFloatDockWidget::mousePressEvent(QMouseEvent *event)
 
 void  LFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    QRect nowRect = frameGeometry();
+    QRect desktopRect = QApplication::desktop()->availableGeometry();
+    if(nowRect.top() < desktopRect.top())
+    {
+        move(nowRect.left(),0);
+    }
+    else if(nowRect.left() < desktopRect.left())
+    {
+        move(desktopRect.left(),nowRect.top());
+    }
+    else if(nowRect.right() > desktopRect.right())
+    {
+        move(desktopRect.right() - nowRect.width(),nowRect.top() + 1);
+    }
+    else if(nowRect.bottom() > desktopRect.bottom())
+    {
+        move(nowRect.left(),desktopRect.bottom() - nowRect.height() + 1);
+    }
+    originRect = frameGeometry();
     mouseMovePos = QPoint(0, 0);
 }
 
