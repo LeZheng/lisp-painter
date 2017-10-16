@@ -14,5 +14,6 @@
         <file alias="rect-scale">image/transform-scale.png</file>
         <file alias="split-h">image/anchor_horizontal.png</file>
         <file alias="split-v">image/anchor_vertical.png</file>
+        <file alias="close-split">image/close-split.png</file>
     </qresource>
 </RCC>

@@ -30,6 +30,7 @@ private:
 signals:
     void widgetActive(LSplitCopyWidget * w);
 public slots:
+    bool closeWidget();
     void verticalSplit();
     void horizontalSplit();
 private slots:

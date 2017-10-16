@@ -91,6 +91,45 @@ void LSplitCopyWidget::onLeafWidgetActive(LSplitCopyWidget * w)
     this->currentLeaf = w;
 }
 
+bool LSplitCopyWidget::closeWidget()//TODO
+{
+    if(this->widget != NULL)
+    {
+        qDebug() << "close now";
+        return false;//TODO
+    }
+    else if(this->currentLeaf->getWidget() != NULL)
+    {
+        QLayout * oldLayout = layout();
+        while(oldLayout->count() > 1)
+        {
+            QLayoutItem * item = oldLayout->takeAt(0);
+            if(item->widget())
+                delete item->widget();
+            delete item;
+        }
+        if(oldLayout->count() == 1 && oldLayout->itemAt(0)->widget() != NULL)
+        {
+            if(oldLayout->itemAt(0)->widget()->inherits("LCloneableWidget"))
+            {
+                this->widget = qobject_cast<LCloneableWidget*>(oldLayout->itemAt(0)->widget());
+                QVBoxLayout * layout = new QVBoxLayout(this);
+                widget->setParent(this);
+                layout->addWidget(widget);
+                layout->setContentsMargins(0,0,0,0);
+                setLayout(layout);
+                connect(widget,&LCloneableWidget::widgetActive,this,&LSplitCopyWidget::onCloneWidgetActive);
+            }
+        }
+        qDebug() << "close";
+        return true;
+    }
+    else if(this->currentLeaf->getWidget() == NULL)
+    {
+        return this->currentLeaf->closeWidget();
+    }
+}
+
 LCloneableWidget * LSplitCopyWidget::getWidget()
 {
     return this->widget;

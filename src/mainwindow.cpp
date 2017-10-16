@@ -170,10 +170,13 @@ void MainWindow::init()
     LActionManager * manager = LActionManager::getInstance();
     QAction * splitVAction = manager->addAction(tr("split vertical"),":/split-v","Ctrl+Shift+O","split vertically");
     QAction * splitHAction = manager->addAction(tr("split horizontal"),":/split-h","Ctrl+Shift+E","split horizontally");
+    QAction * closeSAction = manager->addAction(tr("close split widget"),":/close-split","Ctrl+Shift+W","close current split widget");
     toolWidget->addAction("base",splitVAction);
     toolWidget->addAction("base",splitHAction);
+    toolWidget->addAction("base",closeSAction);
     connect(splitHAction,&QAction::triggered,scw,&LSplitCopyWidget::horizontalSplit);
     connect(splitVAction,&QAction::triggered,scw,&LSplitCopyWidget::verticalSplit);
+    connect(closeSAction,&QAction::triggered,scw,&LSplitCopyWidget::closeWidget);
     connect(scw,&LSplitCopyWidget::widgetActive,
             [=](LSplitCopyWidget * w)
     {
