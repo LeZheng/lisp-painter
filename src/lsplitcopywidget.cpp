@@ -40,11 +40,11 @@ void LSplitCopyWidget::verticalSplit()
         delete l;
         widget = NULL;
         setLayout(mLayout);
-        this->currentLeaf = scw1;
         connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
         connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
         connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
         connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
+        emit scw2->widgetActive(scw2);
     }
     else if(currentLeaf != NULL)
     {
@@ -68,11 +68,11 @@ void LSplitCopyWidget::horizontalSplit()
         delete l;
         widget = NULL;
         setLayout(mLayout);
-        this->currentLeaf = scw1;
         connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
         connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
         connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
         connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
+        emit scw2->widgetActive(scw2);
     }
     else if(currentLeaf != NULL)
     {
@@ -96,23 +96,21 @@ bool LSplitCopyWidget::closeWidget()//TODO
     if(this->widget != NULL)
     {
         qDebug() << "close now";
-        return false;//TODO
+        delete this->widget;
+        return true;//TODO
     }
     else if(this->currentLeaf->getWidget() != NULL)
     {
         QLayout * oldLayout = layout();
-        while(oldLayout->count() > 1)
-        {
-            QLayoutItem * item = oldLayout->takeAt(0);
-            if(item->widget())
-                delete item->widget();
-            delete item;
-        }
+        oldLayout->removeWidget(this->currentLeaf);
+        //TODO
         if(oldLayout->count() == 1 && oldLayout->itemAt(0)->widget() != NULL)
         {
-            if(oldLayout->itemAt(0)->widget()->inherits("LCloneableWidget"))
+            qDebug() << oldLayout->itemAt(0)->widget()->objectName();
+            if(oldLayout->itemAt(0)->widget()->inherits("LSplitCopyWidget"))
             {
-                this->widget = qobject_cast<LCloneableWidget*>(oldLayout->itemAt(0)->widget());
+                LSplitCopyWidget * splitW = qobject_cast<LSplitCopyWidget*>(oldLayout->itemAt(0)->widget());
+                this->widget = splitW->getWidget();
                 QVBoxLayout * layout = new QVBoxLayout(this);
                 widget->setParent(this);
                 layout->addWidget(widget);

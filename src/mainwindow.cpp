@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     this->setMinimumHeight(300);
     this->setMinimumWidth(400);
-
+    this->statusBar()->setSizeGripEnabled(false);
     this->editWidget = new LEditWidget(this);
 }
 
