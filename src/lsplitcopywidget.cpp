@@ -26,41 +26,27 @@ LSplitCopyWidget::LSplitCopyWidget(LCloneableWidget * w,QWidget *parent) : QWidg
 
 void LSplitCopyWidget::verticalSplit()
 {
-    if(widget != NULL)
-    {
-        disconnect(widget,&LCloneableWidget::widgetActive,this,&LSplitCopyWidget::onCloneWidgetActive);
-        QLayout * l = layout();
-        QVBoxLayout * mLayout = new QVBoxLayout(this);
-        mLayout->setContentsMargins(0,0,0,0);
-        LCloneableWidget * w1  = widget->clone();//TODO
-        LSplitCopyWidget * scw1 = new LSplitCopyWidget(widget,this);
-        LSplitCopyWidget * scw2 = new LSplitCopyWidget(w1,this);
-        mLayout->addWidget(scw1);
-        mLayout->addWidget(scw2);
-        delete l;
-        widget = NULL;
-        setLayout(mLayout);
-        connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
-        connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
-        connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
-        connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
-        emit scw2->widgetActive(scw2);
-    }
-    else if(currentLeaf != NULL)
-    {
-        currentLeaf->verticalSplit();
-    }
+    split(false);
 }
 
 void LSplitCopyWidget::horizontalSplit()
+{
+    split(true);
+}
+
+void LSplitCopyWidget::split(bool isHorizontal)
 {
     if(widget != NULL)
     {
         disconnect(widget,&LCloneableWidget::widgetActive,this,&LSplitCopyWidget::onCloneWidgetActive);
         QLayout * l = layout();
-        QHBoxLayout * mLayout = new QHBoxLayout(this);
+        QLayout * mLayout;
+        if(isHorizontal)
+            mLayout = new QHBoxLayout();
+        else
+            mLayout = new QVBoxLayout();
         mLayout->setContentsMargins(0,0,0,0);
-        LCloneableWidget * w1  = widget->clone();//TODO
+        LCloneableWidget * w1  = widget->clone();
         LSplitCopyWidget * scw1 = new LSplitCopyWidget(widget,this);
         LSplitCopyWidget * scw2 = new LSplitCopyWidget(w1,this);
         mLayout->addWidget(scw1);
@@ -68,15 +54,13 @@ void LSplitCopyWidget::horizontalSplit()
         delete l;
         widget = NULL;
         setLayout(mLayout);
-        connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
-        connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::widgetActive);
         connect(scw1,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
         connect(scw2,&LSplitCopyWidget::widgetActive,this,&LSplitCopyWidget::onLeafWidgetActive);
         emit scw2->widgetActive(scw2);
     }
     else if(currentLeaf != NULL)
     {
-        currentLeaf->horizontalSplit();
+        currentLeaf->split(isHorizontal);
     }
 }
 
@@ -89,46 +73,52 @@ void LSplitCopyWidget::onCloneWidgetActive(LCloneableWidget * w)
 void LSplitCopyWidget::onLeafWidgetActive(LSplitCopyWidget * w)
 {
     this->currentLeaf = w;
+    emit widgetActive(this);
 }
 
-bool LSplitCopyWidget::closeWidget()//TODO
+bool LSplitCopyWidget::closeWidget()
 {
     if(this->widget != NULL)
     {
-        qDebug() << "close now";
         delete this->widget;
-        return true;//TODO
+        this->widget = NULL;
+        return false;
     }
-    else if(this->currentLeaf->getWidget() != NULL)
+    else if(this->currentLeaf != NULL && !this->currentLeaf->closeWidget())
     {
         QLayout * oldLayout = layout();
-        oldLayout->removeWidget(this->currentLeaf);
-        //TODO
-        if(oldLayout->count() == 1 && oldLayout->itemAt(0)->widget() != NULL)
+        QVBoxLayout * layout = new QVBoxLayout();
+        QLayoutItem *child;
+        while((child = oldLayout->takeAt(0)) != 0)
         {
-            qDebug() << oldLayout->itemAt(0)->widget()->objectName();
-            if(oldLayout->itemAt(0)->widget()->inherits("LSplitCopyWidget"))
+            QWidget * w = child->widget();
+            if(w != this->currentLeaf && w != NULL)
             {
-                LSplitCopyWidget * splitW = qobject_cast<LSplitCopyWidget*>(oldLayout->itemAt(0)->widget());
-                this->widget = splitW->getWidget();
-                QVBoxLayout * layout = new QVBoxLayout(this);
+                LSplitCopyWidget * splitW = qobject_cast<LSplitCopyWidget*>(w);
+                this->widget = splitW->getCurrentWidget();
                 widget->setParent(this);
                 layout->addWidget(widget);
                 layout->setContentsMargins(0,0,0,0);
-                setLayout(layout);
                 connect(widget,&LCloneableWidget::widgetActive,this,&LSplitCopyWidget::onCloneWidgetActive);
             }
+            else if(w == this->currentLeaf && w != NULL)
+            {
+                delete w;
+                this->currentLeaf = NULL;
+            }
+            delete child;
         }
-        qDebug() << "close";
+        delete oldLayout;
+        setLayout(layout);
         return true;
     }
-    else if(this->currentLeaf->getWidget() == NULL)
-    {
-        return this->currentLeaf->closeWidget();
-    }
+    return false;
 }
 
-LCloneableWidget * LSplitCopyWidget::getWidget()
+LCloneableWidget * LSplitCopyWidget::getCurrentWidget()
 {
-    return this->widget;
+    if(this->widget == NULL)
+        this->currentLeaf->getCurrentWidget();
+    else
+        return this->widget;
 }

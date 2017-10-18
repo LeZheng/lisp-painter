@@ -180,7 +180,7 @@ void MainWindow::init()
     connect(scw,&LSplitCopyWidget::widgetActive,
             [=](LSplitCopyWidget * w)
     {
-        LCloneableWidget * widget = w->getWidget();
+        LCloneableWidget * widget = w->getCurrentWidget();
         if(widget->inherits("LEditWidget"))
         {
             this->editWidget = qobject_cast<LEditWidget *>(widget);

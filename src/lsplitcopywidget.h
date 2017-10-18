@@ -23,10 +23,11 @@ class LSplitCopyWidget : public QWidget
     Q_OBJECT
 public:
     explicit LSplitCopyWidget(LCloneableWidget * w,QWidget *parent = nullptr);
-    LCloneableWidget * getWidget();
+    LCloneableWidget * getCurrentWidget();
 private:
     LCloneableWidget * widget;
     LSplitCopyWidget * currentLeaf;
+    void split(bool isH);
 signals:
     void widgetActive(LSplitCopyWidget * w);
 public slots:
