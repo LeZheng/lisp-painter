@@ -76,6 +76,7 @@ LCloneableWidget * LEditWidget::clone()
 
 void LEditWidget::open(QString path)
 {
+    activateWindow();
     if(!edits.contains(path))
     {
         QFile f(path);
@@ -137,6 +138,7 @@ void LEditWidget::open(QString path)
 
 void LEditWidget::save(QString path)
 {
+    activateWindow();
     if(path == "")
         path = this->ui->tabWidget->tabText(this->ui->tabWidget->currentIndex());
     QTextEdit * edit = edits[path];
@@ -157,6 +159,7 @@ void LEditWidget::save(QString path)
 
 void LEditWidget::create(QString path)
 {
+    activateWindow();
     QFile f(path);
     if(f.open(QIODevice::ReadWrite))
     {

@@ -174,6 +174,10 @@ void MainWindow::init()
     toolWidget->addAction("base",splitVAction);
     toolWidget->addAction("base",splitHAction);
     toolWidget->addAction("base",closeSAction);
+    QMenu * widgetMenu = menuBar()->addMenu(tr("widget"));
+    widgetMenu->addAction(splitVAction->text(),splitVAction,&QAction::trigger,splitVAction->shortcut());
+    widgetMenu->addAction(splitHAction->text(),splitHAction,&QAction::trigger,splitHAction->shortcut());
+    widgetMenu->addAction(closeSAction->text(),closeSAction,&QAction::trigger,closeSAction->shortcut());
     connect(splitHAction,&QAction::triggered,scw,&LSplitCopyWidget::horizontalSplit);
     connect(splitVAction,&QAction::triggered,scw,&LSplitCopyWidget::verticalSplit);
     connect(closeSAction,&QAction::triggered,scw,&LSplitCopyWidget::closeWidget);

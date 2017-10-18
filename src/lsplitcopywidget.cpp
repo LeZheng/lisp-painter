@@ -36,6 +36,7 @@ void LSplitCopyWidget::horizontalSplit()
 
 void LSplitCopyWidget::split(bool isHorizontal)
 {
+    activateWindow();
     if(widget != NULL)
     {
         disconnect(widget,&LCloneableWidget::widgetActive,this,&LSplitCopyWidget::onCloneWidgetActive);
