@@ -6,6 +6,7 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QGridLayout>
+#include <QObjectCleanupHandler>
 
 namespace Ui {
 class LToolsWidget;
@@ -26,6 +27,7 @@ private:
     Ui::LToolsWidget *ui;
     QTabWidget * tabWidget;
     QHash<QString,QWidget *> pageMap;
+    QObjectCleanupHandler cleaner;
 };
 
 #endif // LTOOLSWIDGET_H

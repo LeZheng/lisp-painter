@@ -8,6 +8,11 @@ LFileWidget::LFileWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    this->ui->fileTree->setAutoFillBackground(true);
+    QPalette myPalette;
+    myPalette.setBrush(backgroundRole(),Qt::black);
+    this->ui->fileTree->setPalette(myPalette);
+
     this->workPath = QDir::homePath();
     model = new QDirModel(this);
     this->ui->fileTree->setModel(model);

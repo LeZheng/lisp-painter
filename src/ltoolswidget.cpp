@@ -7,6 +7,10 @@ LToolsWidget::LToolsWidget(QWidget *parent) :
 {
     ui->setupUi(this);
     this->tabWidget = this->ui->tabWidget;
+    this->tabWidget->setAutoFillBackground(true);
+    QPalette myPalette;
+    myPalette.setBrush(backgroundRole(),Qt::black);
+    this->tabWidget->setPalette(myPalette);
 }
 
 LToolsWidget::~LToolsWidget()
@@ -54,6 +58,7 @@ void LToolsWidget::addAction(QString pageName,QAction * action)
         this->tabWidget->addTab(bar,pageName);
     }
     pageMap[pageName]->addAction(action);
+    cleaner.add(action);
 }
 
 QAction * LToolsWidget::addAction(QString pageName,QString name,QIcon icon,QString shortcut,QString status)
