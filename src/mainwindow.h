@@ -49,6 +49,7 @@ private:
     void initFloatDock();
     void initFontToolBar();
     void initBaseToolBar();
+    void initSplitWidget();
 };
 
 #endif // MAINWINDOW_H

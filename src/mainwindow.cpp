@@ -28,7 +28,7 @@ void MainWindow::initBaseToolBar()
     QAction *runAction = manager->addAction(tr("load"),":/load-only","Ctrl+R","load file by clisp");
     QAction *remindAction = manager->addAction(tr("remind"),":/text-remind","Ctrl+1","symbol remind");
     QAction *drawRectAction = manager->addAction(tr("rect select"),":/rect-scale","Ctrl+Alt+a","choose text with rect");
-    toolWidget->addAction("base",openAction);openAction->setParent(this);
+    toolWidget->addAction("base",openAction);
     toolWidget->addAction("base",saveAction);
     toolWidget->addAction("base",createAction);
     toolWidget->addAction("base",runAction);
@@ -65,11 +65,11 @@ void MainWindow::initBaseToolBar()
 
     QMenuBar * bar = menuBar();
     QMenu * fileMenu = bar->addMenu(tr("file"));
-    fileMenu->addAction(openAction->text(),openAction,&QAction::trigger,openAction->shortcut());
-    fileMenu->addAction(saveAction->text(),saveAction,&QAction::trigger,saveAction->shortcut());
-    fileMenu->addAction(createAction->text(),createAction,&QAction::trigger,createAction->shortcut());
+    fileMenu->addAction(openAction->text(),openAction,&QAction::trigger,openAction->shortcut())->setStatusTip(openAction->statusTip());
+    fileMenu->addAction(saveAction->text(),saveAction,&QAction::trigger,saveAction->shortcut())->setStatusTip(saveAction->statusTip());
+    fileMenu->addAction(createAction->text(),createAction,&QAction::trigger,createAction->shortcut())->setStatusTip(createAction->statusTip());
     QMenu * buildMenu = bar->addMenu(tr("build"));
-    buildMenu->addAction(runAction->text(),runAction,&QAction::trigger,runAction->shortcut());
+    buildMenu->addAction(runAction->text(),runAction,&QAction::trigger,runAction->shortcut())->setStatusTip(runAction->statusTip());
 }
 
 void MainWindow::initFontToolBar()
@@ -155,17 +155,8 @@ void MainWindow::initFloatDock()
     cdw->show();
 }
 
-void MainWindow::init()
+void MainWindow::initSplitWidget()
 {
-    initFloatDock();
-    initBaseToolBar();
-    initFontToolBar();
-    QRect desktopRect = QApplication::desktop()->availableGeometry();
-    move((desktopRect.width() - width())/2,(desktopRect.height() - height())/2);
-
-    this->editWidget->setMinimumHeight(300);
-    this->editWidget->setMinimumWidth(400);
-
     LSplitCopyWidget * scw = new LSplitCopyWidget(editWidget,this);
     LActionManager * manager = LActionManager::getInstance();
     QAction * splitVAction = manager->addAction(tr("split vertical"),":/split-v","Ctrl+Shift+O","split vertically");
@@ -175,9 +166,9 @@ void MainWindow::init()
     toolWidget->addAction("base",splitHAction);
     toolWidget->addAction("base",closeSAction);
     QMenu * widgetMenu = menuBar()->addMenu(tr("widget"));
-    widgetMenu->addAction(splitVAction->text(),splitVAction,&QAction::trigger,splitVAction->shortcut());
-    widgetMenu->addAction(splitHAction->text(),splitHAction,&QAction::trigger,splitHAction->shortcut());
-    widgetMenu->addAction(closeSAction->text(),closeSAction,&QAction::trigger,closeSAction->shortcut());
+    widgetMenu->addAction(splitVAction->text(),splitVAction,&QAction::trigger,splitVAction->shortcut())->setStatusTip(splitVAction->statusTip());
+    widgetMenu->addAction(splitHAction->text(),splitHAction,&QAction::trigger,splitHAction->shortcut())->setStatusTip(splitHAction->statusTip());
+    widgetMenu->addAction(closeSAction->text(),closeSAction,&QAction::trigger,closeSAction->shortcut())->setStatusTip(closeSAction->statusTip());
     connect(splitHAction,&QAction::triggered,scw,&LSplitCopyWidget::horizontalSplit);
     connect(splitVAction,&QAction::triggered,scw,&LSplitCopyWidget::verticalSplit);
     connect(closeSAction,&QAction::triggered,scw,&LSplitCopyWidget::closeWidget);
@@ -191,6 +182,16 @@ void MainWindow::init()
         }
     });
     setCentralWidget(scw);
+}
+
+void MainWindow::init()
+{
+    initFloatDock();
+    initBaseToolBar();
+    initFontToolBar();
+    initSplitWidget();
+    QRect desktopRect = QApplication::desktop()->availableGeometry();
+    move((desktopRect.width() - width())/2,(desktopRect.height() - height())/2);
     this->show();
 }
 
