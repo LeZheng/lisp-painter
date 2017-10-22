@@ -83,6 +83,8 @@ void LEditWidget::open(QString path)
         if(f.open(QIODevice::ReadWrite))
         {
             QTextEdit * edit = new QTextEdit(this);
+            edit->setLineWrapMode(QTextEdit::WidgetWidth);
+            edit->setWordWrapMode(QTextOption::NoWrap);
             edit->installEventFilter(this);
             connect(edit,&QTextEdit::currentCharFormatChanged,this,&LEditWidget::currentCharFormatChanged);
             edits[path] = edit;
@@ -164,6 +166,8 @@ void LEditWidget::create(QString path)
     if(f.open(QIODevice::ReadWrite))
     {
         QTextEdit * edit = new QTextEdit(this);
+        edit->setLineWrapMode(QTextEdit::WidgetWidth);
+        edit->setWordWrapMode(QTextOption::NoWrap);
         edit->setContextMenuPolicy (Qt::NoContextMenu);
         edits[path] = edit;
         this->ui->tabWidget->addTab(edit,path);
@@ -207,12 +211,13 @@ void LEditWidget::chooseRectText(int x,int y,int h,int w)
     y = p.y();
     if(edit != NULL)
     {
-        double proc = 1.0 * edit->verticalScrollBar()->value() / edit->verticalScrollBar()->maximum();
+        double proc = edit->verticalScrollBar()->value() * 1.0 / edit->verticalScrollBar()->maximum();
         QFontMetrics fm(edit->currentFont());
         int dh = fm.height();
         QTextBlock block = edit->document()->begin();
         QStringList list;
-        y = y + dh * edit->document()->lineCount() * proc;
+        y = y + (dh * edit->document()->lineCount() - edit->height()) * proc;
+
         for(int i = 0,height = 0;i < edit->document()->lineCount();i++,height+= dh)
         {
             if((height >= y && height <= y + h) || (height + dh >= y && height + dh <= y + h))
