@@ -78,18 +78,7 @@ void LFloatDockWidget::dockDrop()
 {
     QRect rect = this->frameGeometry();
     QRect dRect = QApplication::desktop()->availableGeometry();
-    qreal opacity = isAppear ? (windowOpacity() + 0.05):(windowOpacity() - 0.05);
-    this->setWindowOpacity(opacity);
-    if(opacity >= 1 || opacity <= 0)//drop end
-    {
-        if(opacity >= 1)
-        {
-            resize(originRect.width(),originRect.height());
-            move(originRect.x(),originRect.y());
-        }
-        timer.stop();
-        return;
-    }
+    double opacity = isAppear ? (windowOpacity() + 0.05):(windowOpacity() - 0.05);
 
     if(dRect.top() >= rect.top() && dRect.bottom() > rect.bottom())//berth at top
     {
@@ -99,6 +88,7 @@ void LFloatDockWidget::dockDrop()
         {
             resize(rect.width(),nextHeight);
         }
+        this->setWindowOpacity(opacity);
     }
     else if(dRect.bottom() <= rect.bottom() && dRect.top() < rect.top())//berth at bottom
     {
@@ -109,6 +99,7 @@ void LFloatDockWidget::dockDrop()
             resize(rect.width(),nextHeight);
             move(rect.x(),dRect.bottom() - nextHeight + 1);
         }
+        this->setWindowOpacity(opacity);
     }
     else if(dRect.left() >= rect.left() && dRect.right() != rect.right())//berth at left
     {
@@ -118,6 +109,7 @@ void LFloatDockWidget::dockDrop()
         {
             resize(nextWidth,rect.height());
         }
+        this->setWindowOpacity(opacity);
     }
     else if(dRect.left() != rect.left() && dRect.right() <= rect.right())//berth at right
     {
@@ -128,7 +120,19 @@ void LFloatDockWidget::dockDrop()
             resize(nextWidth,rect.height());
             move(dRect.right() - nextWidth + 1,rect.y());
         }
+        this->setWindowOpacity(opacity);
     }
+
+        if(windowOpacity() >= 1 || windowOpacity() <= 0)//drop end
+        {
+            if(opacity >= 1)
+            {
+                resize(originRect.width(),originRect.height());
+                move(originRect.x(),originRect.y());
+            }
+            timer.stop();
+            return;
+        }
 }
 
 /*
@@ -163,7 +167,7 @@ void  LFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
     }
     else if(nowRect.right() > desktopRect.right())
     {
-        move(desktopRect.right() - nowRect.width(),nowRect.top() + 1);
+        move(desktopRect.right() - nowRect.width() + 1,nowRect.top());
     }
     else if(nowRect.bottom() > desktopRect.bottom())
     {
@@ -178,7 +182,7 @@ void  LFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
  */
 void LFloatDockWidget::appearOrDisappear(bool flag)
 {
-    if(!this->timer.isActive()){
+    if(!this->timer.isActive() && (this->windowOpacity() >= 1 || windowOpacity() <= 0)){
         isAppear = flag;
         this->timer.start(10);
     }

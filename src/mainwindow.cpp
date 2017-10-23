@@ -128,6 +128,7 @@ void MainWindow::initFloatDock()
 {
     QRect desktopRect = QApplication::desktop()->availableGeometry();
     fdw = new LFloatDockWidget(desktopRect.left(),100,200,desktopRect.height() - 100 * 2);
+    floatWidgets.append(fdw);
     QVBoxLayout * layout = new QVBoxLayout(fdw);
     layout->setMargin(6);
     LFileWidget * fw = new LFileWidget(fdw);
@@ -141,6 +142,7 @@ void MainWindow::initFloatDock()
     connect(this,&MainWindow::destroyed,fdw,&LFloatDockWidget::deleteLater);
 
     tdw = new LFloatDockWidget(300,0,desktopRect.width() - 300 * 2,90);
+    floatWidgets.append(tdw);
     QVBoxLayout * tlayout = new QVBoxLayout(tdw);
     tlayout->setMargin(6);
     toolWidget = new LToolsWidget(tdw);
@@ -148,6 +150,7 @@ void MainWindow::initFloatDock()
     tdw->show();
 
     cdw = new LFloatDockWidget(300,desktopRect.bottom() - 150 + 1,desktopRect.width() - 300 * 2,150);
+    floatWidgets.append(cdw);
     consoleWidget = new LConsoleWidget(cdw);
     QVBoxLayout * clayout = new QVBoxLayout(cdw);
     clayout->setMargin(6);
@@ -197,38 +200,25 @@ void MainWindow::init()
 
 void MainWindow::moveEvent(QMoveEvent *event)
 {
-    QPoint p = event->pos();
-    int titleBarHeight = style()->pixelMetric(QStyle::PM_TitleBarHeight);
-    if(p.y() - titleBarHeight < tdw->originRect.bottom() && tdw->windowOpacity() >= 1)
+    QRect mRect = frameGeometry();
+    QListIterator<LFloatDockWidget *> iterator(floatWidgets);
+    while(iterator.hasNext())
     {
-        tdw->setOverlap(true);
-        tdw->appearOrDisappear(false);
-    }
-    else if(p.y() - titleBarHeight > tdw->originRect.bottom() && tdw->windowOpacity() <= 0)
-    {
-        tdw->setOverlap(false);
-        tdw->appearOrDisappear(true);
-    }
-
-    if(p.x() < fdw->originRect.right() && fdw->windowOpacity() >= 1)
-    {
-        fdw->setOverlap(true);
-        fdw->appearOrDisappear(false);
-    }
-    else if(p.x() > fdw->originRect.right() && fdw->windowOpacity() <= 0)
-    {
-        fdw->setOverlap(false);
-        fdw->appearOrDisappear(true);
-    }
-
-    if(p.y() - titleBarHeight + frameGeometry().height() > cdw->originRect.top() && cdw->windowOpacity() >= 1)
-    {
-        cdw->setOverlap(true);
-        cdw->appearOrDisappear(false);
-    }
-    else if(p.y() - titleBarHeight + frameGeometry().height() < cdw->originRect.top() && cdw->windowOpacity() <= 0)
-    {
-        cdw->setOverlap(false);
-        cdw->appearOrDisappear(true);
+        LFloatDockWidget * dw = iterator.next();
+        QRect dwRect = dw->originRect;
+        int minX = mRect.left() > dwRect.left() ? dwRect.left() : mRect.left();
+        int maxX = mRect.right() > dwRect.right() ? mRect.right() : dwRect.right();
+        int minY = mRect.top() > dwRect.top() ? dwRect.top() : mRect.top();
+        int maxY = mRect.bottom() > dwRect.bottom() ? mRect.bottom() : dwRect.bottom();
+        if(maxX - minX < mRect.width() + dwRect.width() && maxY - minY < mRect.height() + dwRect.height())
+        {
+            dw->setOverlap(true);
+            dw->appearOrDisappear(false);
+        }
+        else
+        {
+            dw->setOverlap(false);
+            dw->appearOrDisappear(true);
+        }
     }
 }

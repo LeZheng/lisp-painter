@@ -39,6 +39,7 @@ protected:
     virtual void moveEvent(QMoveEvent *event);
 private:
     Ui::MainWindow *ui;
+    QList<LFloatDockWidget *> floatWidgets;
     LFloatDockWidget * fdw;
     LFloatDockWidget * tdw;
     LFloatDockWidget * cdw;
