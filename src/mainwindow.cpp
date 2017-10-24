@@ -200,17 +200,11 @@ void MainWindow::init()
 
 void MainWindow::moveEvent(QMoveEvent *event)
 {
-    QRect mRect = frameGeometry();
     QListIterator<LFloatDockWidget *> iterator(floatWidgets);
     while(iterator.hasNext())
     {
         LFloatDockWidget * dw = iterator.next();
-        QRect dwRect = dw->originRect;
-        int minX = mRect.left() > dwRect.left() ? dwRect.left() : mRect.left();
-        int maxX = mRect.right() > dwRect.right() ? mRect.right() : dwRect.right();
-        int minY = mRect.top() > dwRect.top() ? dwRect.top() : mRect.top();
-        int maxY = mRect.bottom() > dwRect.bottom() ? mRect.bottom() : dwRect.bottom();
-        if(maxX - minX < mRect.width() + dwRect.width() && maxY - minY < mRect.height() + dwRect.height())
+        if(dw->isOverlapWith(frameGeometry()))
         {
             dw->setOverlap(true);
             dw->appearOrDisappear(false);

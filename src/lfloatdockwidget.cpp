@@ -123,16 +123,16 @@ void LFloatDockWidget::dockDrop()
         this->setWindowOpacity(opacity);
     }
 
-        if(windowOpacity() >= 1 || windowOpacity() <= 0)//drop end
+    if(windowOpacity() >= 1 || windowOpacity() <= 0)//drop end
+    {
+        if(opacity >= 1)
         {
-            if(opacity >= 1)
-            {
-                resize(originRect.width(),originRect.height());
-                move(originRect.x(),originRect.y());
-            }
-            timer.stop();
-            return;
+            resize(originRect.width(),originRect.height());
+            move(originRect.x(),originRect.y());
         }
+        timer.stop();
+        return;
+    }
 }
 
 /*
@@ -157,22 +157,16 @@ void  LFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     QRect nowRect = frameGeometry();
     QRect desktopRect = QApplication::desktop()->availableGeometry();
+
     if(nowRect.top() < desktopRect.top())
-    {
         move(nowRect.left(),0);
-    }
     else if(nowRect.left() < desktopRect.left())
-    {
         move(desktopRect.left(),nowRect.top());
-    }
     else if(nowRect.right() > desktopRect.right())
-    {
         move(desktopRect.right() - nowRect.width() + 1,nowRect.top());
-    }
     else if(nowRect.bottom() > desktopRect.bottom())
-    {
         move(nowRect.left(),desktopRect.bottom() - nowRect.height() + 1);
-    }
+
     originRect = frameGeometry();
     mouseMovePos = QPoint(0, 0);
 }
@@ -182,8 +176,25 @@ void  LFloatDockWidget::mouseReleaseEvent(QMouseEvent *event)
  */
 void LFloatDockWidget::appearOrDisappear(bool flag)
 {
-    if(!this->timer.isActive() && (this->windowOpacity() >= 1 || windowOpacity() <= 0)){
+    if(!this->timer.isActive() && (this->windowOpacity() >= 1 || windowOpacity() <= 0))
+    {
         isAppear = flag;
         this->timer.start(10);
     }
+}
+
+/*
+ * Test current LFloatDockWidget whether overlap with the given mRect
+ */
+bool LFloatDockWidget::isOverlapWith(const QRect &mRect)
+{
+    QRect dwRect = this->originRect;
+    int minX = mRect.left() > dwRect.left() ? dwRect.left() : mRect.left();
+    int maxX = mRect.right() > dwRect.right() ? mRect.right() : dwRect.right();
+    int minY = mRect.top() > dwRect.top() ? dwRect.top() : mRect.top();
+    int maxY = mRect.bottom() > dwRect.bottom() ? mRect.bottom() : dwRect.bottom();
+    if(maxX - minX < mRect.width() + dwRect.width() && maxY - minY < mRect.height() + dwRect.height())
+        return true;
+    else
+        return false;
 }

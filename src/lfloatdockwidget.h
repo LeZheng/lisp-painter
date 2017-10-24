@@ -23,6 +23,7 @@ public:
     QRect originRect;
     bool overlap(){return isOverlapped;}
     void setOverlap(bool flag){isOverlapped = flag;}
+    bool isOverlapWith(const QRect &r);
 protected:
     void enterEvent(QEvent *event);
     void leaveEvent(QEvent *event);
