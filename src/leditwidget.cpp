@@ -69,7 +69,11 @@ LCloneableWidget * LEditWidget::clone()
     QListIterator<QString> iterator(edits.keys());
     while(iterator.hasNext())
     {
-        widget->open(iterator.next());
+        QString path = iterator.next();
+        QTextEdit * edit = new QTextEdit();
+        edit->setDocument(edits[path]->document());
+        widget->addEdit(path,edit);
+        connect(edit,&QTextEdit::textChanged,widget,&LEditWidget::editTextChanged);
     }
     return widget;
 }
@@ -103,27 +107,7 @@ void LEditWidget::open(QString path)
             s4->setFontWeight(QFont::Bold);
             s4->setForeground(Qt::darkMagenta);
             edit->setText(QString(f.readAll().data()));
-            QWidget::connect(edit,&QTextEdit::textChanged,
-                [=]()
-            {
-                int index = this->ui->tabWidget->currentIndex();
-                if(this->ui->tabWidget->tabIcon(index).isNull()){
-                    QSize size(200,200);
-                    QImage img(size,QImage::Format_ARGB32);
-                    QPainter painter(&img);
-                    painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
-                    QPen pen = painter.pen();
-                    pen.setColor(Qt::red);
-                    QFont font = painter.font();
-                    font.setBold(true);
-                    font.setPixelSize(200);
-                    painter.setPen(pen);
-                    painter.setFont(font);
-                    painter.drawText(img.rect(),Qt::AlignCenter,"*");
-                    QIcon icon(QPixmap::fromImage(img));
-                    this->ui->tabWidget->setTabIcon(index,icon);
-                }
-            });
+            connect(edit,&QTextEdit::textChanged,this,&LEditWidget::editTextChanged);
         }
         else
         {
@@ -332,3 +316,30 @@ void LEditWidget::changeColor()
     }
 }
 
+void LEditWidget::addEdit(QString path, QTextEdit *edit)
+{
+    edit->setParent(ui->tabWidget);
+    ui->tabWidget->addTab(edit,path);
+    edits[path] = edit;
+}
+
+void LEditWidget::editTextChanged()
+{
+    int index = this->ui->tabWidget->currentIndex();
+    if(this->ui->tabWidget->tabIcon(index).isNull()){
+        QSize size(200,200);
+        QImage img(size,QImage::Format_ARGB32);
+        QPainter painter(&img);
+        painter.setCompositionMode(QPainter::CompositionMode_DestinationOver);
+        QPen pen = painter.pen();
+        pen.setColor(Qt::red);
+        QFont font = painter.font();
+        font.setBold(true);
+        font.setPixelSize(200);
+        painter.setPen(pen);
+        painter.setFont(font);
+        painter.drawText(img.rect(),Qt::AlignCenter,"*");
+        QIcon icon(QPixmap::fromImage(img));
+        this->ui->tabWidget->setTabIcon(index,icon);
+    }
+}

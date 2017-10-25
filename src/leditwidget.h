@@ -51,6 +51,7 @@ public slots:
     void mergeFormat(QTextCharFormat fmt);
     void chooseRectText(int x,int y,int h,int w);
     void selectCurrentWord();
+    void addEdit(QString path,QTextEdit * edit);
 protected:
     virtual void mousePressEvent(QMouseEvent *event);
 private:
@@ -59,6 +60,8 @@ private:
     GraphicsSelectScene * scene;
     QTableView * remindView;
     QStandardItemModel * model;
+private slots:
+    void editTextChanged();
 };
 
 #endif // LEDITWIDGET_H
