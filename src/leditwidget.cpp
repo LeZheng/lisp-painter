@@ -153,6 +153,7 @@ void LEditWidget::create(QString path)
         edit->setLineWrapMode(QTextEdit::WidgetWidth);
         edit->setWordWrapMode(QTextOption::NoWrap);
         edit->setContextMenuPolicy (Qt::NoContextMenu);
+        edit->installEventFilter(this);
         edits[path] = edit;
         this->ui->tabWidget->addTab(edit,path);
         //TODO

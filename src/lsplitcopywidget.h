@@ -5,6 +5,7 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QEvent>
+#include <QMouseEvent>
 
 class LCloneableWidget:public QWidget
 {
@@ -25,9 +26,13 @@ public:
     explicit LSplitCopyWidget(LCloneableWidget * w,QWidget *parent = nullptr);
     LCloneableWidget * getCurrentWidget();
 private:
+    bool isMouseLeftBtnPressed = false;
+    QPoint oldPoint;
     LCloneableWidget * widget;
     LSplitCopyWidget * currentLeaf;
     void split(bool isH);
+protected:
+    virtual void resizeEvent(QResizeEvent *event);
 signals:
     void widgetActive(LSplitCopyWidget * w);
 public slots:
@@ -37,6 +42,24 @@ public slots:
 private slots:
     void onCloneWidgetActive(LCloneableWidget * w);
     void onLeafWidgetActive(LSplitCopyWidget * w);
+};
+
+class LSplitLineWidget : public QWidget
+{
+    Q_OBJECT
+public:
+    explicit LSplitLineWidget(QWidget * parent = nullptr);
+protected:
+    virtual void mouseMoveEvent(QMouseEvent * e);
+    virtual void mousePressEvent(QMouseEvent * e);
+    virtual void mouseReleaseEvent(QMouseEvent * e);
+    virtual void enterEvent(QEvent *event);
+    virtual void leaveEvent(QEvent *event);
+private:
+    bool isMouseLeftBtnPressed = false;
+    QPoint lastPoint;
+signals:
+    void onDragged(int dx,int dy);
 };
 
 #endif // LSPLITCOPYWIDGET_H
