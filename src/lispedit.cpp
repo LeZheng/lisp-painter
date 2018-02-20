@@ -10,7 +10,10 @@ LispEdit::LispEdit(QWidget *parent)
 
 void LispEdit::createWidgets()
 {
-    //(void)new LispHighlighter(document());
+//    srchiliteqt::Qt4SyntaxHighlighter *highlighter =
+//     new srchiliteqt::Qt4SyntaxHighlighter(document());
+//    highlighter->init("lisp.lang");
+
     model = new QStringListModel(this);
     completer = new QCompleter(this);
     completer->setWidget(this);
@@ -30,7 +33,15 @@ void LispEdit::createConnections()
 
 void LispEdit::highlightCurrentLine()
 {
-
+    QList<QTextEdit::ExtraSelection> extraSelections;
+    QTextEdit::ExtraSelection selection;
+    QBrush highligherColor = palette().alternateBase();
+    selection.format.setBackground(highligherColor);
+    selection.format.setProperty(QTextFormat::FullWidthSelection,true);
+    selection.cursor = textCursor();
+    selection.cursor.clearSelection();
+    extraSelections.append(selection);
+    setExtraSelections(extraSelections);
 }
 
 void LispEdit::performCompletion(){
@@ -119,13 +130,12 @@ void LispEdit::keyPressEvent(QKeyEvent *event)
         case Qt::Key_Return:
         case Qt::Key_Escape: event->ignore();return;
         default: completer->popup()->hide();break;
-
-            break;
         }
     }
+    QPlainTextEdit::keyPressEvent(event);
 }
 
-void LispEdit::handledCompletedAndSelected(QKeyEvent *event)
+bool LispEdit::handledCompletedAndSelected(QKeyEvent *event)
 {
     completedAndSelected = false;
     QTextCursor cursor = textCursor();

@@ -9,6 +9,7 @@
 #include <QAbstractItemView>
 #include <QScrollBar>
 #include <QStringList>
+//#include <srchiliteqt/Qt4SyntaxHighlighter.h>
 
 class LispEdit : public QPlainTextEdit
 {
@@ -26,12 +27,13 @@ private:
 
     void createWidgets();
     void createConnections();
-    void highlightCurrentLine();
-    void performCompletion();
     void performCompletion(const QString &completionPrefix);
     void populateModel(const QString &completionPrefix);
     void insertCompletion(const QString &completion,bool singleWord);
-    void handledCompletedAndSelected(QKeyEvent *event);
+    bool handledCompletedAndSelected(QKeyEvent *event);
+protected slots:
+    void highlightCurrentLine();
+    void performCompletion();
 };
 
 #endif // LISPEDIT_H

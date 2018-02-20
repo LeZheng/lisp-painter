@@ -12,6 +12,9 @@ TARGET = lisp-painter
 TEMPLATE = app
 INCLUDEPATH += $$PWD/include
 
+#LIBS += -lsource-highlight-qt4
+
+
 SOURCES += \
     src/graphicsselectscene.cpp \
     src/lconsolewidget.cpp \

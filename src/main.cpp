@@ -4,6 +4,7 @@
 #include <QMessageBox>
 #include <QDesktopWidget>
 #include "lispsymbolfactory.h"
+#include "lispedit.h"
 #include <QDebug>
 
 QMainWindow * mainWindow;
@@ -32,6 +33,10 @@ int main(int argc, char *argv[])
     s.show();
     s.move((QApplication::desktop()->width() - s.width())/2,
                    (QApplication::desktop()->height() - s.height())/2);
+
+    QWidget ww;
+    LispEdit e(&ww);
+    ww.show();
 
     MainWindow w;
     w.connect(&s,&LStartupWidget::finished,&w,&MainWindow::init);
