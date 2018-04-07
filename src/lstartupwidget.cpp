@@ -2,7 +2,7 @@
 #include <QDebug>
 
 LStartupWidget::LStartupWidget(int c,QWidget *parent)
-    : QWidget(parent),initCount(c)
+    : QSplashScreen(parent),initCount(c)
 {
     this->setWindowFlags(Qt::FramelessWindowHint|Qt::WindowMinimizeButtonHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
@@ -81,7 +81,7 @@ void LStartupWidget::timerEvent(QTimerEvent *event)
 
 void LStartupWidget::initStateChange(QString state)
 {
-    //TODO state
+    showMessage(state);
     static int count = 0;
     count++;
     this->progressBar->setValue(count * 100 / initCount);
@@ -91,4 +91,9 @@ void LStartupWidget::initStateChange(QString state)
         this->close();
         emit finished();
     }
+}
+
+void LStartupWidget::drawContents(QPainter *painter)
+{
+
 }

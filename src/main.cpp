@@ -34,10 +34,6 @@ int main(int argc, char *argv[])
     s.move((QApplication::desktop()->width() - s.width())/2,
                    (QApplication::desktop()->height() - s.height())/2);
 
-    QWidget ww;
-    LispEdit e(&ww);
-    ww.show();
-
     MainWindow w;
     w.connect(&s,&LStartupWidget::finished,&w,&MainWindow::init);
     mainWindow = &w;

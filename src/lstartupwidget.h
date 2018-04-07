@@ -10,8 +10,9 @@
 #include <QVBoxLayout>
 #include <QList>
 #include <QTimerEvent>
+#include <QSplashScreen>
 
-class LStartupWidget : public QWidget
+class LStartupWidget : public QSplashScreen
 {
     Q_OBJECT
 
@@ -20,6 +21,9 @@ public:
     ~LStartupWidget();
     void timerEvent(QTimerEvent *event);
     const int initCount;
+
+    virtual void drawContents(QPainter *painter);
+
 private:
     QGraphicsView * gView;
     QGraphicsScene * gScene;
